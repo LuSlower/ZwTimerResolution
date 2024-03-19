@@ -1,15 +1,18 @@
 # SetTimerRes
 Una herramienta más para cambiar la resolución del temporizador del sistema en el contexto del proceso de llamada
+![image](https://github.com/LuSlower/SetTimerRes/assets/148411728/ff586b35-1470-42a5-b960-9525a69a048f)
+
 
 ## ACTUALMENTE
-* Se permiten solo 7 digitos en el cuadro de texto, debe ser un numero entero o arrojara un error
+* Presione ESC para ocultar la GUI, puede hacer clic en el icono de la bandeja para volver a mostrarla tambien añadi un control show alli
+* Se permiten solo 7 digitos como máximo en el cuadro de texto, debe ser un numero entero o arrojara un error
 * La resolución del temporizador máxima será siempre 5000ns (5ms), asi que cualquier valor por debajo de ese ingresado sera reemplazado automaticamente por el, 
 aplica la misma relatividad para el minimo 156250ns
 * Hago uso de LoadLibrary y FreeLibrary para maximizar el rendimiento de DllCall(), las llamadas dinamicas constantes pueden bloquear el script
 * Tambien hago uso de EmptyWorkingSet y SetProcessWorkingSetSize para recolectar algo de basura (este lenguaje no posee uno)
 
 ## PROBLEMAS CONOCIDOS
-* Si posees Windows 11 debes tener marcada la casilla GlobalTimerRequest, referencia: [EL GRAN CAMBIO DE REGLAS](https://randomascii.wordpress.com/2020/10/04/windows-timer-resolution-the-great-rule-change/)
+* Si posees Windows 11 debes tener marcada la casilla GlobalTimerRequest (reiniciar), referencia: [EL GRAN CAMBIO DE REGLAS](https://randomascii.wordpress.com/2020/10/04/windows-timer-resolution-the-great-rule-change/)
 
 * Nose si funciona en Windows 11 y Windows Server 2022+ luego de minimizar/ocultar el proceso, debido a que aun no implemento una forma correcta para llamar dinamicamente a SetProcessInformation, estaré trabajando en aquello
 
