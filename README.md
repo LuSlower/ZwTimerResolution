@@ -1,5 +1,6 @@
 # SetTimerRes
 Una herramienta más para cambiar la resolución del temporizador del sistema en el contexto del proceso de llamada
+
 ![image](https://github.com/LuSlower/SetTimerRes/assets/148411728/ff586b35-1470-42a5-b960-9525a69a048f)
 
 
