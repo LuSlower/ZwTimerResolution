@@ -9,15 +9,16 @@ aplica la misma relatividad para el minimo 156250ns
 * Tambien hago uso de EmptyWorkingSet y SetProcessWorkingSetSize para recolectar algo de basura (este lenguaje no posee uno)
 
 ## INFO
-* Si posees Windows 11 debes tener marcada la casilla GlobalTimerRequest, gracias al blog de dawson por [EL GRAN CAMBIO DE REGLAS](https://randomascii.wordpress.com/2020/10/04/windows-timer-resolution-the-great-rule-change/)
-* Nose si funciona en Windows 11 y Windows Server 2022+, debido a que aun no implemento una forma correcta para llamar dinamicamente a SetProcessInformation, estaré trabajando en aquello
+* La primera version de este programa se baso en una version de AutoIT3, puedes verificar el archivo [AQUI](src/AU3/SetTimerRes(OnEvent).au3)
+* Si posees Windows 11 debes tener marcada la casilla GlobalTimerRequest, referencia: [EL GRAN CAMBIO DE REGLAS](https://randomascii.wordpress.com/2020/10/04/windows-timer-resolution-the-great-rule-change/)
+* Nose si funciona en Windows 11 y Windows Server 2022+ luego de minimizar/ocultar el proceso, debido a que aun no implemento una forma correcta para llamar dinamicamente a SetProcessInformation, estaré trabajando en aquello
 
 ## CONTRIBUYENDO
 Gracias AutoHotkey y AutoIT Comunmity
 
 ## CONSTRUIR
-* Debes tener instalada la ultima versión de AHK v1.1, la puedes encontrar en: [AutoHotKey GitHub](https://github.com/AutoHotkey/AutoHotkey)
+* Debes tener instalada la ultima versión de AHK v1.1 (AHK_L), la puedes encontrar en: [AutoHotKey GitHub](https://github.com/AutoHotkey/AutoHotkey)
 * Simplemente edite el script a su gusto
 
 ## DERECHOS DE AUTOR Y LICENCIA
-[LICENCIA MIT](LICENSE)
+[LICENCIA](LICENSE)
