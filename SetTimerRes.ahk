@@ -24,26 +24,44 @@ IniRead, _save_start, %INI%, Start, Windows, 0
 EmptyWorkingSet() {
 ;llamada a EmptyWorkingSet
 pid := DllCall("kernel32.dll\GetCurrentProcessId")
-hProcess := DllCall("OpenProcess", "uint", 0x001F0FFF, "int", 0, "uint", pid)
+hProcess := DllCall("OpenProcess", "uint", 0x001F0FFF, "int", 0, "uint", pid) ;ALL_ACCESS
 DllCall("Kernel32.dll\SetProcessWorkingSetSize", "ptr", hProcess, "uptr", -1, "uptr", -1)
 DllCall("psapi.dll\EmptyWorkingSet", "Ptr", hProcess)
 DllCall("CloseHandle", "ptr", hProcess)
 }
 
-SetProcessInformation() {
+PagePriorityLow() {
 pid := DllCall("kernel32.dll\GetCurrentProcessId")
-hProcess := DllCall("OpenProcess", "uint", 0x001F0FFF, "int", 0, "uint", pid)
-PROCESS_POWER_THROTTLING := 0x1E
-PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION := 0
-SIZE := 4
-result := DllCall("Kernel32.dll\SetProcessInformation", "Ptr", hProcess, "UInt", PROCESS_POWER_THROTTLING, "Ptr", &PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION, "UInt", SIZE)
+hProcess := DllCall("OpenProcess", "uint", 0x001F0FFF, "int", 0, "uint", pid) ;SET_INFORMATION
+;~ hProcess := DllCall("kernel32.dll\GetCurrentProcess")
+MEMORY_PRIORITY_CLASS := 39
+MEMORY_PRIORITY := 1
+MEMORY_PRIORITY_SIZE = 4
+VarSetCapacity(MEMORY_PRIORITY_INFORMATION, MEMORY_PRIORITY_SIZE, 0)
+NumPut(MEMORY_PRIORITY, &MEMORY_PRIORITY_INFORMATION)
+;Llamar a NtSetInformationProcess para MEMORY_PRIORITY_INFORMATION
+result := DllCall("ntdll.dll\NtSetInformationProcess", "Ptr", hProcess, "Int", MEMORY_PRIORITY_CLASS, "Ptr", &MEMORY_PRIORITY_INFORMATION, "UInt", MEMORY_PRIORITY_SIZE)
+DllCall("CloseHandle", "ptr", hProcess)
+}
+
+DisableIgnoreTimer() {
+pid := DllCall("kernel32.dll\GetCurrentProcessId")
+hProcess := DllCall("OpenProcess", "uint", 0x001F0FFF, "int", 0, "uint", pid) ;SET_INFORMATION
+PROCESS_POWER_THROTTLING_STATE := DllCall("GlobalAlloc", "UInt", 0, "Ptr", 8)  ; Asigna 8 bytes de memoria
+ControlMask := PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION  ; Define el valor de ControlMask
+StateMask := 1  ; Define el valor de StateMask
+NumPut(ControlMask, PROCESS_POWER_THROTTLING_STATE, 0, "UInt")  ; Asigna el valor de ControlMask a la estructura
+NumPut(StateMask, PROCESS_POWER_THROTTLING_STATE, 4, "UInt")  ; Asigna el valor de StateMask a la estructura
+
+;Llamar a NtSetInformationProcess para deshabilitar PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION
+result := DllCall("kernel32.dll\SetProcessInformation", "Ptr", hProcess, "Int", 19, "Ptr", PROCESS_POWER_THROTTLING_STATE, "UInt", 8)
+DllCall("GlobalFree", "Ptr", PROCESS_POWER_THROTTLING_STATE)  ; Libera la memoria asignada
 DllCall("CloseHandle", "ptr", hProcess)
 }
 
 NTQueryTimerResolution() {
 ;llamada a NtQueryTimerResolution
-SetProcessInformation()
-DllCall("ntdll.dll\NtQueryTimerResolution", "Int64P", Mn, "Int64P", Mx, "Int64P", Ct)
+DllCall("ntdll.dll\NtQueryTimerResolution", "Int64*", Mn, "Int64*", Mx, "Int64*", Ct)
 global _max := Mx
 global _min := Mn
 global _current := Ct
@@ -52,7 +70,7 @@ EmptyWorkingSet()
 
 NTSetTimerResolution(Ds, St) {
 ;llamada a NtSetTimerResolution
-DllCall("ntdll.dll\NtSetTimerResolution", "UInt", Ds, "UInt", St, "Int64P", At)
+DllCall("ntdll.dll\NtSetTimerResolution", "UInt", Ds, "UInt", St, "Int64*", At)
 global _current := At
 EmptyWorkingSet()
 }
@@ -76,19 +94,23 @@ Gui, add, text, x20 y70 vCur, Current Resolution :  %_current% (ns)
 Gui, add, button, x40 y90, Set Max
 Gui, add, button, x110 y90, Set Min
 Gui, add, Text, x55 y120, Custom Resolution
-Gui, add, edit, x75 y140 w50 h15 vCust, %_save_custom%
+Gui, add, edit, x75 y140 w50 h15 vCust number limit7, %_save_custom%
 Gui, add, button, x40 y165 w115 h20, Set Custom
 Gui, add, checkbox, x15 y200 vGlobalT, GlobalTimerRequest (Win11)
 Gui, add, checkbox, x15 y220 vHide, Cargar con Windows (Hide)
 GuiControl, , GlobalT, %_save_global_timer%
 GuiControl, , Hide, %_save_start%
-EmptyWorkingSet() ;recolectar basura
+EmptyWorkingSet() ;recolectar basura (drenar ws)
+PagePriorityLow()
+DisableIgnoreTimer()
 switch _save_start
 {
 	case 0:
 		Gui, show, w195 h250, SetTimerRes | LuSlower
+		Gui, +ToolWindow
 	Case 1:
 		Gui, hide
+		Gui, +ToolWindow
 }
 return
 
