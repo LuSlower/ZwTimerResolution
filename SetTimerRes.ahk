@@ -50,11 +50,11 @@ hProcess := DllCall("OpenProcess", "uint", 0x001F0FFF, "int", 0, "uint", pid) ;S
 PROCESS_POWER_THROTTLING_STATE := DllCall("GlobalAlloc", "UInt", 0, "Ptr", 8)  ; Asigna 8 bytes de memoria
 ControlMask := PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION  ; Define el valor de ControlMask
 StateMask := 1  ; Define el valor de StateMask
-NumPut(ControlMask, PROCESS_POWER_THROTTLING_STATE, 0, "UInt")  ; Asigna el valor de ControlMask a la estructura
+NumPut(ControlMask, PROCESS_POWER_THROTTLING_STATE, 1, "UInt")  ; Asigna el valor de ControlMask a la estructura
 NumPut(StateMask, PROCESS_POWER_THROTTLING_STATE, 4, "UInt")  ; Asigna el valor de StateMask a la estructura
 
 ;Llamar a NtSetInformationProcess para deshabilitar PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION
-result := DllCall("kernel32.dll\SetProcessInformation", "Ptr", hProcess, "Int", 19, "Ptr", PROCESS_POWER_THROTTLING_STATE, "UInt", 8)
+result := DllCall("kernel32.dll\SetProcessInformation", "Ptr", hProcess, "Int", 19, "Ptr", &PROCESS_POWER_THROTTLING_STATE, "UInt", 8)
 DllCall("GlobalFree", "Ptr", PROCESS_POWER_THROTTLING_STATE)  ; Libera la memoria asignada
 DllCall("CloseHandle", "ptr", hProcess)
 }
