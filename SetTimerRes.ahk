@@ -2,11 +2,11 @@
 #NoEnv
 ;@Ahk2Exe-SetCompanyName LuSlower
 ;@Ahk2Exe-SetDescription SetTimerRes
-;@Ahk2Exe-SetCopyright Copyright - Luis Garcia
-;@Ahk2Exe-SetFileVersion 1.0.1
+;@Ahk2Exe-SetCopyright Copyright-LuSlower
+;@Ahk2Exe-SetFileVersion 0.0.0.0
 ;@Ahk2Exe-SetProductName SetTimerRes
-;@Ahk2Exe-SetProductVersion 1.0.1
-;@Ahk2Exe-SetVersion 1.0.0.1
+;@Ahk2Exe-SetProductVersion 0.0.0.0
+;@Ahk2Exe-SetVersion 0.0.0.0
 
 global WorkingDir := A_Temp "\SetTimerRes\"
 FileCreateDir, %WorkingDir%
