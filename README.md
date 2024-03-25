@@ -10,6 +10,7 @@ Una herramienta más para cambiar la resolución del temporizador del sistema en
 aplica la misma relatividad para el minimo 156250ns
 * Hago uso de LoadLibrary y FreeLibrary para maximizar el rendimiento de DllCall(), las llamadas dinamicas constantes pueden bloquear el script
 * Tambien hago uso de EmptyWorkingSet y SetProcessWorkingSetSize para recolectar algo de basura (este lenguaje no posee uno)
+* Este script consume poca memoria (cerda de 1k de total bytes)
 
 # INFO
 * La primera version de este programa se baso en una version de AutoIT3, puedes verificar el archivo [AQUI](AU3/SetTimerRes(OnEvent).au3)
