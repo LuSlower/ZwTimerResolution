@@ -2,17 +2,17 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Version=Beta
 #AutoIt3Wrapper_Icon=..\..\..\..\..\..\Pictures\TimerRes.ico
-#AutoIt3Wrapper_Outfile=SetTimerRes (Deprecated).exe
-#AutoIt3Wrapper_Outfile_x64=SetTimerRes_x64.exe
 #AutoIt3Wrapper_Compression=4
+#AutoIt3Wrapper_UseUpx=y
+#AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=SetTimerRes
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.32
-#AutoIt3Wrapper_Res_Fileversion_AutoIncrement=y
+#AutoIt3Wrapper_Res_Fileversion=0.0.0.0
 #AutoIt3Wrapper_Res_ProductName=SetTimerRes
-#AutoIt3Wrapper_Res_ProductVersion=1.0.0.0
+#AutoIt3Wrapper_Res_ProductVersion=0.0.0.0
 #AutoIt3Wrapper_Res_CompanyName=LuSlower
 #AutoIt3Wrapper_Res_LegalCopyright=Copyright © Luis Garcia
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
+#AutoIt3Wrapper_Run_AU3Check=n
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #include <Constants.au3>
 #include <GUIConstants.au3>
@@ -66,7 +66,7 @@ Func NtQueryTimerResolution()
 					"GlobalTimerResolutionRequests", _
 					"REG_DWORD", _
 					"1")
-			_WinAPI_SetProcessInformation()
+		_SetProcessInformation()
 		Case $global = 4
 			RegDelete("HKLM64\SYSTEM\CurrentControlSet\Control\Session Manager\kernel", _
 					"GlobalTimerResolutionRequests")
@@ -111,9 +111,9 @@ Main()
 ;==============================================================
 Func Main()
 	GUIDelete()
-	Global $Main = GUICreate("SetTimerRes | LuSlower", 195, 250, Default, Default, $WS_POPUP, $WS_EX_CONTROLPARENT)
+	Global $Main = GUICreate("SetTimerRes | LuSlower", 195, 250, Default, Default)
 	NtQueryTimerResolution()
-	_WinAPI_SetProcessInformation()
+	_SetProcessInformation()
 	GUISetBkColor($gColor)
 
 	;Set Timer Group
@@ -230,21 +230,21 @@ Func _hide()
 	GUIDelete()
 EndFunc   ;==>_hide
 
-Func _WinAPI_SetProcessInformation()
-$hProcess = _WinAPI_GetCurrentProcess()
-Local $ProcessPowerThrottling = 0x1E ;PROCESS_POWER_THROTTLING
-Local $PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION = 0
-If $hProcess = 0 Then
-    MsgBox(16, "Error", "Error al abrir el proceso")
-    Return
-EndIf
-Local $PROCESS_POWER_THROTTLING_STATE = DllStructCreate("UInt")
-DllStructSetData($PROCESS_POWER_THROTTLING_STATE, 1, $PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION)
-Local $status = DllCall("kernel32.dll", _
-		"LONG", "SetProcessInformation", _
-		"HANDLE", $hProcess, _
-		"INT", $ProcessPowerThrottling, _
-		"PTR", DllStructGetPtr($PROCESS_POWER_THROTTLING_STATE), _
-		"DWORD", DllStructGetSize($PROCESS_POWER_THROTTLING_STATE))
+Func _SetProcessInformation()
+Local $hProcess = _WinAPI_OpenProcess($PROCESS_SET_INFORMATION, 0, @AutoItPID, True) ;SET_INFORMATION = 0x200
+Local $PROCESS_INFORMATION_CLASS = 19
+Local $PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION = 4
+; Definir la estructura PROCESS_POWER_THROTTLING_STATE
+Local $PROCESS_POWER_THROTTLING_STATE = DllStructCreate("DWORD ControlMask; DWORD StateMask")
+DllStructSetData($PROCESS_POWER_THROTTLING_STATE, "ControlMask", $PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION)
+DllStructSetData($PROCESS_POWER_THROTTLING_STATE, "StateMask", 0)
+;Call SetProcessInformation
+Local $status = DllCall("Kernel32.dll",  _
+				"LONG", "SetProcessInformation", _
+				"HANDLE", $hProcess, _
+				"INT", $PROCESS_INFORMATION_CLASS, _
+				"PTR", DllStructGetPtr($PROCESS_POWER_THROTTLING_STATE), _
+				"UINT", DllStructGetSize($PROCESS_POWER_THROTTLING_STATE))
+_WinAPI_CloseHandle($hProcess) ;Close Handle of Process
 ConsoleWrite($status [0] & @CRLF)
 EndFunc
