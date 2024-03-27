@@ -1,2 +1,3 @@
 EXPORTS
-    _SetProcessInformation @1
+    _SetProcessInformation = _SetProcessInformation@4 @1
+    _SetProcessInformation@4 @2

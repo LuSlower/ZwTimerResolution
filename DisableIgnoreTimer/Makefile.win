@@ -6,12 +6,12 @@ CC       = gcc.exe
 WINDRES  = windres.exe
 OBJ      = DisableIgnoreTimer.o
 LINKOBJ  = DisableIgnoreTimer.o
-LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib32" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -m32
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
 BIN      = DisableIgnoreTimer.dll
-CXXFLAGS = $(CXXINCS) -Ofast -DBUILDING_DLL=1
-CFLAGS   = $(INCS) -Ofast -DBUILDING_DLL=1
+CXXFLAGS = $(CXXINCS) -Ofast -m32 -DBUILDING_DLL=1
+CFLAGS   = $(INCS) -Ofast -m32 -DBUILDING_DLL=1
 RM       = rm.exe -f
 DEF      = libDisableIgnoreTimer.def
 STATIC   = libDisableIgnoreTimer.a
