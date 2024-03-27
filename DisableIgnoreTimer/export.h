@@ -12,7 +12,7 @@ extern "C" {
 #define DLL_EXPORT __declspec(dllimport)
 #endif
 
-DLL_EXPORT BOOL _SetProcessInformation(HANDLE hProcess);
+DLL_EXPORT int __stdcall _SetProcessInformation(HANDLE hProcess);
 
 #ifdef __cplusplus
 }
