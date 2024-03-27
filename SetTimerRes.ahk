@@ -8,14 +8,22 @@
 ;@Ahk2Exe-SetProductVersion 0.0.0.0
 ;@Ahk2Exe-SetVersion 0.0.0.0
 
-global WorkingDir := A_Temp "\SetTimerRes\"
+WorkingDir := A_Temp "\SetTimerRes\"
 FileCreateDir, %WorkingDir%
 FileInstall, LICENSE.txt, %WorkingDir% LICENSE.txt, 1 ;MIT LICENSE
+FileInstall, DisableIgnoreTimer.dll, %WorkingDir% DisableIgnoreTimer.dll, 1 ;Install Library
+
+global DisableIgnoreTimer := WorkingDir "DisableIgnoreTimer.dll"
+dll = DisableIgnoreTimer
+
+;obtener PID actual
+global pid := DllCall("kernel32.dll\GetCurrentProcessId")
 
 ;Cargar librerias
 global ntdll := DllCall("LoadLibrary", "Str", "ntdll.dll", "Ptr")
 global psapi := DllCall("LoadLibrary", "Str", "psapi.dll", "Ptr")
 global kernel32 := DllCall("LoadLibrary", "Str", "kernel32.dll", "Ptr")
+global DisableIgnoreTimer := DllCall("LoadLibrary", "Str", dll, "Ptr")
 global INI := a_scriptdir "\SetTimerRes.ini"
 IniRead, _save_custom, %INI%, TimerConfig, CustomTimer, 0000000
 IniRead, _save_global_timer, %INI%, TimerConfig, GlobalTimer, 0
@@ -31,9 +39,7 @@ DllCall("CloseHandle", "ptr", hProcess)
 }
 
 PagePriorityLow() {
-pid := DllCall("kernel32.dll\GetCurrentProcessId")
 hProcess := DllCall("OpenProcess", "uint", 0x001F0FFF, "int", 0, "uint", pid) ;SET_INFORMATION
-;~ hProcess := DllCall("kernel32.dll\GetCurrentProcess")
 MEMORY_PRIORITY_CLASS := 39
 MEMORY_PRIORITY := 1
 MEMORY_PRIORITY_SIZE = 4
@@ -45,17 +51,9 @@ DllCall("CloseHandle", "ptr", hProcess)
 }
 
 DisableIgnoreTimer() {
-pid := DllCall("kernel32.dll\GetCurrentProcessId")
-hProcess := DllCall("OpenProcess", "uint", 0x001F0FFF, "int", 0, "uint", pid) ;SET_INFORMATION
-PROCESS_POWER_THROTTLING_STATE := DllCall("GlobalAlloc", "UInt", 0, "Ptr", 8)  ; Asigna 8 bytes de memoria
-ControlMask := PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION  ; Define el valor de ControlMask
-StateMask := 1  ; Define el valor de StateMask
-NumPut(ControlMask, PROCESS_POWER_THROTTLING_STATE, 1, "UInt")  ; Asigna el valor de ControlMask a la estructura
-NumPut(StateMask, PROCESS_POWER_THROTTLING_STATE, 4, "UInt")  ; Asigna el valor de StateMask a la estructura
-
-;Llamar a NtSetInformationProcess para deshabilitar PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION
-result := DllCall("kernel32.dll\SetProcessInformation", "Ptr", hProcess, "Int", 19, "Ptr", &PROCESS_POWER_THROTTLING_STATE, "UInt", 8)
-DllCall("GlobalFree", "Ptr", PROCESS_POWER_THROTTLING_STATE)  ; Libera la memoria asignada
+hProcess := DllCall("OpenProcess", "uint", 0x200, "int", 0, "uint", pid) ;SET_INFORMATION
+;Llamar a DisableIgnoreTimer.dll para deshabilitar PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION
+result := DllCall("DisableIgnoreTimer.dll\_SetProcessInformation", "Handle", hProcess)
 DllCall("CloseHandle", "ptr", hProcess)
 }
 
@@ -163,6 +161,7 @@ GuiClose:
 DllCall("FreeLibrary ", "Ptr", ntdll)
 DllCall("FreeLibrary ", "Ptr", psapi)
 DllCall("FreeLibrary ", "Ptr", kernel32)
+DllCall("FreeLibrary ", "Ptr", DisableIgnoreTimer)
 key_run := "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 GuiControlGet, _Hvalue, , Hide
 switch _Hvalue
