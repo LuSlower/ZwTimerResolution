@@ -31,7 +31,6 @@ IniRead, _save_start, %INI%, Start, Windows, 0
 
 EmptyWorkingSet() {
 ;llamada a EmptyWorkingSet
-pid := DllCall("kernel32.dll\GetCurrentProcessId")
 hProcess := DllCall("OpenProcess", "uint", 0x001F0FFF, "int", 0, "uint", pid) ;ALL_ACCESS
 DllCall("Kernel32.dll\SetProcessWorkingSetSize", "ptr", hProcess, "uptr", -1, "uptr", -1)
 DllCall("psapi.dll\EmptyWorkingSet", "Ptr", hProcess)
