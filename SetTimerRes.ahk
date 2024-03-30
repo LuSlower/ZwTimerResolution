@@ -2,7 +2,7 @@
 #NoEnv
 ;@Ahk2Exe-SetCompanyName LuSlower
 ;@Ahk2Exe-SetDescription SetTimerRes
-;@Ahk2Exe-SetCopyright Copyright-LuSlower
+;@Ahk2Exe-SetCopyright Copyright © LuSlower
 ;@Ahk2Exe-SetFileVersion 0.0.0.0
 ;@Ahk2Exe-SetProductName SetTimerRes
 ;@Ahk2Exe-SetProductVersion 0.0.0.0
