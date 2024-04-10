@@ -1,0 +1,24 @@
+#include <windows.h>
+
+VS_VERSION_INFO VERSIONINFO
+BEGIN
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "040904E4"
+        {
+            VALUE "CompanyName", "LuSlower Software"
+            VALUE "FileDescription", "DisableIgnoreTimer"
+            VALUE "FileVersion", "0.0.0.0"
+            VALUE "InternalName", "DisableIgnoreTimer"
+            VALUE "LegalCopyright", "Copyright © LuSlower"
+            VALUE "OriginalFilename", "DisableIgnoreTimer.dll"
+            VALUE "ProductName", "DisableIgnoreTimer"
+            VALUE "ProductVersion", "0.0.0.0"
+        }
+    }
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0409, 1252
+    }
+END
+
