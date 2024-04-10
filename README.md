@@ -15,6 +15,7 @@ aplica la misma relatividad para el minimo 156250ns
 # INFO
 * La primera version de este programa se baso en una version de AutoIT3, puedes verificar el archivo [AQUI](AU3/SetTimerRes(OnEvent).au3)
 deje de programarlo alli por que sondea demasiado, este script posee un rendimiento excelente a comparación del de AutoIT3
+* MSDN: Reducir el intervalo del temporizador tiene un efecto adverso en la duración de la batería al evitar que el sistema quede inactivo. Es particularmente importante que los programas que pueden permanecer inactivos durante largos períodos de tiempo (reproductores de video/música en pausa, programas minimizados, programas en segundo plano, etc.) no aumenten la frecuencia del temporizador cuando no la necesitan.
 
 * Si posees Windows 11 debes tener marcada la casilla GlobalTimerRequest (reiniciar), referencia: [EL GRAN CAMBIO DE REGLAS](https://randomascii.wordpress.com/2020/10/04/windows-timer-resolution-the-great-rule-change/)
 
