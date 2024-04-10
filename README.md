@@ -9,7 +9,7 @@ Una herramienta más para cambiar la resolución del temporizador del sistema en
 * La resolución del temporizador máxima será siempre 5000ns (5ms), asi que cualquier valor por debajo de ese ingresado sera reemplazado automaticamente por el, 
 aplica la misma relatividad para el minimo 156250ns
 * Hago uso de LoadLibrary y FreeLibrary para maximizar el rendimiento de DllCall(), las llamadas dinamicas constantes pueden bloquear el script
-* Tambien hago uso de EmptyWorkingSet y SetProcessWorkingSetSize para recolectar algo de basura (este lenguaje no posee uno)
+* Tambien hago uso de EmptyWorkingSet para recolectar algo de basura (este lenguaje no posee uno)
 * Este script consume poca memoria (cerca de 2k de total bytes)
 
 # INFO
