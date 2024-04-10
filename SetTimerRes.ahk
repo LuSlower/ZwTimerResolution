@@ -1,8 +1,8 @@
 #SingleInstance Force
 #NoEnv
-;@Ahk2Exe-SetCompanyName LuSlower
+;@Ahk2Exe-SetCompanyName LuSlower Software
 ;@Ahk2Exe-SetDescription SetTimerRes
-;@Ahk2Exe-SetCopyright Copyright Â© LuSlower
+;@Ahk2Exe-SetCopyright Copyright © LuSlower
 ;@Ahk2Exe-SetFileVersion 0.0.0.0
 ;@Ahk2Exe-SetProductName SetTimerRes
 ;@Ahk2Exe-SetProductVersion 0.0.0.0
@@ -25,35 +25,30 @@ global psapi := DllCall("LoadLibrary", "Str", "psapi.dll", "Ptr")
 global kernel32 := DllCall("LoadLibrary", "Str", "kernel32.dll", "Ptr")
 global DisableIgnoreTimer := DllCall("LoadLibrary", "Str", dll, "Ptr")
 global INI := a_scriptdir "\SetTimerRes.ini"
-IniRead, _save_custom, %INI%, TimerConfig, CustomTimer, 0000000
+IniRead, _save_custom, %INI%, TimerConfig, CustomTimer, 000000
 IniRead, _save_global_timer, %INI%, TimerConfig, GlobalTimer, 0
 IniRead, _save_start, %INI%, Start, Windows, 0
 
 EmptyWorkingSet() {
 ;llamada a EmptyWorkingSet
 hProcess := DllCall("OpenProcess", "uint", 0x001F0FFF, "int", 0, "uint", pid) ;ALL_ACCESS
-DllCall("Kernel32.dll\SetProcessWorkingSetSize", "ptr", hProcess, "uptr", -1, "uptr", -1)
-DllCall("psapi.dll\EmptyWorkingSet", "Ptr", hProcess)
+DllCall("psapi.dll\EmptyWorkingSet", "Ptr", hProcess) ;pagefault? yes
 DllCall("CloseHandle", "ptr", hProcess)
 }
 
 PagePriorityLow() {
-hProcess := DllCall("OpenProcess", "uint", 0x001F0FFF, "int", 0, "uint", pid) ;SET_INFORMATION
-MEMORY_PRIORITY_CLASS := 39
-MEMORY_PRIORITY := 1
-MEMORY_PRIORITY_SIZE = 4
-VarSetCapacity(MEMORY_PRIORITY_INFORMATION, MEMORY_PRIORITY_SIZE, 0)
-NumPut(MEMORY_PRIORITY, &MEMORY_PRIORITY_INFORMATION)
-;Llamar a NtSetInformationProcess para MEMORY_PRIORITY_INFORMATION
-result := DllCall("ntdll.dll\NtSetInformationProcess", "Ptr", hProcess, "Int", MEMORY_PRIORITY_CLASS, "Ptr", &MEMORY_PRIORITY_INFORMATION, "UInt", MEMORY_PRIORITY_SIZE)
+hProcess := DllCall("OpenProcess", "uint", 0x200, "int", 0, "uint", pid) ;SET_INFORMATION
+result := DllCall("DisableIgnoreTimer.dll\_SetProcessInformation", "Ptr", hProcess, "Int", 2)
 DllCall("CloseHandle", "ptr", hProcess)
+MsgBox % result, resultado
 }
 
 DisableIgnoreTimer() {
 hProcess := DllCall("OpenProcess", "uint", 0x200, "int", 0, "uint", pid) ;SET_INFORMATION
 ;Llamar a DisableIgnoreTimer.dll para deshabilitar PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION
-result := DllCall("DisableIgnoreTimer.dll\_SetProcessInformation", "Handle", hProcess)
+result := DllCall("DisableIgnoreTimer.dll\_SetProcessInformation", "Ptr", hProcess, "Int", 1)
 DllCall("CloseHandle", "ptr", hProcess)
+MsgBox % result, resultado
 }
 
 NTQueryTimerResolution() {
@@ -91,7 +86,7 @@ Gui, add, text, x20 y70 vCur, Current Resolution :  %_current% (ns)
 Gui, add, button, x40 y90, Set Max
 Gui, add, button, x110 y90, Set Min
 Gui, add, Text, x55 y120, Custom Resolution
-Gui, add, edit, x75 y140 w50 h15 vCust number limit7, %_save_custom%
+Gui, add, edit, x77 y140 w45 h15 vCust number limit6, %_save_custom%
 Gui, add, button, x40 y165 w115 h20, Set Custom
 Gui, add, checkbox, x15 y200 vGlobalT, GlobalTimerRequest (Win11)
 Gui, add, checkbox, x15 y220 vHide, Cargar con Windows (Hide)
