@@ -1,0 +1,22 @@
+resource.h(25): Error! E498: col(48) syntax error before 'PROCESS_INFORMATION_CLASS'; probable cause: incorrectly spelled type name
+resource.h(25): Note! N393: col(48) included from main.cpp(4)
+main.cpp(7): Error! E121: col(1) syntax error
+main.cpp(64): Error! E029: col(29) symbol 'minRes' has not been declared
+main.cpp(64): Error! E029: col(38) symbol 'maxRes' has not been declared
+main.cpp(64): Error! E029: col(47) symbol 'currRes' has not been declared
+main.cpp(72): Error! E029: col(57) symbol 'actRes' has not been declared
+main.cpp(108): Error! E029: col(13) symbol 'SetProcessInformation' has not been declared
+main.cpp(113): Error! E006: col(44) syntax error; probable cause: missing ';'
+main.cpp(114): Error! E029: col(45) symbol 'state' has not been declared
+main.cpp(120): Error! E029: col(45) symbol 'ProcessPowerThrottling' has not been declared
+main.cpp(125): Error! E029: col(38) symbol 'MEMORY_PRIORITY_VERY_LOW' has not been declared
+main.cpp(128): Error! E029: col(45) symbol 'ProcessMemoryPriority' has not been declared
+main.cpp(180): Error! E029: col(61) symbol 'maxRes' has not been declared
+main.cpp(184): Error! E029: col(61) symbol 'minRes' has not been declared
+main.cpp(188): Error! E029: col(61) symbol 'currRes' has not been declared
+main.cpp(193): Error! E029: col(24) symbol 'RegKeyQueryEx' has not been declared
+main.cpp(201): Error! E029: col(65) symbol 'actRes' has not been declared
+main.cpp(263): Error! E029: col(32) symbol 'RegKeySetEx' has not been declared
+main.cpp(269): Error! E029: col(25) symbol 'RegKeyDelete' has not been declared
+main.cpp(304): Error! E029: col(43) symbol 'maxRes' has not been declared
+main.cpp(306): Error! E133: col(73) too many errors: compilation aborted

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="SetTimerRes" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/SetTimerRes" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+		</Build>
+		<Linker>
+			<Add library="gdi32" />
+			<Add library="user32" />
+			<Add library="kernel32" />
+			<Add library="comctl32" />
+			<Add library="ntdll" />
+		</Linker>
+		<ExtraCommands>
+			<Add after="upx --lzma $(TARGET_OUTPUT_FILE)" />
+		</ExtraCommands>
+		<Unit filename="main.cpp">
+			<Option weight="100" />
+		</Unit>
+		<Unit filename="manifest.xml" />
+		<Unit filename="resource.h" />
+		<Unit filename="resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>
