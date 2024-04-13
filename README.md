@@ -13,7 +13,7 @@ aplica la misma relatividad para el minimo 156250ns
 
 # INFO
 * La primera version de este programa se baso en una version de AutoIT3, puedes verificar el archivo [AQUI](AU3/SetTimerRes(OnEvent).au3)
-deje de programarlo alli por que sondea demasiado, este script posee un rendimiento excelente a comparación del de AutoIT3
+deje de programarlo alli por que sondea demasiado
 * La segunda versión se baso en esta [version](SetTimerRes.ahk) de un script AHK, ligero pero depende de un DLL
 * MSDN: Reducir el intervalo del temporizador tiene un efecto adverso en la duración de la batería al evitar que el sistema quede inactivo. Es particularmente importante que los programas que pueden permanecer inactivos durante largos períodos de tiempo (reproductores de video/música en pausa, programas minimizados, programas en segundo plano, etc.) no aumenten la frecuencia del temporizador cuando no la necesitan.
 
