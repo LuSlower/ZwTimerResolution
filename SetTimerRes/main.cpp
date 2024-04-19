@@ -6,7 +6,7 @@
 //Leer REG_SZ del registro
 char* RegKeyQueryEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
 {
-    static char result[MAX_PATH]; // Static para que persista fuera del ámbito de la función
+    static char result[MAX_PATH]; // Static para que persista fuera del Ã¡mbito de la funciÃ³n
     HKEY hSubKey;
     if (RegOpenKeyExA(hKey, lpSubKey, 0, KEY_QUERY_VALUE, &hSubKey) == ERROR_SUCCESS)
     {
@@ -22,7 +22,7 @@ char* RegKeyQueryEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
     return nullptr; // Devolver nullptr si no se pudo leer el valor
 }
 
-// Función para escribir un valor REG_SZ en el registro
+// FunciÃ³n para escribir un valor REG_SZ en el registro
 bool RegKeySetEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName, LPCSTR lpData)
 {
     HKEY hSubKey;
@@ -39,7 +39,7 @@ bool RegKeySetEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName, LPCSTR lpData)
     return false;
 }
 
-// Función para eliminar un valor en el registro
+// FunciÃ³n para eliminar un valor en el registro
 bool RegKeyDelete(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
 {
     HKEY hSubKey;
@@ -72,7 +72,7 @@ void _NtSetTimerResolution(ULONG customRes)
         NtSetTimerResolution(customRes, SetResolution, &actRes);
 }
 
-// Declaración del trayicon
+// DeclaraciÃ³n del trayicon
 NOTIFYICONDATA nid;
 bool isIconVisible = false;
 
@@ -98,8 +98,6 @@ void _drain()
     HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_SET_QUOTA, false, GetCurrentProcessId());
     //drenar WorkingSet
     SetProcessWorkingSetSize(hProcess, (SIZE_T) -1, (SIZE_T) -1);
-    //drenar monton
-    HeapFree(GetProcessHeap(), HEAP_NO_SERIALIZE, NULL);
 }
 
 //SetInformationProcess
@@ -133,7 +131,7 @@ void _SetProcessInformation()
         }
         else
         {
-            printf("Error al obtener la dirección de SetProcessInformation\n"); //No existe en Windows 7
+            printf("Error al obtener la direcciÃ³n de SetProcessInformation\n"); //No existe en Windows 7
         }
 }
 
@@ -238,7 +236,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         switch (lParam)
         {
-            // Mostrar el menú de la bandeja al hacer clic derecho en el icono
+            // Mostrar el menÃº de la bandeja al hacer clic derecho en el icono
             case WM_RBUTTONDOWN:
             ShowTrayMenu(hwndDlg);
             break;
