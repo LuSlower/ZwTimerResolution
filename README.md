@@ -22,10 +22,5 @@ deje de programarlo alli por que sondea demasiado
 ## CONTRIBUYENDO
 Gracias AutoHotkey y AutoIT Comunmity
 
-## CONSTRUIR
-* Descarga SetTimerRes.ahk
-* Debes tener instalada la ultima versión de AHK v1.1 (AHK_L), la puedes encontrar en: [AutoHotKey GitHub](https://github.com/AutoHotkey/AutoHotkey)
-* Simplemente edite el script a su gusto, mi IDE preferido es SciTE4AHK
-
 ## DERECHOS DE AUTOR Y LICENCIA
 [LICENCIA](LICENSE)
