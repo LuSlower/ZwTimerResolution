@@ -121,14 +121,6 @@ void _SetProcessInformation()
             //DISABLE IDLE TIMER RESOLUTION
             SetProcessInformation(hProcess, ProcessPowerThrottling, &state, sizeof(state));
 
-            //pasar puntero de la estructura
-            MEMORY_PRIORITY_INFORMATION MemPrio;
-            ZeroMemory(&MemPrio, sizeof(MemPrio));
-            MemPrio.MemoryPriority = MEMORY_PRIORITY_VERY_LOW;
-
-            //VELY LOW MEMORY PRIORITY
-            SetProcessInformation(hProcess, ProcessMemoryPriority, &MemPrio, sizeof(MemPrio));
-
 
             //cerrar HANDLE
             CloseHandle(hProcess);
@@ -150,6 +142,9 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
     case WM_INITDIALOG:
     {
+        //establecer prioridad de segundo plano (low i/o y low mem priority)
+        SetPriorityClass(GetCurrentProcess(), PROCESS_MODE_BACKGROUND_BEGIN);
+
         //establecer hIcon
         HICON hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON));
         SendMessage(hwndDlg, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
@@ -228,6 +223,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
 
         _drain();
+
     }
     return TRUE;
 
