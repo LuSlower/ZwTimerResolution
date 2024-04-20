@@ -1,5 +1,5 @@
 # nt_timer
-[![GitHub All Releases](https://img.shields.io/github/downloads/LuSlower/nt_timer/releases/total.svg)](https://github.com/LuSlower/nt_timer/releases)
+[![Total Downloads](https://img.shields.io/github/downloads/LuSlower/nt_timer/total.svg)](https://github.com/LuSlower/nt_timer/releases)
 
 Una herramienta más para cambiar la resolución del temporizador del sistema en el contexto del proceso de llamada
 
