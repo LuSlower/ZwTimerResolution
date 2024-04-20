@@ -1,8 +1,7 @@
 # SetTimerRes
 Una herramienta más para cambiar la resolución del temporizador del sistema en el contexto del proceso de llamada
 
-![image](https://github.com/LuSlower/SetTimerRes/assets/148411728/80fc285e-8187-4805-a54c-8419eb1f309e)
-
+![image](https://github.com/LuSlower/SetTimerRes/assets/148411728/4f7777b6-d847-45ea-8cb3-f27156d6acbf)
 
 ## ACTUALMENTE
 * Presione ESC para ocultar la GUI, puede hacer clic en el icono de la bandeja para salir de la aplicación
