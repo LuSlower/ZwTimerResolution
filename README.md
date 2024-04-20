@@ -1,4 +1,4 @@
-# SetTimerRes
+# nt_timer
 Una herramienta más para cambiar la resolución del temporizador del sistema en el contexto del proceso de llamada
 
 ![image](https://github.com/LuSlower/SetTimerRes/assets/148411728/4f7777b6-d847-45ea-8cb3-f27156d6acbf)
