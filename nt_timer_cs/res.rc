@@ -1,0 +1,2 @@
+#include <windows.h>
+MAIN_ICON ICON "nt_timer.ico"
