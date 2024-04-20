@@ -19,8 +19,6 @@ Consola:
 
 * Algo más ligero (cerca 400k de total bytes)
 * Obtenga ayuda pasando el parametro /? o help
-* solo se permiten hasta 6 digitos (minimo 4)
-* puede detener todas las instancias con <stop>
 
 # INFO
 > Reducir el intervalo del temporizador tiene un efecto adverso en la duración de la batería al evitar que el sistema quede inactivo. Es particularmente importante que los programas que pueden permanecer inactivos durante largos períodos de tiempo (reproductores de video/música en pausa, programas minimizados, programas en segundo plano, etc.) no aumenten la frecuencia del temporizador cuando no la necesitan.
