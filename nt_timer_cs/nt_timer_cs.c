@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <string.h>
 
-// Declaraci髇 de la funci髇 NtSetTimerResolution
+// Declaraci贸n de NtSetTimerResolution y NtQueryTimerResolution
 typedef LONG NTSTATUS;
 NTSTATUS NTAPI NtSetTimerResolution(ULONG DesiredResolution, BOOLEAN SetResolution, ULONG *CurrentResolution);
 NTSTATUS NTAPI NtQueryTimerResolution(ULONG *MinimumResolution, ULONG *MaximumResolution, ULONG *CurrentResolution);
@@ -11,7 +11,7 @@ NTSTATUS NTAPI NtQueryTimerResolution(ULONG *MinimumResolution, ULONG *MaximumRe
 //declarar semaforo
 static HANDLE hMutex;
 
-// Declaraci髇 de SetProcessInformation
+// Declaraci贸n de SetProcessInformation
 WINBASEAPI WINBOOL WINAPI SetProcessInformation(HANDLE hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, LPVOID ProcessInformation, DWORD ProcessInformationSize);
 
 //SetInformationProcess
@@ -37,7 +37,7 @@ void _SetProcessInformation()
     }
     else
     {
-        printf("Error al obtener la direcci髇 de SetProcessInformation\n"); //No existe en Windows 7
+        printf("Error al obtener la direcci贸n de SetProcessInformation\n"); //No existe en Windows 7
     }
 }
 
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    // Verificar si argv[1] es un n鷐ero entero
+    // Verificar si argv[1] es un n煤mero entero
     for (int i = 0; argv[1][i] != '\0'; i++)
     {
     if (!isdigit(argv[1][i]))
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    //Verificar tama駉 del argumento
+    //Verificar tama帽o del argumento
     if (strlen(argv[1]) >= 4 && strlen(argv[1]) < 6)
     {
         hMutex = CreateMutex(NULL, FALSE, "nt_timer_cs");
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
             }
 
             ULONG res_act, res = atoi(argv[1]); // Convertir el argumento a ULONG
-            NTSTATUS set_status = NtSetTimerResolution(res, TRUE, &res_act); // Establecer resoluci髇 del temporizador
+            NTSTATUS set_status = NtSetTimerResolution(res, TRUE, &res_act); // Establecer resoluci贸n del temporizador
 
             printf("Resolucion establecida correctamente a %dns", res_act);
 
