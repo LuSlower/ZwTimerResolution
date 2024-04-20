@@ -22,7 +22,7 @@ char* RegKeyQueryEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
     return nullptr; // Devolver nullptr si no se pudo leer el valor
 }
 
-// Función para escribir un valor REG_SZ en el registro
+//Escribir REG_SZ en el registro
 bool RegKeySetEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName, LPCSTR lpData)
 {
     HKEY hSubKey;
@@ -39,7 +39,7 @@ bool RegKeySetEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName, LPCSTR lpData)
     return false;
 }
 
-// Función para eliminar un valor en el registro
+//Eliminar REG_SZ del registro
 bool RegKeyDelete(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
 {
     HKEY hSubKey;
@@ -79,16 +79,19 @@ bool isIconVisible = false;
 //ShowTrayMenu
 void ShowTrayMenu(HWND hWnd)
 {
+    //obtener posición del puntero (x,y)
     POINT pt;
     GetCursorPos(&pt);
 
+    //crear menú
     HMENU hMenu = CreatePopupMenu();
     AppendMenu(hMenu, MF_STRING, IDM_EXIT, "Exit");
 
+    //poner en primer plano la ventana actual y centrar en menú
     SetForegroundWindow(hWnd);
-    TrackPopupMenu(hMenu, TPM_RIGHTALIGN | TPM_BOTTOMALIGN | TPM_NONOTIFY, pt.x, pt.y, 0, hWnd, NULL);
-    PostMessage(hWnd, WM_NULL, 0, 0);
+    TrackPopupMenu(hMenu, TPM_RIGHTALIGN | TPM_BOTTOMALIGN | TPM_NONOTIFY | TPM_LEFTBUTTON, pt.x, pt.y, 0, hWnd, NULL);
 
+    //destruir menu
     DestroyMenu(hMenu);
 }
 
@@ -107,6 +110,7 @@ void _SetProcessInformation()
         {
             //Obtener el HANDLE del proceso actual
             HANDLE hProcess = OpenProcess(PROCESS_SET_INFORMATION, FALSE, GetCurrentProcessId());
+
             //pasa puntero de la estructura
             PROCESS_POWER_THROTTLING_STATE state;
             ZeroMemory(&state, sizeof(state));
@@ -122,7 +126,7 @@ void _SetProcessInformation()
             ZeroMemory(&MemPrio, sizeof(MemPrio));
             MemPrio.MemoryPriority = MEMORY_PRIORITY_VERY_LOW;
 
-            //set very low mem priority
+            //VELY LOW MEMORY PRIORITY
             SetProcessInformation(hProcess, ProcessMemoryPriority, &MemPrio, sizeof(MemPrio));
 
 
@@ -164,10 +168,13 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         nid.cbSize = sizeof(NOTIFYICONDATA);
         nid.hWnd = hwndDlg;
         nid.uID = 1;
-        nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
+        nid.uFlags = NIF_ICON | NIF_MESSAGE;
         nid.uCallbackMessage = WM_ICON;
         nid.hIcon = hIcon;
         strcpy(nid.szTip, "SetTimerRes");
+
+        //destruir icono
+        DestroyIcon(hIcon);
 
         // Agregar el icono a la bandeja del sistema
         Shell_NotifyIcon(NIM_ADD, &nid);
@@ -243,7 +250,6 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             case WM_LBUTTONDOWN:
             //Mostrar dialogo al hacer clic izquierdo
             ShowWindow(hwndDlg, SW_SHOWDEFAULT);
-            _drain();
             break;
         }
     }
@@ -352,9 +358,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
-            _drain();
         }
         if (!IsWindow(hwndR)) {
+            DestroyWindow(hwndR);
         break; // Salir del bucle si el HWND ya no existe
         }
     }
