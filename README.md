@@ -20,7 +20,7 @@ Consola:
 ![image](https://github.com/LuSlower/nt_timer/assets/148411728/f54c955b-2708-42f6-9ca1-d05a1409e747)
 
 * Algo más ligero (cerca 400k de total bytes)
-* Obtenga ayuda pasando el parametro /? o help
+* Obtenga ayuda pasando el arg /? o help
 
 # INFO
 > Reducir el intervalo del temporizador tiene un efecto adverso en la duración de la batería al evitar que el sistema quede inactivo. Es particularmente importante que los programas que pueden permanecer inactivos durante largos períodos de tiempo (reproductores de video/música en pausa, programas minimizados, programas en segundo plano, etc.) no aumenten la frecuencia del temporizador cuando no la necesitan.
@@ -29,10 +29,6 @@ Consola:
 
 > [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\kernel]
 "GlobalTimerResolutionRequests"=dword:00000001
-
-## CONTRIBUYENDO
-Gracias AutoHotkey y AutoIT Comunmity
-basado en
 
 ## DERECHOS DE AUTOR Y LICENCIA
 [LICENCIA](LICENSE)
