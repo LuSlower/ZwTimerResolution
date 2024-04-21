@@ -6,8 +6,7 @@ Una herramienta más para cambiar la resolución del temporizador del sistema en
 ## ACTUALMENTE
 GUI:
 
-![image](https://github.com/LuSlower/SetTimerRes/assets/148411728/4f7777b6-d847-45ea-8cb3-f27156d6acbf)
-
+![image](https://github.com/LuSlower/nt_timer/assets/148411728/ef0ec42f-978e-48f5-b433-d9fefd435746)
 
 * Presione ESC para ocultar la GUI, puede hacer clic en el icono de la bandeja para salir de la aplicación
 * Se permiten solo 6 digitos como máximo en el cuadro de texto, debe ser un numero entero o arrojara un error
@@ -17,7 +16,7 @@ aplica la misma relatividad para el minimo 156250ns
 
 Consola:
 
-![image](https://github.com/LuSlower/nt_timer/assets/148411728/f54c955b-2708-42f6-9ca1-d05a1409e747)
+![image](https://github.com/LuSlower/nt_timer/assets/148411728/376f9fe4-3eb5-4dd6-a0ea-93cfad5b2a07)
 
 * Algo más ligero (cerca 400k de total bytes)
 * Obtenga ayuda pasando el arg /? o help
