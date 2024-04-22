@@ -42,7 +42,7 @@ Al pasar el argumento 'test' nt_timer_cs se ejecutara en un bucle, para comproba
 
 ```
 comienza la prueba...
-presione ESCAPE tecla para salir
+presione ESCAPE para salir
 
 time: 0.0013 ms | sleep_time: 1.3309 ms | diff: 0.3309 ms | resolucion: 5054 ns
 
@@ -62,7 +62,7 @@ esto no quiere decir que sean estables, siempre habrá una fluctuación así ust
 
 ```
 comienza la prueba...
-presione ESCAPE tecla para salir
+presione ESCAPE para salir
 
 inicio : 5000
 final : 5070
