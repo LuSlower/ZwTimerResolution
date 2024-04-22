@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <windows.h>
 
-// Declaraci髇 de NtSetTimerResolution y NtQueryTimerResolution
+// Declaraci贸n de NtSetTimerResolution y NtQueryTimerResolution
 typedef LONG NTSTATUS;
 NTSTATUS NTAPI NtSetTimerResolution(ULONG DesiredResolution, BOOLEAN SetResolution, ULONG *CurrentResolution);
 NTSTATUS NTAPI NtQueryTimerResolution(ULONG *MinimumResolution, ULONG *MaximumResolution, ULONG *CurrentResolution);
 
-// Declaraci髇 de SetProcessInformation
+// Declaraci贸n de SetProcessInformation
 WINBASEAPI WINBOOL WINAPI SetProcessInformation(HANDLE hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, LPVOID ProcessInformation, DWORD ProcessInformationSize);
 
-// Declarar sem醘oro
+// Declarar sem谩foro
 static HANDLE hMutex;
 
 void _SetProcessInformation()
@@ -26,7 +26,7 @@ void _SetProcessInformation()
         state.ControlMask = PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION;
         state.StateMask = 0;
 
-        // Deshabilitar la resoluci髇 del temporizador de inactividad
+        // Deshabilitar la resoluci贸n del temporizador de inactividad
         SetProcessInformation(hProcess, ProcessPowerThrottling, &state, sizeof(state));
 
         // Cerrar HANDLE
@@ -34,14 +34,14 @@ void _SetProcessInformation()
     }
     else
     {
-        printf("Error al obtener la direcci髇 de SetProcessInformation\n"); // No existe en Windows 7
+        printf("Error al obtener la direcci贸n de SetProcessInformation\n"); // No existe en Windows 7
     }
 }
 
 // Definir contadores
 LARGE_INTEGER ctr, frq, start, end;
 
-// Funci髇 para obtener el tiempo preciso
+// Funci贸n para obtener el tiempo preciso
 double get_precise_time()
 {
     // Medir el tiempo de espera Sleep(1) y calcular el tiempo
@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
         double max_sample = INT_MIN;
 
         //ejecutar bucle con un aumento de 10 nanosegundos por
-        for (int res = start_res; res <= end_res; res += 15)
+        for (int res = start_res; res <= end_res; res += 10)
         {
             NtSetTimerResolution(res, TRUE, &res_act);
             Sleep(100);
@@ -209,7 +209,7 @@ int main(int argc, char *argv[])
 
     //resolucion
 
-    // Verificar si argv[1] es un n鷐ero entero
+    // Verificar si argv[1] es un n煤mero entero
     for (int i = 0; argv[1][i] != '\0'; i++)
     {
     if (!isdigit(argv[1][i]))
@@ -219,7 +219,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    //Verificar tama駉 del argumento
+    //Verificar tama帽o del argumento
     if (strlen(argv[1]) >= 4 && strlen(argv[1]) < 6)
     {
         hMutex = CreateMutex(NULL, FALSE, "nt_timer_cs");
@@ -233,7 +233,7 @@ int main(int argc, char *argv[])
             }
 
             res = atoi(argv[1]); // Convertir el argumento a ULONG
-            NTSTATUS set_status = NtSetTimerResolution(res, TRUE, &res_act); // Establecer resoluci髇 del temporizador
+            NTSTATUS set_status = NtSetTimerResolution(res, TRUE, &res_act); // Establecer resoluci贸n del temporizador
 
             printf("resolucion establecida correctamente a %d ns", res_act);
 
