@@ -1,5 +1,7 @@
+#pragma once
 #include <stdio.h>
 #include <windows.h>
+#include <limits.h>
 
 // Declaración de NtSetTimerResolution y NtQueryTimerResolution
 typedef LONG NTSTATUS;
@@ -13,8 +15,6 @@ void _SetProcessInformation()
 {
     if (SetProcessInformation)
     {
-        // Obtener el HANDLE del proceso actual
-        HANDLE hProcess = OpenProcess(PROCESS_SET_INFORMATION, FALSE, GetCurrentProcessId());
 
         // Pasa un puntero a la estructura
         PROCESS_POWER_THROTTLING_STATE state;
@@ -24,10 +24,7 @@ void _SetProcessInformation()
         state.StateMask = 0;
 
         // Deshabilitar la resolución del temporizador de inactividad
-        SetProcessInformation(hProcess, ProcessPowerThrottling, &state, sizeof(state));
-
-        // Cerrar HANDLE
-        CloseHandle(hProcess);
+        SetProcessInformation(GetCurrentProcess(), ProcessPowerThrottling, &state, sizeof(state));
     }
     else
     {
@@ -83,9 +80,6 @@ int main(int argc, char *argv[])
 
     // Obtener la frecuencia del contador de rendimiento y el valor del contador
     QueryPerformanceFrequency(&frq);
-
-    // Elevar prioridad
-    SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
 
     if (strcmp(argv[1], "query") == 0)
     {
@@ -159,11 +153,6 @@ int main(int argc, char *argv[])
             sum_samples += sample_time;
             num_samples++;
 
-        // Verificar si se ha presionado ESCAPE
-        if(GetAsyncKeyState(VK_ESCAPE)){
-            printf("\nsaliendo de la prueba...\n");
-            break;
-        }
         }
 
         // Calcular promedio
@@ -178,17 +167,12 @@ int main(int argc, char *argv[])
     else if (strcmp(argv[1], "test") == 0)
     {
         //bucle predeterminado
-        printf("comienza la prueba...\npresione ESCAPE para salir\n");
+        printf("comienza la prueba...\n");
         for (int i = 1; ; i++) {
             NtQueryTimerResolution(&min, &max, &current);
             get_precise_time();
             printf(" | resolucion: %d ns\n", current);
             Sleep(1000);
-            // Verificar si se ha presionado ESCAPE
-            if(GetAsyncKeyState(VK_ESCAPE)){
-                printf("\nsaliendo de la prueba...");
-                break;
-            }
         }
         return 0;
     }
@@ -216,14 +200,6 @@ int main(int argc, char *argv[])
     //Verificar tamaño del argumento
     if (strlen(argv[1]) >= 4 && strlen(argv[1]) < 6)
     {
-        HANDLE hMutex = CreateMutex(NULL, FALSE, "nt_timer_cs");
-        if (GetLastError() == ERROR_ALREADY_EXISTS)
-            {
-                //Ya hay una instancia
-                CloseHandle(hMutex);
-                printf("Instancia detenida\n");
-                return 1;
-            }
 
             res = atoi(argv[1]); // Convertir el argumento a ULONG
             NtSetTimerResolution(res, TRUE, &res_act); // Establecer resolución del temporizador
@@ -236,17 +212,16 @@ int main(int argc, char *argv[])
             //llamar a SetProcessInformation
             _SetProcessInformation();
 
-            //cerrar HANDLE
-            CloseHandle(hMutex);
-
             //liberar consola
             FreeConsole();
 
             //liberar memoria
             SetProcessWorkingSetSize(GetCurrentProcess(), (SIZE_T) -1, (SIZE_T) -1);
 
-            //permanecer activo
-            Sleep(INFINITE);
+            HANDLE hEvent = CreateEvent(NULL, TRUE, FALSE, NULL); // Manual reset event, inicialmente no señalizado
+
+            // Suspender el hilo hasta que el evento se señalice
+            WaitForSingleObject(hEvent, INFINITE);
     }
     else
     {
@@ -255,3 +230,4 @@ int main(int argc, char *argv[])
     }
     return 0;
 }
+
