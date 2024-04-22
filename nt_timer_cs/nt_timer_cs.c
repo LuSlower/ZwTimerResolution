@@ -9,9 +9,6 @@ NTSTATUS NTAPI NtQueryTimerResolution(ULONG *MinimumResolution, ULONG *MaximumRe
 // Declaración de SetProcessInformation
 WINBASEAPI WINBOOL WINAPI SetProcessInformation(HANDLE hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, LPVOID ProcessInformation, DWORD ProcessInformationSize);
 
-// Declarar semáforo
-static HANDLE hMutex;
-
 void _SetProcessInformation()
 {
     if (SetProcessInformation)
@@ -39,7 +36,7 @@ void _SetProcessInformation()
 }
 
 // Definir contadores
-LARGE_INTEGER ctr, frq, start, end;
+LARGE_INTEGER frq, start, end;
 
 // Función para obtener el tiempo preciso
 double get_precise_time()
@@ -82,15 +79,13 @@ int main(int argc, char *argv[])
 
     // Llamar a NtQueryTimerResolution
     ULONG min, max, current, res_act, res;
-    NTSTATUS query_status = NtQueryTimerResolution(&min, &max, &current);
+    NtQueryTimerResolution(&min, &max, &current);
 
     // Obtener la frecuencia del contador de rendimiento y el valor del contador
     QueryPerformanceFrequency(&frq);
-    QueryPerformanceCounter(&ctr);
 
     // Elevar prioridad
-    //SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
-    SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
+    SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
 
     if (strcmp(argv[1], "query") == 0)
     {
@@ -99,7 +94,6 @@ int main(int argc, char *argv[])
         printf("\nresolucion minima : %d ns\n", min);
         printf("resolucion maxima : %d ns\n", max);
         printf("resolucion actual : %d ns\n", current);
-        printf("QPF : %d\nQPC: %d", frq, ctr);
         get_precise_time();
         return 0;
     }
@@ -222,32 +216,34 @@ int main(int argc, char *argv[])
     //Verificar tamaño del argumento
     if (strlen(argv[1]) >= 4 && strlen(argv[1]) < 6)
     {
-        hMutex = CreateMutex(NULL, FALSE, "nt_timer_cs");
+        HANDLE hMutex = CreateMutex(NULL, FALSE, "nt_timer_cs");
         if (GetLastError() == ERROR_ALREADY_EXISTS)
             {
                 //Ya hay una instancia
                 CloseHandle(hMutex);
-                printf("ya hay una instancia ejecutandose en segundo plano\n");
-                printf("si desea detener la instancia ejecute nt_timer_cs.exe con el argumento <stop>");
+                printf("Instancia detenida\n");
                 return 1;
             }
 
             res = atoi(argv[1]); // Convertir el argumento a ULONG
-            NTSTATUS set_status = NtSetTimerResolution(res, TRUE, &res_act); // Establecer resolución del temporizador
+            NtSetTimerResolution(res, TRUE, &res_act); // Establecer resolución del temporizador
 
             printf("resolucion establecida correctamente a %d ns", res_act);
 
+            //prioridad de segundo plano
+            SetPriorityClass(GetCurrentProcess(), PROCESS_MODE_BACKGROUND_BEGIN);
+
             //llamar a SetProcessInformation
             _SetProcessInformation();
+
+            //cerrar HANDLE
+            CloseHandle(hMutex);
 
             //liberar consola
             FreeConsole();
 
             //liberar memoria
             SetProcessWorkingSetSize(GetCurrentProcess(), (SIZE_T) -1, (SIZE_T) -1);
-
-            //prioridad de segundo plano
-            SetPriorityClass(GetCurrentProcess(), PROCESS_MODE_BACKGROUND_BEGIN);
 
             //permanecer activo
             Sleep(INFINITE);
@@ -257,8 +253,5 @@ int main(int argc, char *argv[])
         printf("/? o help para obtener ayuda");
         return 1;
     }
-
-    //cerrar HANDLE
-    CloseHandle(hMutex);
+    return 0;
 }
-
