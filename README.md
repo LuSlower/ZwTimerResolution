@@ -6,7 +6,7 @@ Una herramienta más para cambiar la resolución del temporizador del sistema en
 ## ACTUALMENTE
 GUI:
 
-![image](https://github.com/LuSlower/nt_timer/assets/148411728/53bff5b4-5bdc-40e7-8694-3a95f27c7296)
+![image](https://github.com/LuSlower/nt_timer/assets/148411728/6c81dfa6-6f49-4c51-850f-deb36be22b84)
 
 * Presione ESC para ocultar la GUI, puede hacer clic en el icono de la bandeja para salir de la aplicación
 * Se permiten solo 6 digitos como máximo en el cuadro de texto, debe ser un numero entero o arrojara un error
@@ -16,7 +16,7 @@ aplica la misma relatividad para el minimo 156250ns
 
 Consola:
 
-![image](https://github.com/LuSlower/nt_timer/assets/148411728/376f9fe4-3eb5-4dd6-a0ea-93cfad5b2a07)
+![image](https://github.com/LuSlower/nt_timer/assets/148411728/02046e46-787a-4a86-8831-7a5cd6f42e9a)
 
 * Algo más ligero (cerca 400k de total bytes)
 * Obtenga ayuda pasando el arg /? o help
@@ -37,7 +37,8 @@ si desea establecer una resolución personalizada cree un acceso directo y espec
 
 Al pasar el argumento 'test' nt_timer_cs se ejecutara en un bucle programando un temporizador, para comprobar si realmente sleep hace que la CPU se detenga 1ms
 
-![image](https://github.com/LuSlower/nt_timer/assets/148411728/d9294204-d31a-41a0-81b3-400de04fb826)
+![image](https://github.com/LuSlower/nt_timer/assets/148411728/a77c8795-0b6d-4c31-bd95-2ff83beb7d5f)
+
 
 
 ## DERECHOS DE AUTOR Y LICENCIA
