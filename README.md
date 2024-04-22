@@ -52,8 +52,6 @@ time: 0.0010 ms | sleep_time: 1.0065 ms | diff: 0.0065 ms | resolucion: 5054 ns
 time: 0.0015 ms | sleep_time: 1.5071 ms | diff: 0.5071 ms | resolucion: 5054 ns
 
 time: 0.0015 ms | sleep_time: 1.5079 ms | diff: 0.5079 ms | resolucion: 5054 ns
-
-saliendo de la prueba...
 ```
 
 aparte de 'test' puede pasar dos argumentos más 'start' y 'end', esto ejecutará una prueba específica para verificar que resolución posee valores más precisos
