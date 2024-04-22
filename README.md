@@ -32,15 +32,57 @@ Consola:
 
 si desea establecer una resolución personalizada cree un acceso directo y específique
 
-`nt_timer_cs.exe 5000`
+```
+nt_timer_cs.exe 5000
+```
 
 ## PRECISION
 
 Al pasar el argumento 'test' nt_timer_cs se ejecutara en un bucle, para comprobar la precision de Sleep(1)
+
+```
+comienza la prueba...
+presione ESCAPE tecla para salir
+
+time: 0.0013 ms | sleep_time: 1.3309 ms | diff: 0.3309 ms | resolucion: 5054 ns
+
+time: 0.0015 ms | sleep_time: 1.5006 ms | diff: 0.5006 ms | resolucion: 5054 ns
+
+time: 0.0010 ms | sleep_time: 1.0065 ms | diff: 0.0065 ms | resolucion: 5054 ns
+
+time: 0.0015 ms | sleep_time: 1.5071 ms | diff: 0.5071 ms | resolucion: 5054 ns
+
+time: 0.0015 ms | sleep_time: 1.5079 ms | diff: 0.5079 ms | resolucion: 5054 ns
+
+saliendo de la prueba...
+```
+
 aparte de 'test' puede pasar dos argumentos más 'start' y 'end', esto ejecutará una prueba específica para verificar que resolución posee valores más precisos
 esto no quiere decir que sean estables, siempre habrá una fluctuación así usted debe hacer pruebas para verificar cual de todos le conviene...
 
-![image](https://github.com/LuSlower/nt_timer/assets/148411728/a77c8795-0b6d-4c31-bd95-2ff83beb7d5f)
+```
+comienza la prueba...
+presione ESCAPE tecla para salir
+
+inicio : 5000
+final : 5070
+
+time: 0.0015 ms | sleep_time: 1.4952 ms | diff: 0.4952 ms | resolucion 4990 ns
+
+time: 0.0015 ms | sleep_time: 1.4998 ms | diff: 0.4998 ms | resolucion 5003 ns
+
+time: 0.0015 ms | sleep_time: 1.5071 ms | diff: 0.5071 ms | resolucion 5028 ns
+
+time: 0.0010 ms | sleep_time: 1.0066 ms | diff: 0.0066 ms | resolucion 5041 ns
+
+time: 0.0010 ms | sleep_time: 1.0100 ms | diff: 0.0100 ms | resolucion 5054 ns
+
+prueba finalizada...
+
+minimo: 0.0066 ms
+maximo: 0.5071 ms
+promedio: 0.3037 ms
+```
 
 
 
