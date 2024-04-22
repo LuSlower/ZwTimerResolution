@@ -18,8 +18,8 @@ Consola:
 
 ![image](https://github.com/LuSlower/nt_timer/assets/148411728/b83c7f09-b0d2-45b6-bf6c-245de0b7fee6)
 
-
-* Algo más ligero (cerca 400k de total bytes)
+* Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precision de Sleep(1)
+* Algo más ligero en consumo (cerca 400k de total bytes)
 * Obtenga ayuda pasando el arg /? o help
 
 # INFO
