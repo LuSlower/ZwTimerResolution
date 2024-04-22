@@ -54,9 +54,27 @@ double get_precise_time()
 
 int main(int argc, char *argv[])
 {
+    // Definir valores
+    ULONG min, max, current, res_act, res;
 
-    //obtener ayuda
-    if (argc < 2 || strcmp(argv[1], "help") == 0 || strcmp(argv[1], "/?") == 0)
+    // Obtener la frecuencia del contador de rendimiento
+    QueryPerformanceFrequency(&frq);
+
+    if (argc < 2 || strcmp(argv[1], "test") == 0)
+    {
+        //bucle predeterminado
+        printf("comienza la prueba...\n");
+        for (int i = 1; ; i++) {
+            NtQueryTimerResolution(&min, &max, &current);
+            get_precise_time();
+            printf(" | resolucion: %d ns", current);
+            Sleep(1000);
+        }
+        return 0;
+    }
+
+    //help
+    if(strcmp(argv[1], "help") == 0 || strcmp(argv[1], "/?") == 0)
     {
         printf("Instrucciones de uso:\n");
         printf("\n<resolution>\n");
@@ -74,12 +92,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    // Llamar a NtQueryTimerResolution
-    ULONG min, max, current, res_act, res;
     NtQueryTimerResolution(&min, &max, &current);
-
-    // Obtener la frecuencia del contador de rendimiento y el valor del contador
-    QueryPerformanceFrequency(&frq);
 
     if (strcmp(argv[1], "query") == 0)
     {
@@ -139,7 +152,7 @@ int main(int argc, char *argv[])
             NtSetTimerResolution(res, TRUE, &res_act);
             Sleep(100);
             double sample_time = get_precise_time();
-            printf(" | resolucion %d ns\n", res_act);
+            printf(" | resolucion %d ns", res_act);
             Sleep(100);
 
             // Actualizar valores de min, max, sum y contador
@@ -161,18 +174,6 @@ int main(int argc, char *argv[])
         printf("\nminimo: %.4f ms\n", min_sample);
         printf("maximo: %.4f ms\n", max_sample);
         printf("promedio: %.4f ms\n", avg_sample);
-        return 0;
-    }
-    else if (strcmp(argv[1], "test") == 0)
-    {
-        //bucle predeterminado
-        printf("comienza la prueba...\n");
-        for (int i = 1; ; i++) {
-            NtQueryTimerResolution(&min, &max, &current);
-            get_precise_time();
-            printf(" | resolucion: %d ns\n", current);
-            Sleep(1000);
-        }
         return 0;
     }
 
@@ -229,4 +230,3 @@ int main(int argc, char *argv[])
     }
     return 0;
 }
-
