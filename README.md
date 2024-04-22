@@ -30,7 +30,7 @@ Consola:
 > [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\kernel]
 "GlobalTimerResolutionRequests"=dword:00000001
 
-si desea establecer una resolución personalizada cree un acceso directo y específique
+si desea establecer una resolución personalizada específique
 
 ```
 nt_timer_cs.exe 5000
