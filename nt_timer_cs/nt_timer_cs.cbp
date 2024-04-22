@@ -31,6 +31,9 @@
 		<Unit filename="nt_timer_cs.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="res.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

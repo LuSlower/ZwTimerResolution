@@ -14,7 +14,7 @@ BEGIN
             VALUE "FileDescription", "nt_timer_cs"
             VALUE "FileVersion", "0.0.0.0"
             VALUE "InternalName", "nt_timer_Cs"
-            VALUE "LegalCopyright", "Copyright Â© LuSlower"
+            VALUE "LegalCopyright", "Copyright © LuSlower"
             VALUE "OriginalFilename", "nt_timer_cs.exe"
             VALUE "ProductName", "nt_timer_cs"
             VALUE "ProductVersion", "0.0.0.0"
