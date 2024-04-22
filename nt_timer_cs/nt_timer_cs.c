@@ -3,6 +3,12 @@
 #include <windows.h>
 #include <limits.h>
 
+// Definir valores
+ULONG min, max, current, res_act, res;
+
+// Definir contadores
+LARGE_INTEGER frq, start, end;
+
 // Declaración de NtSetTimerResolution y NtQueryTimerResolution
 typedef LONG NTSTATUS;
 NTSTATUS NTAPI NtSetTimerResolution(ULONG DesiredResolution, BOOLEAN SetResolution, ULONG *CurrentResolution);
@@ -32,9 +38,6 @@ void _SetProcessInformation()
     }
 }
 
-// Definir contadores
-LARGE_INTEGER frq, start, end;
-
 // Función para obtener el tiempo preciso
 double get_precise_time()
 {
@@ -44,33 +47,34 @@ double get_precise_time()
     QueryPerformanceCounter(&end);
 
     // Convertir la diferencia a milisegundos y restar el sleep(1)
-    double time_ms = (double)(end.QuadPart - start.QuadPart) / frq.QuadPart;
-    double time_sleep = time_ms * 1000.0;
-    double diff = time_sleep - 1.0;
-    printf("\ntime: %.4f ms | sleep_time: %.4f ms | diff: %.4f ms", time_ms, time_sleep, diff);
+    double time = (double)(end.QuadPart - start.QuadPart) / frq.QuadPart;
+    double tsleep = time * 1000.0;
+    double delta = tsleep - 1.0;
+    printf("\ntime: %.4f s | tsleep: %.4f ms | delta: %.4f ms", time, tsleep, delta);
 
-    return (double)diff;
+    return (double)delta;
+}
+
+void loop_get_time()
+{
+    // Obtener la frecuencia del contador de rendimiento
+    QueryPerformanceFrequency(&frq);
+
+    NtQueryTimerResolution(&min, &max, &current);
+    //bucle predeterminado
+    printf("comienza la prueba...\n");
+    for (int i = 1; ; i++) {
+    NtQueryTimerResolution(&min, &max, &current);
+    get_precise_time();
+    printf(" | nt timer: %d ns", current);
+    Sleep(1000);
+    }
 }
 
 int main(int argc, char *argv[])
 {
-    // Definir valores
-    ULONG min, max, current, res_act, res;
-
-    // Obtener la frecuencia del contador de rendimiento
-    QueryPerformanceFrequency(&frq);
-
-    if (argc < 2 || strcmp(argv[1], "test") == 0)
-    {
-        //bucle predeterminado
-        printf("comienza la prueba...\n");
-        for (int i = 1; ; i++) {
-            NtQueryTimerResolution(&min, &max, &current);
-            get_precise_time();
-            printf(" | resolucion: %d ns", current);
-            Sleep(1000);
-        }
-        return 0;
+    if (argc < 2){
+        loop_get_time();
     }
 
     //help
@@ -91,6 +95,9 @@ int main(int argc, char *argv[])
         printf("\nDetiene todas las instancias.\n");
         return 0;
     }
+
+    // Obtener la frecuencia del contador de rendimiento
+    QueryPerformanceFrequency(&frq);
 
     NtQueryTimerResolution(&min, &max, &current);
 
@@ -152,8 +159,8 @@ int main(int argc, char *argv[])
             NtSetTimerResolution(res, TRUE, &res_act);
             Sleep(100);
             double sample_time = get_precise_time();
-            printf(" | resolucion %d ns", res_act);
-            Sleep(100);
+            printf(" | nt timer: %d ns", res_act);
+            Sleep(500);
 
             // Actualizar valores de min, max, sum y contador
             if (sample_time < min_sample) {
@@ -175,6 +182,10 @@ int main(int argc, char *argv[])
         printf("maximo: %.4f ms\n", max_sample);
         printf("promedio: %.4f ms\n", avg_sample);
         return 0;
+    }
+    else if (strcmp(argv[1], "test") == 0)
+    {
+        loop_get_time();
     }
 
     //detener instancias
@@ -230,3 +241,4 @@ int main(int argc, char *argv[])
     }
     return 0;
 }
+
