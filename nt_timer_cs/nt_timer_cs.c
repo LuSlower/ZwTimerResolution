@@ -38,7 +38,6 @@ void _SetProcessInformation()
     }
 }
 
-// Función para obtener el tiempo preciso
 double get_precise_time()
 {
     // Medir el tiempo de espera Sleep(1) y calcular el tiempo
@@ -192,11 +191,11 @@ int main(int argc, char *argv[])
 
     if (strcmp(argv[1], "stop") == 0)
     {
-        system("Taskkill -f -im nt_timer_cs.exe");
+        system("taskkill -f -im nt_timer_cs.exe");
         return 0;
     }
 
-    //resolucion
+       //resolucion
 
     // Verificar si argv[1] es un número entero
     for (int i = 0; argv[1][i] != '\0'; i++)
@@ -211,6 +210,13 @@ int main(int argc, char *argv[])
     //Verificar tamaño del argumento
     if (strlen(argv[1]) >= 4 && strlen(argv[1]) < 6)
     {
+            //detener instancias
+            HANDLE hMutex = CreateMutex(NULL, TRUE, "nt_timer_cs.exe");
+            if (GetLastError() == ERROR_ALREADY_EXISTS) {
+                CloseHandle(hMutex);
+                printf("ya hay una instancia ejecutandose en segundo plano");
+                return 1;
+            }
 
             res = atoi(argv[1]); // Convertir el argumento a ULONG
             NtSetTimerResolution(res, TRUE, &res_act); // Establecer resolución del temporizador
@@ -239,6 +245,7 @@ int main(int argc, char *argv[])
         printf("/? o help para obtener ayuda");
         return 1;
     }
+
     return 0;
 }
 
