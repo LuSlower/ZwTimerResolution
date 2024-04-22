@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
         }
 
         printf("comienza la prueba...\n");
-        printf("presione ESCAPE tecla para salir\n");
+        printf("presione ESCAPE para salir\n");
         printf("\ninicio : %d\nfinal : %d\n", start_res, end_res);
 
         // Definir numero de pruebas
@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
     else if (strcmp(argv[1], "test") == 0)
     {
         //bucle predeterminado
-        printf("comienza la prueba...\npresione ESCAPE tecla para salir\n");
+        printf("comienza la prueba...\npresione ESCAPE para salir\n");
         for (int i = 1; ; i++) {
             NtQueryTimerResolution(&min, &max, &current);
             get_precise_time();
