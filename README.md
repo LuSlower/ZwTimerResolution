@@ -43,15 +43,9 @@ Al pasar el argumento 'test' nt_timer_cs se ejecutara en un bucle, para comproba
 ```
 comienza la prueba...
 
-time: 0.0013 ms | sleep_time: 1.3309 ms | diff: 0.3309 ms | resolucion: 5054 ns
-
-time: 0.0015 ms | sleep_time: 1.5006 ms | diff: 0.5006 ms | resolucion: 5054 ns
-
-time: 0.0010 ms | sleep_time: 1.0065 ms | diff: 0.0065 ms | resolucion: 5054 ns
-
-time: 0.0015 ms | sleep_time: 1.5071 ms | diff: 0.5071 ms | resolucion: 5054 ns
-
-time: 0.0015 ms | sleep_time: 1.5079 ms | diff: 0.5079 ms | resolucion: 5054 ns
+time: 0.0010 s | tsleep: 1.0316 ms | delta: 0.0316 ms | nt timer: 5054 ns
+time: 0.0010 s | tsleep: 1.0056 ms | delta: 0.0056 ms | nt timer: 5054 ns
+time: 0.0010 s | tsleep: 1.0064 ms | delta: 0.0064 ms | nt timer: 5054 ns
 ```
 
 aparte de 'test' puede pasar dos argumentos más 'start' y 'end', esto ejecutará una prueba específica para verificar que resolución posee valores más precisos
@@ -61,23 +55,24 @@ esto no quiere decir que sean estables, siempre habrá una fluctuación así ust
 comienza la prueba...
 
 inicio : 5000
-final : 5070
+final : 5100
 
-time: 0.0015 ms | sleep_time: 1.4952 ms | diff: 0.4952 ms | resolucion 4990 ns
-
-time: 0.0015 ms | sleep_time: 1.4998 ms | diff: 0.4998 ms | resolucion 5003 ns
-
-time: 0.0015 ms | sleep_time: 1.5071 ms | diff: 0.5071 ms | resolucion 5028 ns
-
-time: 0.0010 ms | sleep_time: 1.0066 ms | diff: 0.0066 ms | resolucion 5041 ns
-
-time: 0.0010 ms | sleep_time: 1.0100 ms | diff: 0.0100 ms | resolucion 5054 ns
-
+time: 0.0015 s | tsleep: 1.4936 ms | delta: 0.4936 ms | nt timer: 4990 ns
+time: 0.0015 s | tsleep: 1.4976 ms | delta: 0.4976 ms | nt timer: 5003 ns
+time: 0.0015 s | tsleep: 1.5064 ms | delta: 0.5064 ms | nt timer: 5016 ns
+time: 0.0010 s | tsleep: 1.0082 ms | delta: 0.0082 ms | nt timer: 5029 ns
+time: 0.0010 s | tsleep: 1.0049 ms | delta: 0.0049 ms | nt timer: 5029 ns
+time: 0.0010 s | tsleep: 1.0067 ms | delta: 0.0067 ms | nt timer: 5041 ns
+time: 0.0015 s | tsleep: 1.5087 ms | delta: 0.5087 ms | nt timer: 5054 ns
+time: 0.0010 s | tsleep: 1.0112 ms | delta: 0.0112 ms | nt timer: 5067 ns
+time: 0.0010 s | tsleep: 1.0103 ms | delta: 0.0103 ms | nt timer: 5067 ns
+time: 0.0010 s | tsleep: 1.0187 ms | delta: 0.0187 ms | nt timer: 5080 ns
+time: 0.0010 s | tsleep: 1.0171 ms | delta: 0.0171 ms | nt timer: 5093 ns
 prueba finalizada...
 
-minimo: 0.0066 ms
-maximo: 0.5071 ms
-promedio: 0.3037 ms
+minimo: 0.0049 ms
+maximo: 0.5087 ms
+promedio: 0.1894 ms
 ```
 
 
