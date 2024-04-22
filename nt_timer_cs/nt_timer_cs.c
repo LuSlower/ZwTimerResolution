@@ -125,7 +125,6 @@ int main(int argc, char *argv[])
         }
 
         printf("comienza la prueba...\n");
-        printf("presione ESCAPE para salir\n");
         printf("\ninicio : %d\nfinal : %d\n", start_res, end_res);
 
         // Definir numero de pruebas
