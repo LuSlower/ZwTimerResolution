@@ -36,7 +36,9 @@ si desea establecer una resolución personalizada cree un acceso directo y espec
 
 ## PRECISION
 
-Al pasar el argumento 'test' nt_timer_cs se ejecutara en un bucle programando un temporizador, para comprobar si realmente sleep hace que la CPU se detenga 1ms
+Al pasar el argumento 'test' nt_timer_cs se ejecutara en un bucle, para comprobar la precision de Sleep(1)
+aparte de 'test' puede pasar dos argumentos más 'start' y 'end', esto ejecutará una prueba específica para verificar que resolución posee valores más precisos
+esto no quiere decir que sean estables, siempre habrá una fluctuación así usted debe hacer pruebas para verificar cual de todos le conviene...
 
 ![image](https://github.com/LuSlower/nt_timer/assets/148411728/a77c8795-0b6d-4c31-bd95-2ff83beb7d5f)
 
