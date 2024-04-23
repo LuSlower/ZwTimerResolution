@@ -75,7 +75,7 @@ maximo: 0.5087 ms
 promedio: 0.1894 ms
 ```
 
-al finalizar los resultados se guardarán en sleep-text.txt ubicado en el mismo directorio de nt_timer_cs
+al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio de nt_timer_cs
 para visualizar cual de todas las resoluciones obtuvo una mayor precisión (menor delta, menor diff)
 puede visualizarlos en https://list2chart.com/csv-to-chart/
 
