@@ -16,7 +16,7 @@ aplica la misma relatividad para el minimo 156250ns
 
 Consola:
 
-![image](https://github.com/LuSlower/nt_timer/assets/148411728/b83c7f09-b0d2-45b6-bf6c-245de0b7fee6)
+![image](https://github.com/LuSlower/nt_timer/assets/148411728/f53b4609-3a62-481d-8bc7-f1722673c408)
 
 * Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precision de Sleep(1)
 * Algo más ligero en consumo (cerca 400k de total bytes)
@@ -75,7 +75,15 @@ maximo: 0.5087 ms
 promedio: 0.1894 ms
 ```
 
+al finalizar los resultados se guardarán en sleep-text.txt ubicado en el mismo directorio de nt_timer_cs
+para visualizar cual de todas las resoluciones obtuvo una mayor precisión (menor delta, menor diff)
+puede visualizarlos en https://list2chart.com/csv-to-chart/
 
+simplemente arraste el archivo allí y específique que columna desea comparar
+
+aquí hay un ejemplo
+
+![image](https://github.com/LuSlower/nt_timer/assets/148411728/475d5904-d60c-4a86-892b-0878958d6907)
 
 ## DERECHOS DE AUTOR Y LICENCIA
 [LICENCIA](LICENSE)
