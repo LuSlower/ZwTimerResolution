@@ -2,12 +2,16 @@
 #include <stdio.h>
 #include <windows.h>
 #include <limits.h>
+#include <tchar.h>
 
 // Definir valores
 ULONG min, max, current, res_act, res;
 
 // Definir contadores
 LARGE_INTEGER frq, start, end;
+
+// Definir semaforo, evento nulo
+HANDLE hMutex, hEvent;
 
 // Declaración de NtSetTimerResolution y NtQueryTimerResolution
 typedef LONG NTSTATUS;
@@ -38,7 +42,25 @@ void _SetProcessInformation()
     }
 }
 
-double get_precise_time()
+TCHAR* _get_folder_path()
+{
+    static TCHAR szPath[MAX_PATH];
+    GetModuleFileName(NULL, szPath, MAX_PATH);
+
+    // Encuentra la última aparición de '\\' en la ruta completa
+    TCHAR* lastBackslash = _tcsrchr(szPath, '\\');
+    if (lastBackslash != NULL) {
+        // Coloca un terminador de cadena nula después del último '\\' para obtener solo la carpeta
+        *(lastBackslash + 1) = '\0';
+    }
+
+    return szPath;
+}
+
+// declarar medidas
+double time, tsleep, delta;
+
+double test_sleep_precision()
 {
     // Medir el tiempo de espera Sleep(1) y calcular el tiempo
     QueryPerformanceCounter(&start);
@@ -46,32 +68,30 @@ double get_precise_time()
     QueryPerformanceCounter(&end);
 
     // Convertir la diferencia a milisegundos y restar el sleep(1)
-    double time = (double)(end.QuadPart - start.QuadPart) / frq.QuadPart;
-    double tsleep = time * 1000.0;
-    double delta = tsleep - 1.0;
-    printf("\ntime: %.4f s | tsleep: %.4f ms | delta: %.4f ms", time, tsleep, delta);
+    time = (double)(end.QuadPart - start.QuadPart) / frq.QuadPart;
+    tsleep = time * 1000.0;
+    delta = tsleep - 1.0;
+    printf("\ntime: %.4f s | tsleep: %.4f ms | delta: %.4f ms | nt-timer: %d ns", time, tsleep, delta, res_act);
 
     return (double)delta;
 }
 
 void loop_get_time()
 {
-    // Obtener la frecuencia del contador de rendimiento
-    QueryPerformanceFrequency(&frq);
-
-    NtQueryTimerResolution(&min, &max, &current);
     //bucle predeterminado
     printf("comienza la prueba...\n");
     for (int i = 1; ; i++) {
-    NtQueryTimerResolution(&min, &max, &current);
-    get_precise_time();
-    printf(" | nt timer: %d ns", current);
+    NtQueryTimerResolution(&min, &max, &res_act);
+    test_sleep_precision();
     Sleep(1000);
     }
 }
 
 int main(int argc, char *argv[])
 {
+    // Obtener la frecuencia del contador de rendimiento
+    QueryPerformanceFrequency(&frq);
+
     if (argc < 2){
         loop_get_time();
     }
@@ -88,26 +108,23 @@ int main(int argc, char *argv[])
         printf("\nDevuelve informacion acerca de la resolucion del temporizador.\n");
         printf("\n<test> start end\n");
         printf("\nGenera una prueba sobre la precision de Sleep(1).\n");
-        printf("Por defecto se ejecuta en un bucle\npuede especificar un inicio y un final para verificar que resolucion tiene una mejor precision\n");
+        printf("por defecto se ejecuta en un bucle\npuede especificar un inicio y un final para verificar que resolucion tiene una mejor precision\n");
+        printf("lo resultados se guardaran en c:\sleep-test.txt\n");
         printf("ejemplo: 'nt_timer_cs.exe test 5000 6000'\n");
         printf("\n<stop>\n");
         printf("\nDetiene todas las instancias.\n");
         return 0;
     }
 
-    // Obtener la frecuencia del contador de rendimiento
-    QueryPerformanceFrequency(&frq);
-
-    NtQueryTimerResolution(&min, &max, &current);
-
     if (strcmp(argv[1], "query") == 0)
     {
+        NtQueryTimerResolution(&min, &max, &current);
+
         // Obtener resoluciones del temporizador
         printf("informacion del temporizador:\n");
         printf("\nresolucion minima : %d ns\n", min);
         printf("resolucion maxima : %d ns\n", max);
         printf("resolucion actual : %d ns\n", current);
-        get_precise_time();
         return 0;
     }
 
@@ -152,14 +169,33 @@ int main(int argc, char *argv[])
         double min_sample = INT_MAX;
         double max_sample = INT_MIN;
 
-        //ejecutar bucle con un aumento de 10 nanosegundos por
-        for (int res = start_res; res <= end_res; res += 10)
+        //obtener path y abrir archivo
+        TCHAR* dir = _get_folder_path();
+        TCHAR test[MAX_PATH];
+
+        _snprintf(test, MAX_PATH, _T("%s%s"), dir, _T("sleep-test.txt"));
+        FILE *outputFile = fopen(test, L"w");
+
+        if (outputFile == NULL)
+        {
+            printf("Error al abrir el archivo de salida.\n");
+            return 1;
+        }
+
+        //heads
+        fprintf(outputFile,"sleep-time, delta-ms, nt-timer\n");
+
+        //ejecutar bucle con un aumento de 11 nanosegundos
+        for (int res = start_res; res <= end_res; res += 11)
         {
             NtSetTimerResolution(res, TRUE, &res_act);
             Sleep(100);
-            double sample_time = get_precise_time();
-            printf(" | nt timer: %d ns", res_act);
+            double sample_time = test_sleep_precision();
             Sleep(500);
+
+            //stdout
+            fprintf(outputFile,"%.4f, %.4f, %d\n",
+                   tsleep, delta, res_act);
 
             // Actualizar valores de min, max, sum y contador
             if (sample_time < min_sample) {
@@ -171,6 +207,7 @@ int main(int argc, char *argv[])
             sum_samples += sample_time;
             num_samples++;
 
+
         }
 
         // Calcular promedio
@@ -180,6 +217,9 @@ int main(int argc, char *argv[])
         printf("\nminimo: %.4f ms\n", min_sample);
         printf("maximo: %.4f ms\n", max_sample);
         printf("promedio: %.4f ms\n", avg_sample);
+
+        //cerrar archivo
+        fclose(outputFile);
         return 0;
     }
     else if (strcmp(argv[1], "test") == 0)
@@ -191,7 +231,8 @@ int main(int argc, char *argv[])
 
     if (strcmp(argv[1], "stop") == 0)
     {
-        system("taskkill -f -im nt_timer_cs.exe");
+        printf("instancias detenidas");
+        system("taskkill -f -im nt_timer_cs.exe >nul");
         return 0;
     }
 
@@ -211,7 +252,7 @@ int main(int argc, char *argv[])
     if (strlen(argv[1]) >= 4 && strlen(argv[1]) < 6)
     {
             //detener instancias
-            HANDLE hMutex = CreateMutex(NULL, TRUE, "nt_timer_cs.exe");
+            hMutex = CreateMutex(NULL, TRUE, "nt_timer_cs.exe");
             if (GetLastError() == ERROR_ALREADY_EXISTS) {
                 CloseHandle(hMutex);
                 printf("ya hay una instancia ejecutandose en segundo plano");
@@ -220,7 +261,7 @@ int main(int argc, char *argv[])
 
             res = atoi(argv[1]); // Convertir el argumento a ULONG
             NtSetTimerResolution(res, TRUE, &res_act); // Establecer resolución del temporizador
-
+            Sleep(100);
             printf("resolucion establecida correctamente a %d ns", res_act);
 
             //prioridad de segundo plano
@@ -235,7 +276,7 @@ int main(int argc, char *argv[])
             //liberar memoria
             SetProcessWorkingSetSize(GetCurrentProcess(), (SIZE_T) -1, (SIZE_T) -1);
 
-            HANDLE hEvent = CreateEvent(NULL, TRUE, FALSE, NULL); // Manual reset event, inicialmente no señalizado
+            hEvent = CreateEvent(NULL, TRUE, FALSE, NULL); // Manual reset event, inicialmente no señalizado
 
             // Suspender el hilo hasta que el evento se señalice
             WaitForSingleObject(hEvent, INFINITE);
