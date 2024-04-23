@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
         printf("\n<test> start end\n");
         printf("\nGenera una prueba sobre la precision de Sleep(1).\n");
         printf("por defecto se ejecuta en un bucle\npuede especificar un inicio y un final para verificar que resolucion tiene una mejor precision\n");
-        printf("lo resultados se guardaran en c:\sleep-test.txt\n");
+        printf("los resultados se guardaran en sleep-test.txt\n");
         printf("ejemplo: 'nt_timer_cs.exe test 5000 6000'\n");
         printf("\n<stop>\n");
         printf("\nDetiene todas las instancias.\n");
