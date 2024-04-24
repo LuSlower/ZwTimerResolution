@@ -13,12 +13,12 @@ LARGE_INTEGER frq, start, end;
 // Definir semaforo, evento nulo
 HANDLE hMutex, hEvent;
 
-// Declaraci髇 de ZwSetTimerResolution y ZwQueryTimerResolution
+// Declaraci贸n de funciones Zw = Nt
 typedef LONG NTSTATUS;
-NTSTATUS NTAPI ZwSetTimerResolution(ULONG DesiredResolution, BOOLEAN SetResolution, ULONG *CurrentResolution);
-NTSTATUS NTAPI ZwQueryTimerResolution(ULONG *MinimumResolution, ULONG *MaximumResolution, ULONG *CurrentResolution);
+NTSYSAPI NTSTATUS NTAPI ZwSetTimerResolution(ULONG DesiredResolution, BOOLEAN SetResolution, ULONG *CurrentResolution);
+NTSYSAPI NTSTATUS NTAPI ZwQueryTimerResolution(ULONG *MinimumResolution, ULONG *MaximumResolution, ULONG *CurrentResolution);
 
-// Declaraci髇 de SetProcessInformation
+// Declaraci贸n de SetProcessInformation
 WINBASEAPI WINBOOL WINAPI SetProcessInformation(HANDLE hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, LPVOID ProcessInformation, DWORD ProcessInformationSize);
 
 void _SetProcessInformation()
@@ -33,12 +33,12 @@ void _SetProcessInformation()
         state.ControlMask = PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION;
         state.StateMask = 0;
 
-        // Deshabilitar la resoluci髇 del temporizador de inactividad
+        // Deshabilitar la resoluci贸n del temporizador de inactividad
         SetProcessInformation(GetCurrentProcess(), ProcessPowerThrottling, &state, sizeof(state));
     }
     else
     {
-        printf("Error al obtener la direcci髇 de SetProcessInformation\n"); // No existe en Windows 7
+        printf("Error al obtener la direcci贸n de SetProcessInformation\n"); // No existe en Windows 7
     }
 }
 
@@ -47,10 +47,10 @@ TCHAR* _get_folder_path()
     static TCHAR szPath[MAX_PATH];
     GetModuleFileName(NULL, szPath, MAX_PATH);
 
-    // Encuentra la 鷏tima aparici髇 de '\\' en la ruta completa
+    // Encuentra la 煤ltima aparici贸n de '\\' en la ruta completa
     TCHAR* lastBackslash = _tcsrchr(szPath, '\\');
     if (lastBackslash != NULL) {
-        // Coloca un terminador de cadena nula despu閟 del 鷏timo '\\' para obtener solo la carpeta
+        // Coloca un terminador de cadena nula despu茅s del 煤ltimo '\\' para obtener solo la carpeta
         *(lastBackslash + 1) = '\0';
     }
 
@@ -62,7 +62,6 @@ double time, tsleep, delta;
 
 void sleep_test()
 {
-    // Medir el tiempo de espera Sleep(1) y calcular el tiempo
     QueryPerformanceCounter(&start);
     Sleep(1);
     QueryPerformanceCounter(&end);
@@ -81,16 +80,18 @@ void loop_test()
     ZwQueryTimerResolution(&min, &max, &res_act);
     sleep_test();
     printf("\ntime: %.4f s | sleep(1): %.4f ms | delta: %.4f ms | zwres: %d ns", time, tsleep, delta, res_act);
-    Sleep(700);
+    Sleep(750);
     }
 }
 
 int main(int argc, char *argv[])
 {
-    // Obtener la frecuencia del contador de rendimiento
-    QueryPerformanceFrequency(&frq);
 
     if (argc < 2){
+        // Obtener la frecuencia del contador de rendimiento
+        QueryPerformanceFrequency(&frq);
+
+        //loop
         loop_test();
     }
 
@@ -130,6 +131,10 @@ int main(int argc, char *argv[])
     //test de precision
     if(strcmp(argv[1], "test") == 0 && argc == 5)
     {
+
+    // Obtener la frecuencia del contador de rendimiento
+    QueryPerformanceFrequency(&frq);
+
         // start
         for (int i = 0; argv[2][i] != '\0'; i++)
         {
@@ -240,6 +245,10 @@ int main(int argc, char *argv[])
     }
     else if (strcmp(argv[1], "test") == 0)
     {
+
+        // Obtener la frecuencia del contador de rendimiento
+        QueryPerformanceFrequency(&frq);
+
         //default
         loop_test();
     }
@@ -255,7 +264,7 @@ int main(int argc, char *argv[])
 
        //set zwresolucion
 
-    // Verificar si argv[1] es un n鷐ero entero
+    // Verificar si argv[1] es un n煤mero entero
     for (int i = 0; argv[1][i] != '\0'; i++)
     {
     if (!isdigit(argv[1][i]))
@@ -265,7 +274,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    //Verificar tama駉 del argumento
+    //Verificar tama帽o del argumento
     if (strlen(argv[1]) >= 4 && strlen(argv[1]) < 6)
     {
             //detener instancias
@@ -277,7 +286,7 @@ int main(int argc, char *argv[])
             }
 
             res = atoi(argv[1]); // Convertir el argumento a ULONG
-            ZwSetTimerResolution(res, TRUE, &res_new); // Establecer resoluci髇 del temporizador
+            ZwSetTimerResolution(res, TRUE, &res_new); // Establecer resoluci贸n del temporizador
             Sleep(250);
             printf("resolucion establecida correctamente a %d ns", res_new);
 
@@ -293,9 +302,9 @@ int main(int argc, char *argv[])
             //liberar memoria
             SetProcessWorkingSetSize(GetCurrentProcess(), (SIZE_T) -1, (SIZE_T) -1);
 
-            hEvent = CreateEvent(NULL, TRUE, FALSE, NULL); // Manual reset event, inicialmente no se馻lizado
+            hEvent = CreateEvent(NULL, TRUE, FALSE, NULL); // Manual reset event, inicialmente no se帽alizado
 
-            // Suspender el hilo hasta que el evento se se馻lice
+            // Suspender el hilo hasta que el evento se se帽alice
             WaitForSingleObject(hEvent, INFINITE);
     }
     else
