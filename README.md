@@ -1,5 +1,5 @@
 # ZwTimerResolution
-[![Total Downloads](https://img.shields.io/github/downloads/LuSlower/nt_timer/total.svg)](https://github.com/LuSlower/nt_timer/releases) [![PayPal Badge](https://img.shields.io/badge/PayPal-003087?logo=paypal&logoColor=fff&style=flat)](https://paypal.me/eldontweaks) 
+[![Total Downloads](https://img.shields.io/github/downloads/LuSlower/ZwTimerResolution/total.svg)](https://github.com/LuSlower/ZwTimerResolution/releases) [![PayPal Badge](https://img.shields.io/badge/PayPal-003087?logo=paypal&logoColor=fff&style=flat)](https://paypal.me/eldontweaks) 
 
 Una herramienta más para cambiar la resolución del temporizador del sistema en el contexto del proceso de llamada
 
@@ -16,7 +16,7 @@ aplica la misma relatividad para el minimo 156250ns
 
 Consola:
 
-![image](https://github.com/LuSlower/nt_timer/assets/148411728/acf5bbde-7ee3-477c-a11b-5a87fef54481)
+![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/acf5bbde-7ee3-477c-a11b-5a87fef54481)
 
 * Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precision de Sleep(1)
 * Algo más ligero en consumo (cerca 400k de total bytes)
@@ -83,7 +83,7 @@ minimo: 1.0029 ms | 0.0029 ms
 maximo: 1.5182 ms | 0.5182 ms
 ```
 
-al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio de nt_timer_cs
+al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio de zwtimer.exe
 para visualizar cual de todas las resoluciones obtuvo una mayor precisión (menor delta, menor diff)
 puede visualizarlos en https://list2chart.com/csv-to-chart/
 
