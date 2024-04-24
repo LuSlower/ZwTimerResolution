@@ -16,7 +16,7 @@ aplica la misma relatividad para el minimo 156250ns
 
 Consola:
 
-![image](https://github.com/LuSlower/nt_timer/assets/148411728/f53b4609-3a62-481d-8bc7-f1722673c408)
+![image](https://github.com/LuSlower/nt_timer/assets/148411728/0ef8f916-9401-4d96-bdd2-4ce5205257e2)
 
 * Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precision de Sleep(1)
 * Algo más ligero en consumo (cerca 400k de total bytes)
@@ -33,19 +33,21 @@ Consola:
 si desea establecer una resolución personalizada específique
 
 ```
-nt_timer_cs.exe 5000
+zwtimer.exe 5000
 ```
 
 ## PRECISION
 
-Al pasar el argumento 'test' nt_timer_cs se ejecutara en un bucle, para comprobar la precision de Sleep(1)
+Al pasar el argumento 'test' zwtimer se ejecutara en un bucle, para comprobar la precision de Sleep(1)
 
 ```
 comienza la prueba...
 
-time: 0.0010 s | tsleep: 1.0316 ms | delta: 0.0316 ms | nt timer: 5054 ns
-time: 0.0010 s | tsleep: 1.0056 ms | delta: 0.0056 ms | nt timer: 5054 ns
-time: 0.0010 s | tsleep: 1.0064 ms | delta: 0.0064 ms | nt timer: 5054 ns
+time: 0.0014 s | sleep(1): 1.4140 ms | delta: 0.4140 ms | zwres: 5054 ns
+time: 0.0010 s | sleep(1): 1.0058 ms | delta: 0.0058 ms | zwres: 5054 ns
+time: 0.0010 s | sleep(1): 1.0062 ms | delta: 0.0062 ms | zwres: 5054 ns
+time: 0.0010 s | sleep(1): 1.0054 ms | delta: 0.0054 ms | zwres: 5054 ns
+time: 0.0010 s | sleep(1): 1.0064 ms | delta: 0.0064 ms | zwres: 5054 ns
 ```
 
 aparte de 'test' puede pasar dos argumentos más 'start' y 'end', esto ejecutará una prueba específica para verificar que resolución posee valores más precisos
@@ -55,24 +57,31 @@ esto no quiere decir que sean estables, siempre habrá una fluctuación así ust
 comienza la prueba...
 
 inicio : 5000
-final : 5100
+final : 5200
+conteo : 20
 
-time: 0.0015 s | tsleep: 1.4936 ms | delta: 0.4936 ms | nt timer: 4990 ns
-time: 0.0015 s | tsleep: 1.4976 ms | delta: 0.4976 ms | nt timer: 5003 ns
-time: 0.0015 s | tsleep: 1.5064 ms | delta: 0.5064 ms | nt timer: 5016 ns
-time: 0.0010 s | tsleep: 1.0082 ms | delta: 0.0082 ms | nt timer: 5029 ns
-time: 0.0010 s | tsleep: 1.0049 ms | delta: 0.0049 ms | nt timer: 5029 ns
-time: 0.0010 s | tsleep: 1.0067 ms | delta: 0.0067 ms | nt timer: 5041 ns
-time: 0.0015 s | tsleep: 1.5087 ms | delta: 0.5087 ms | nt timer: 5054 ns
-time: 0.0010 s | tsleep: 1.0112 ms | delta: 0.0112 ms | nt timer: 5067 ns
-time: 0.0010 s | tsleep: 1.0103 ms | delta: 0.0103 ms | nt timer: 5067 ns
-time: 0.0010 s | tsleep: 1.0187 ms | delta: 0.0187 ms | nt timer: 5080 ns
-time: 0.0010 s | tsleep: 1.0171 ms | delta: 0.0171 ms | nt timer: 5093 ns
+sleep(1): 1.4955 ms | delta: 0.4955 ms | zwres: 4990 ns
+sleep(1): 1.4998 ms | delta: 0.4998 ms | zwres: 5003 ns
+sleep(1): 1.4287 ms | delta: 0.4287 ms | zwres: 5016 ns
+sleep(1): 1.2060 ms | delta: 0.2060 ms | zwres: 5029 ns
+sleep(1): 1.1324 ms | delta: 0.1324 ms | zwres: 5041 ns
+sleep(1): 1.0341 ms | delta: 0.0341 ms | zwres: 5054 ns
+sleep(1): 1.0375 ms | delta: 0.0375 ms | zwres: 5067 ns
+sleep(1): 1.0145 ms | delta: 0.0144 ms | zwres: 5080 ns
+sleep(1): 1.0175 ms | delta: 0.0175 ms | zwres: 5093 ns
+sleep(1): 1.0197 ms | delta: 0.0197 ms | zwres: 5105 ns
+sleep(1): 1.0470 ms | delta: 0.0470 ms | zwres: 5118 ns
+sleep(1): 1.0249 ms | delta: 0.0249 ms | zwres: 5131 ns
+sleep(1): 1.0273 ms | delta: 0.0273 ms | zwres: 5144 ns
+sleep(1): 1.0308 ms | delta: 0.0308 ms | zwres: 5157 ns
+sleep(1): 1.0323 ms | delta: 0.0323 ms | zwres: 5170 ns
+sleep(1): 1.0353 ms | delta: 0.0353 ms | zwres: 5182 ns
+
 prueba finalizada...
 
-minimo: 0.0049 ms
-maximo: 0.5087 ms
-promedio: 0.1894 ms
+minimo: 1.0029 ms | 0.0029 ms
+maximo: 1.5182 ms | 0.5182 ms
+promedio: 1.0353 ms | 0.0353 ms
 ```
 
 al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio de nt_timer_cs
@@ -83,7 +92,7 @@ simplemente arraste el archivo allí y específique que columna desea comparar
 
 aquí hay un ejemplo
 
-![image](https://github.com/LuSlower/nt_timer/assets/148411728/475d5904-d60c-4a86-892b-0878958d6907)
+![image](https://github.com/LuSlower/nt_timer/assets/148411728/18d45865-1cf7-4a3d-9811-48ee45c53426)
 
 ## DERECHOS DE AUTOR Y LICENCIA
 [LICENCIA](LICENSE)
