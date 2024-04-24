@@ -1,4 +1,4 @@
-# nt_timer
+# ZwTimerResolution
 [![Total Downloads](https://img.shields.io/github/downloads/LuSlower/nt_timer/total.svg)](https://github.com/LuSlower/nt_timer/releases) [![PayPal Badge](https://img.shields.io/badge/PayPal-003087?logo=paypal&logoColor=fff&style=flat)](https://paypal.me/eldontweaks) 
 
 Una herramienta más para cambiar la resolución del temporizador del sistema en el contexto del proceso de llamada
