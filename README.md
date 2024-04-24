@@ -16,7 +16,7 @@ aplica la misma relatividad para el minimo 156250ns
 
 Consola:
 
-![image](https://github.com/LuSlower/nt_timer/assets/148411728/0ef8f916-9401-4d96-bdd2-4ce5205257e2)
+![image](https://github.com/LuSlower/nt_timer/assets/148411728/acf5bbde-7ee3-477c-a11b-5a87fef54481)
 
 * Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precision de Sleep(1)
 * Algo más ligero en consumo (cerca 400k de total bytes)
