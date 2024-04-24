@@ -88,8 +88,9 @@ int main(int argc, char *argv[])
 {
 
     if (argc < 2){
-        // Obtener la frecuencia del contador de rendimiento
+        // Obtener la frecuencia del contador de rendimiento establecer prioridad
         QueryPerformanceFrequency(&frq);
+        SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
 
         //loop
         loop_test();
@@ -132,8 +133,9 @@ int main(int argc, char *argv[])
     if(strcmp(argv[1], "test") == 0 && argc == 5)
     {
 
-    // Obtener la frecuencia del contador de rendimiento
-    QueryPerformanceFrequency(&frq);
+        // Obtener la frecuencia del contador de rendimiento establecer prioridad
+        QueryPerformanceFrequency(&frq);
+        SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
 
         // start
         for (int i = 0; argv[2][i] != '\0'; i++)
@@ -246,8 +248,9 @@ int main(int argc, char *argv[])
     else if (strcmp(argv[1], "test") == 0)
     {
 
-        // Obtener la frecuencia del contador de rendimiento
+        // Obtener la frecuencia del contador de rendimiento establecer prioridad
         QueryPerformanceFrequency(&frq);
+        SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
 
         //default
         loop_test();
