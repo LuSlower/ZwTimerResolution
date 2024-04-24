@@ -81,7 +81,6 @@ prueba finalizada...
 
 minimo: 1.0029 ms | 0.0029 ms
 maximo: 1.5182 ms | 0.5182 ms
-promedio: 1.0353 ms | 0.0353 ms
 ```
 
 al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio de nt_timer_cs
