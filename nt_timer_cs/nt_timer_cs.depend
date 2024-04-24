@@ -1,9 +1,0 @@
-# depslib dependency file v1.0
-1713598322 source:e:\documentos\codeblocks\main\main\main.c
-	<stdio.h>
-	<stdlib.h>
-	<windows.h>
-
-1713674023 source:e:\documentos\codeblocks\nt_timer_cs\res.rc
-	<windows.h>
-
