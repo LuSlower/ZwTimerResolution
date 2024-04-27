@@ -19,7 +19,8 @@ Consola:
 ![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/acf5bbde-7ee3-477c-a11b-5a87fef54481)
 
 * Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precision de Sleep(1)
-* Algo más ligero en consumo (cerca 400k de total bytes)
+* Algo más ligero en consumo (menos de 400k de total bytes)
+* Una opción mucho más ligera es [zw-timer-rs](zw-timer-rs/src/main.rs)
 * Obtenga ayuda pasando el arg /? o help
 
 # INFO
@@ -51,7 +52,7 @@ time: 0.0010 s | sleep(1): 1.0064 ms | delta: 0.0064 ms | zwres: 5054 ns
 ```
 
 aparte de 'test' puede pasar dos argumentos más 'start' y 'end', esto ejecutará una prueba específica para verificar que resolución posee valores más precisos
-esto no quiere decir que sean estables, siempre habrá una fluctuación así usted debe hacer pruebas para verificar cual de todos le conviene...
+esto no quiere decir que sean estables, siempre habrá una fluctuación así usted debe hacer pruebas para verificar cual de todas le conviene...
 
 ```
 comienza la prueba...
