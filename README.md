@@ -6,7 +6,7 @@ Una herramienta más para cambiar la resolución del temporizador del sistema en
 ## ACTUALMENTE
 GUI:
 
-![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/3ae4c46b-5e94-408b-91ae-5509dd892375)
+![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/fbcac45d-597b-4718-ad4a-03c0c9695ba1)
 
 * Presione ESC para ocultar la GUI, puede hacer clic en el icono de la bandeja para salir de la aplicación
 * Se permiten solo 6 digitos como máximo en el cuadro de texto, debe ser un numero entero o arrojara un error
