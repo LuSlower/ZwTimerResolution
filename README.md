@@ -10,7 +10,7 @@ GUI:
 
 * Presione ESC para ocultar la GUI, puede hacer clic en el icono de la bandeja para salir de la aplicación
 * Se permiten solo 6 digitos como máximo en el cuadro de texto, debe ser un numero entero o arrojara un error
-* La resolución del temporizador máxima será siempre 5000ns (5ms), asi que cualquier valor por debajo de ese ingresado sera reemplazado automaticamente por el, 
+* La resolución del temporizador máxima será siempre 5000 (*100) ns = 5ms, asi que cualquier valor por debajo de ese ingresado sera reemplazado automaticamente por el, 
 aplica la misma relatividad para el minimo 156250ns
 * Esta GUI Win32 consume poca memoria (cerca de 1.3k de total bytes)
 
