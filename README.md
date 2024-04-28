@@ -16,8 +16,6 @@ aplica la misma relatividad para el minimo 156250ns
 
 Consola:
 
-![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/f995cc2c-b90c-4e2e-88e0-6fcb87c6c91a)
-
 * Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precision de Sleep(1)
 * Algo más ligero en consumo (menos de 400k de total bytes)
 * Obtenga ayuda pasando el arg /? o help
