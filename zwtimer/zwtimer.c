@@ -84,13 +84,20 @@ void loop_test()
     }
 }
 
+void get_frq()
+{
+    // Obtener la frecuencia del contador de rendimiento establecer prioridad
+    QueryPerformanceFrequency(&frq);
+    SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
+}
+
 int main(int argc, char *argv[])
 {
 
     if (argc < 2){
-        // Obtener la frecuencia del contador de rendimiento establecer prioridad
-        QueryPerformanceFrequency(&frq);
-        SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
+
+        // get frequency
+        get_frq();
 
         //loop
         loop_test();
@@ -109,9 +116,9 @@ int main(int argc, char *argv[])
         printf("\n<test> start end count\n");
         printf("\nGenera una prueba sobre la precision de Sleep(1).\n");
         printf("por defecto se ejecuta en un bucle\n");
-        printf("puede especificar un inicio, final y los conteos para verificar que resolucion tiene una mejor precision\n");
+        printf("puede especificar un inicio, final para verificar que resolucion tiene una mejor precision\n");
         printf("los resultados se guardaran en sleep-test.txt\n");
-        printf("ejemplo: 'zwtimer.exe test 5000 6000 20'\n");
+        printf("ejemplo: 'zwtimer.exe test 5000 6000'\n");
         printf("\n<stop>\n");
         printf("\nDetiene todas las instancias.\n");
         return 0;
@@ -130,12 +137,11 @@ int main(int argc, char *argv[])
     }
 
     //test de precision
-    if(strcmp(argv[1], "test") == 0 && argc == 5)
+    if(strcmp(argv[1], "test") == 0 && argc == 4)
     {
 
-        // Obtener la frecuencia del contador de rendimiento establecer prioridad
-        QueryPerformanceFrequency(&frq);
-        SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
+        // get frequency
+        get_frq();
 
         // start
         for (int i = 0; argv[2][i] != '\0'; i++)
@@ -157,19 +163,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        // leer valor de counts
-        int counts = atoi(argv[4]);
-        for (int i = 0; argv[4][i] != '\0'; i++)
-        {
-            if (!isdigit(argv[4][i]) || counts <= 5 || counts > 200)
-            {
-                printf("los conteos deben ser mayor o igual a 5 y menor o igual a 200\n");
-                return 1;
-            }
-
-        }
-
-        // Convertir a entero start, end y counts
+        // Convertir a entero start, end
         int start_res = atoi(argv[2]);
         int end_res = atoi(argv[3]);
 
@@ -181,7 +175,7 @@ int main(int argc, char *argv[])
         }
 
         printf("comienza la prueba...\n");
-        printf("\ninicio : %d\nfinal : %d\nconteo : %d\n", start_res, end_res, counts);
+        printf("\ninicio : %d\nfinal : %d\n", start_res, end_res);
 
         //obtener path y abrir archivo
         TCHAR* dir = _get_folder_path();
@@ -196,14 +190,14 @@ int main(int argc, char *argv[])
         //heads
         fprintf(outputFile,"Sleep(1), DeltaMs, ZwResolution\n");
 
-        //ejecutar bucle con un aumento de 13 ns
+        //ejecutar bucle
         for (int res = start_res; res <= end_res; res += 13)
         {
             // redefinir mediciones
             double num_sleep = 0, num_delta = 0, sum_sleep = 0, sum_delta = 0;
 
-            // Realizar 'counts' mediciones para cada valor de res
-            for (int i = 0; i < counts; ++i)
+            // Realizar '25' mediciones para cada valor de res
+            for (int i = 0; i < 25; ++i)
             {
                 ZwSetTimerResolution(res, TRUE, &res_act);
                 Sleep(50);
@@ -248,9 +242,8 @@ int main(int argc, char *argv[])
     else if (strcmp(argv[1], "test") == 0)
     {
 
-        // Obtener la frecuencia del contador de rendimiento establecer prioridad
-        QueryPerformanceFrequency(&frq);
-        SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
+        // get frequency
+        get_frq();
 
         //default
         loop_test();
@@ -290,7 +283,7 @@ int main(int argc, char *argv[])
 
             res = atoi(argv[1]); // Convertir el argumento a ULONG
             ZwSetTimerResolution(res, TRUE, &res_new); // Establecer resolución del temporizador
-            Sleep(250);
+            Sleep(100);
             printf("resolucion establecida correctamente a %d ns", res_new);
 
             //prioridad de segundo plano
