@@ -16,7 +16,7 @@ aplica la misma relatividad para el minimo 156250ns
 
 Consola:
 
-![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/acf5bbde-7ee3-477c-a11b-5a87fef54481)
+![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/9db31347-93e8-4af2-ab97-5bdf9f87e3f5)
 
 * Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precision de Sleep(1)
 * Algo más ligero en consumo (menos de 400k de total bytes)
@@ -60,7 +60,6 @@ comienza la prueba...
 
 inicio : 5000
 final : 5200
-conteo : 20
 
 sleep(1): 1.4955 ms | delta: 0.4955 ms | zwres: 4990 ns
 sleep(1): 1.4998 ms | delta: 0.4998 ms | zwres: 5003 ns
