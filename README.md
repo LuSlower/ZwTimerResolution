@@ -20,7 +20,6 @@ Consola:
 
 * Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precision de Sleep(1)
 * Algo más ligero en consumo (menos de 400k de total bytes)
-* Una opción mucho más ligera es [zw-timer-rs](zw-timer-rs/src/main.rs)
 * Obtenga ayuda pasando el arg /? o help
 
 # INFO
