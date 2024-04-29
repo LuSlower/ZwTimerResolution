@@ -1,4 +1,3 @@
-#define WIN32_LEAN_AND_MEAN
 #pragma once
 #ifndef NTAPI_H
 #define NTAPI_H
