@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <windows.h>
 #include <limits.h>
 #include <tchar.h>
@@ -112,7 +113,7 @@ int main(int argc, char *argv[])
         printf("ejemplo: 'zwtimer.exe 5000'\n");
         printf("\n<query>\n");
         printf("\nDevuelve informacion acerca de la resolucion del temporizador.\n");
-        printf("\n<test> start end count\n");
+        printf("\n<test> start end\n");
         printf("\nGenera una prueba sobre la precision de Sleep(1).\n");
         printf("por defecto se ejecuta en un bucle\n");
         printf("puede especificar un inicio, final para verificar que resolucion tiene una mejor precision\n");
@@ -181,7 +182,7 @@ int main(int argc, char *argv[])
         TCHAR test[MAX_PATH];
 
         _snprintf(test, MAX_PATH, _T("%s%s"), dir, _T("sleep-test.txt"));
-        FILE *outputFile = fopen(test, L"w");
+        FILE *outputFile = fopen(test, "w");
 
         // declarar limites
         double min_sleep = INT_MAX, min_delta = INT_MAX, max_sleep = INT_MIN, max_delta = INT_MIN, avg_sleep, avg_delta;
@@ -310,4 +311,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
