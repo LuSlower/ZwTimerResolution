@@ -48,7 +48,13 @@ time: 0.0010 s | sleep(1): 1.0054 ms | delta: 0.0054 ms | zwres: 5054 ns
 time: 0.0010 s | sleep(1): 1.0064 ms | delta: 0.0064 ms | zwres: 5054 ns
 ```
 
-aparte de 'test' puede pasar dos argumentos más 'start' y 'end', esto ejecutará una prueba específica para verificar que resolución posee valores más precisos
+aparte de 'test' puede pasar dos argumentos más 'start' y 'end'
+
+```
+zwtimer.exe test 5000 5200
+```
+
+esto ejecutará una prueba específica para verificar que resolución posee valores más precisos
 esto no quiere decir que sean estables, siempre habrá una fluctuación así que usted debe hacer pruebas para verificar cual de todas le conviene...
 
 ```
