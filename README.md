@@ -56,6 +56,9 @@ zwtimer.exe test 5000 5200
 
 esto ejecutará una prueba específica para verificar que resolución posee valores más precisos
 esto no quiere decir que sean estables, siempre habrá una fluctuación así que usted debe hacer pruebas para verificar cual de todas le conviene...
+procure tener el tic rtc desactivado (por defecto)
+
+> bdcdedit -deletevalue useplatformtick
 
 ```
 comienza la prueba...
