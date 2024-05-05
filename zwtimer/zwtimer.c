@@ -13,7 +13,7 @@ LARGE_INTEGER frq, start, end;
 // Definir semaforo, evento nulo
 HANDLE hMutex, hEvent;
 
-// Declaración de funciones Zw = Nt
+// Declaración de funciones Zw
 typedef LONG NTSTATUS;
 NTSYSAPI NTSTATUS NTAPI ZwSetTimerResolution(ULONG DesiredResolution, BOOLEAN SetResolution, ULONG *CurrentResolution);
 NTSYSAPI NTSTATUS NTAPI ZwQueryTimerResolution(ULONG *MinimumResolution, ULONG *MaximumResolution, ULONG *CurrentResolution);
@@ -80,7 +80,7 @@ void loop_test()
     ZwQueryTimerResolution(&min, &max, &res_act);
     sleep_test();
     printf("\ntime: %.4f s | sleep(1): %.4f ms | delta: %.4f ms | zwres: %d ns", time, tsleep, delta, res_act);
-    Sleep(750);
+    Sleep(500);
     }
 }
 
@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
         fprintf(outputFile,"Sleep(1), DeltaMs, ZwResolution\n");
 
         //ejecutar bucle
-        for (int res = start_res; res <= end_res; res += 13)
+        for (int res = start_res; res_act < end_res; res += 3)
         {
             // redefinir mediciones
             double num_sleep = 0, num_delta = 0, sum_sleep = 0, sum_delta = 0;
@@ -202,34 +202,43 @@ int main(int argc, char *argv[])
                 ZwSetTimerResolution(res, TRUE, &res_act);
                 Sleep(50);
                 sleep_test();
-                Sleep(50);
 
-                // actualizar delta y sleep
-                if (delta < min_delta) {
-                    min_delta = delta;
-                }
-                if (delta > max_delta) {
-                    max_delta = delta;
-                }
                 sum_delta += delta;
                 num_delta++;
 
-                if (tsleep < min_sleep) {
-                    min_sleep = tsleep;
-                }
-                if (tsleep > max_sleep) {
-                    max_sleep = tsleep;
-                }
                 sum_sleep += tsleep;
                 num_sleep++;
             }
+
             // Calcular promedio
             avg_sleep = (double)sum_sleep / num_sleep;
             avg_delta = (double)sum_delta / num_delta;
+
+            // actualizar avg_delta y avg_sleep
+
+            if (avg_sleep < min_sleep) {
+                min_sleep = avg_sleep;
+            }
+
+            if (avg_delta < min_delta) {
+                min_delta = avg_delta;
+            }
+
+            if (avg_sleep > max_sleep) {
+                max_sleep = avg_sleep;
+            }
+            if (avg_delta > max_delta) {
+                max_delta = avg_delta;
+            }
+
             printf("\nsleep(1): %.4f ms | delta: %.4f ms | zwres: %d ns", avg_sleep, avg_delta, res_act);
             // Guardar resultados en el archivo de salida
             fprintf(outputFile,"%.4f, %.4f, %d\n", avg_sleep, avg_delta, res_act);
+
+            // incrementar resolucion de inicio
+            res+= 10;
         }
+
 
         printf("\n\nprueba finalizada...\n");
         printf("\nminimo: %.4f ms | %.4f ms\n",min_sleep, min_delta);
