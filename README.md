@@ -54,7 +54,7 @@ aparte de 'test' puede pasar dos argumentos más 'start' y 'end'
 zwtimer.exe test 5000 5200
 ```
 
-esto ejecutará una prueba específica para verificar que resolución posee valores más precisos
+esto ejecutará una prueba específica (donde el dispositivo no este ocupado) para verificar que resolución posee valores más precisos en standby
 esto no quiere decir que sean estables, siempre habrá una fluctuación así que usted debe hacer pruebas para verificar cual de todas le conviene...
 
 procure tener el tic rtc desactivado (por defecto)
@@ -84,6 +84,8 @@ sleep(1): 1.0273 ms | delta: 0.0273 ms | zwres: 5144 ns
 sleep(1): 1.0308 ms | delta: 0.0308 ms | zwres: 5157 ns
 sleep(1): 1.0323 ms | delta: 0.0323 ms | zwres: 5170 ns
 sleep(1): 1.0353 ms | delta: 0.0353 ms | zwres: 5182 ns
+sleep(1): 1.0387 ms | delta: 0.0387 ms | zwres: 5195 ns
+sleep(1): 1.0412 ms | delta: 0.0412 ms | zwres: 5208 ns
 
 prueba finalizada...
 
