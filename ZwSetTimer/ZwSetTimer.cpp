@@ -3,10 +3,42 @@
 #include <stdio.h>
 #include "declarations.h"
 
+HINSTANCE hInst;
+static HWND hwndDlg;
+
+void RestartProgram()
+{
+    TCHAR szFileName[MAX_PATH];
+    GetModuleFileName(NULL, szFileName, MAX_PATH);
+
+    // Cerrar el proceso actual
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    ZeroMemory(&pi, sizeof(pi));
+
+    if (!CreateProcess(NULL, szFileName, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
+    {
+        printf("Error al reiniciar el programa: %d\n", GetLastError());
+        return;
+    }
+
+    CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
+
+    // Obtener el identificador del proceso actual y cerrarlo
+    DWORD currentProcessId = GetCurrentProcessId();
+    HANDLE currentProcessHandle = OpenProcess(PROCESS_TERMINATE, FALSE, currentProcessId);
+    TerminateProcess(currentProcessHandle, 0);
+    CloseHandle(currentProcessHandle);
+}
+
 //Leer REG_SZ del registro
 char* RegKeyQueryEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
 {
-    static char result[MAX_PATH]; // Static para que persista fuera del ámbito de la función
+    static char result[MAX_PATH]; // Static para que persista fuera del Ã¡mbito de la funciÃ³n
     HKEY hSubKey;
     if (RegOpenKeyExA(hKey, lpSubKey, 0, KEY_QUERY_VALUE, &hSubKey) == ERROR_SUCCESS)
     {
@@ -70,22 +102,22 @@ void _ZwSetTimerResolution(ULONG customRes)
         ZwSetTimerResolution(customRes, TRUE, &actRes);
 }
 
-// Declaración del trayicon
+// DeclaraciÃ³n del trayicon
 NOTIFYICONDATA nid;
 bool isIconVisible = false;
 
 //ShowTrayMenu
 void ShowTrayMenu(HWND hWnd)
 {
-    //obtener posición del puntero (x,y)
+    //obtener posiciÃ³n del puntero (x,y)
     POINT pt;
     GetCursorPos(&pt);
 
-    //crear menú
+    //crear menÃº
     HMENU hMenu = CreatePopupMenu();
     AppendMenu(hMenu, MF_STRING, IDM_EXIT, "Exit");
 
-    //poner en primer plano la ventana actual y centrar en menú
+    //poner en primer plano la ventana actual y centrar en menÃº
     SetForegroundWindow(hWnd);
     TrackPopupMenu(hMenu, TPM_RIGHTALIGN | TPM_BOTTOMALIGN | TPM_NONOTIFY | TPM_LEFTBUTTON, pt.x, pt.y, 0, hWnd, NULL);
 
@@ -125,14 +157,12 @@ void _SetProcessInformation()
         }
         else
         {
-            printf("Error al obtener la dirección de SetProcessInformation\n"); //No existe en Windows 7
+            printf("Error al obtener la direcciÃ³n de SetProcessInformation\n"); //No existe en Windows 7
         }
 }
 
-HINSTANCE hInst;
-static HWND hEdit;
-static HWND hwndDlg;
-static HANDLE hMutex;
+//buffer LTEXT
+char buffer[21];
 
 BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -143,19 +173,12 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         //establecer prioridad de segundo plano (low i/o y low mem priority)
         SetPriorityClass(GetCurrentProcess(), PROCESS_MODE_BACKGROUND_BEGIN);
 
+        //call ZwQueryTimerResolution
+        _ZwQueryTimerResolution();
+
         //establecer hIcon
         HICON hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON));
         SendMessage(hwndDlg, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
-
-        hMutex = CreateMutex(NULL, TRUE, "ZwSetTimer");
-        if (GetLastError() == ERROR_ALREADY_EXISTS)
-        {
-        //Ya hay una instancia
-        CloseHandle(hMutex);
-        MessageBox(0, "Ya hay una instancia de ZwSetTimer ejecutandose", "Error", MB_ICONERROR | MB_OK);
-        DestroyWindow(hwndDlg);
-        return TRUE;
-        }
 
         // Inicializar la estructura NOTIFYICONDATA
         nid.cbSize = sizeof(NOTIFYICONDATA);
@@ -172,8 +195,9 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         // Agregar el icono a la bandeja del sistema
         Shell_NotifyIcon(NIM_ADD, &nid);
 
-        char buffer[21]; //exact char buffer
+        // Llamar a ZwQueryTimerResolution
         _ZwQueryTimerResolution();
+
         // Convertir maxRes a cadena
         sprintf(buffer, "Maximun Timer Resolution: %lu ns", maxRes);
         SetDlgItemText(hwndDlg, _MAX, buffer);
@@ -188,12 +212,13 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
         //Comprobar CustomTimer
         SendDlgItemMessage(hwndDlg, _CUSTOM, EM_SETLIMITTEXT, 6, 0); //limitar a 6 caracteres el EDIT
+
         char* custom = RegKeyQueryEx(HKEY_CURRENT_USER, "Software\\ZwSetTimer", "CustomTimer");
         LPCSTR f_custom = custom;
         if (custom)
         {
             SetDlgItemText(hwndDlg, _CUSTOM, f_custom); //rellenar edit con valor obtenido del registro
-            ULONG f_res = strtoul(f_custom, NULL, 10);
+            ULONG f_res = strtoul(f_custom, NULL, 0);
             _ZwSetTimerResolution(f_res);
             // Convertir actRes a cadena
             sprintf(buffer, "Current Timer Resolution: %lu ns", actRes);
@@ -237,14 +262,18 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         switch (lParam)
         {
-            // Mostrar el menú de la bandeja al hacer clic derecho en el icono
             case WM_RBUTTONDOWN:
-            ShowTrayMenu(hwndDlg);
-            break;
+            {
+                // Mostrar el menÃº de la bandeja al hacer clic derecho en el icono
+                ShowTrayMenu(hwndDlg);
+            }
+            return TRUE;
             case WM_LBUTTONDOWN:
-            //Mostrar dialogo al hacer clic izquierdo
-            ShowWindow(hwndDlg, SW_SHOWDEFAULT);
-            break;
+            {
+                //Mostrar dialogo al hacer clic izquierdo
+                ShowWindow(hwndDlg, SW_SHOWDEFAULT);
+            }
+            return TRUE;
         }
     }
     return TRUE;
@@ -269,7 +298,6 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
         //exit
         // Eliminar el icono de la bandeja y eliminar la ventana
-        CloseHandle(hMutex);
         Shell_NotifyIcon(NIM_DELETE, &nid);
         DestroyWindow(hwndDlg);
     }
@@ -277,16 +305,10 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     case WM_COMMAND:
     {
-        //call ZwQueryTimerResolution
-        _ZwQueryTimerResolution();
-
-        //Obtener texto del EDIT para DesiredResolution
-        char lpbuffer[6];
-        GetDlgItemText(hwndDlg, _CUSTOM, lpbuffer, sizeof(lpbuffer));
-        ULONG lpres = strtoul(lpbuffer, NULL, 10);
-
         //buffer LTEXT
         char buffer[21];
+        char lpbuffer[6];
+
         switch(LOWORD(wParam))
         {
 
@@ -298,8 +320,10 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
             case SET_MAX:
                 {
+
                     //call ZwSetTimerResolution
                     _ZwSetTimerResolution(maxRes);
+
                     // Convertir actRes a cadena
                     sprintf(buffer, "Current Timer Resolution: %lu ns", actRes);
                     SetDlgItemText(hwndDlg, _CURR, buffer);
@@ -308,8 +332,10 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
             case SET_MIN:
                 {
+
                     //call ZwSetTimerResolution
                     _ZwSetTimerResolution(minRes);
+
                     // Convertir actRes a cadena
                     sprintf(buffer, "Current Timer Resolution: %lu ns", actRes);
                     SetDlgItemText(hwndDlg, _CURR, buffer);
@@ -318,18 +344,25 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
             case SET_CUSTOM:
                 {
+                    // Obtener texto del EDIT para DesiredResolution
+                    GetDlgItemText(hwndDlg, _CUSTOM, lpbuffer, sizeof(lpbuffer));
+                    ULONG lpres = strtoul(lpbuffer, NULL, 0);
+
+                    // Call ZwSetTimerResolution
                     _ZwSetTimerResolution(lpres);
+
                     // Convertir actRes a cadena
                     sprintf(buffer, "Current Timer Resolution: %lu ns", actRes);
                     SetDlgItemText(hwndDlg, _CURR, buffer);
                     RegKeySetEx(HKEY_CURRENT_USER, "Software\\ZwSetTimer", "CustomTimer", lpbuffer);
+                    RestartProgram();
                 }
                 return TRUE;
 
-        }//end Switch wParam
-
-    }
-    return TRUE; //end WM_COMMAND
+            }//end Switch wParam
+            return TRUE;
+        }
+        return TRUE; //end WM_COMMAND
     }
     return FALSE; //end Switch
 }
@@ -348,13 +381,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
             ShowWindow(hwndR, SW_HIDE);
             _drain();
         }
-        if (!IsDialogMessage(hwndR, &msg))
+       if (!IsDialogMessage(hwndR, &msg))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+
         if (!IsWindow(hwndR)) {
             DestroyWindow(hwndR);
+            DestroyWindow(hwndDlg);
         break; // Salir del bucle si el HWND ya no existe
         }
     }
