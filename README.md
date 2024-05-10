@@ -57,10 +57,6 @@ zwtimer.exe test 5000 5200
 esto ejecutará una prueba específica (donde el dispositivo no este ocupado) para verificar que resolución posee valores más precisos en standby
 esto no quiere decir que sean estables, siempre habrá una fluctuación así que usted debe hacer pruebas para verificar cual de todas le conviene...
 
-procure tener el tick rtc desactivado (por defecto)
-
-> bdcdedit -deletevalue useplatformtick
-
 
 ```
 comienza la prueba...
