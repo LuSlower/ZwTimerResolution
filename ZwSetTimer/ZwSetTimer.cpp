@@ -6,35 +6,6 @@
 HINSTANCE hInst;
 static HWND hwndDlg;
 
-void RestartProgram()
-{
-    TCHAR szFileName[MAX_PATH];
-    GetModuleFileName(NULL, szFileName, MAX_PATH);
-
-    // Cerrar el proceso actual
-    STARTUPINFO si;
-    PROCESS_INFORMATION pi;
-
-    ZeroMemory(&si, sizeof(si));
-    si.cb = sizeof(si);
-    ZeroMemory(&pi, sizeof(pi));
-
-    if (!CreateProcess(NULL, szFileName, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
-    {
-        printf("Error al reiniciar el programa: %d\n", GetLastError());
-        return;
-    }
-
-    CloseHandle(pi.hProcess);
-    CloseHandle(pi.hThread);
-
-    // Obtener el identificador del proceso actual y cerrarlo
-    DWORD currentProcessId = GetCurrentProcessId();
-    HANDLE currentProcessHandle = OpenProcess(PROCESS_TERMINATE, FALSE, currentProcessId);
-    TerminateProcess(currentProcessHandle, 0);
-    CloseHandle(currentProcessHandle);
-}
-
 //Leer REG_SZ del registro
 char* RegKeyQueryEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
 {
@@ -161,15 +132,14 @@ void _SetProcessInformation()
         }
 }
 
-//buffer LTEXT
-char buffer[21];
-
 BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch(uMsg)
     {
     case WM_INITDIALOG:
     {
+
+
         //establecer prioridad de segundo plano (low i/o y low mem priority)
         SetPriorityClass(GetCurrentProcess(), PROCESS_MODE_BACKGROUND_BEGIN);
 
@@ -198,6 +168,9 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         // Llamar a ZwQueryTimerResolution
         _ZwQueryTimerResolution();
 
+        // LTEXT
+        char buffer[21];
+
         // Convertir maxRes a cadena
         sprintf(buffer, "Maximun Timer Resolution: %lu ns", maxRes);
         SetDlgItemText(hwndDlg, _MAX, buffer);
@@ -218,7 +191,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         if (custom)
         {
             SetDlgItemText(hwndDlg, _CUSTOM, f_custom); //rellenar edit con valor obtenido del registro
-            ULONG f_res = strtoul(f_custom, NULL, 0);
+            ULONG f_res = strtoul(f_custom, NULL, 10);
             _ZwSetTimerResolution(f_res);
             // Convertir actRes a cadena
             sprintf(buffer, "Current Timer Resolution: %lu ns", actRes);
@@ -346,7 +319,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 {
                     // Obtener texto del EDIT para DesiredResolution
                     GetDlgItemText(hwndDlg, _CUSTOM, lpbuffer, sizeof(lpbuffer));
-                    ULONG lpres = strtoul(lpbuffer, NULL, 0);
+                    ULONG lpres = strtoul(lpbuffer, NULL, 10);
 
                     // Call ZwSetTimerResolution
                     _ZwSetTimerResolution(lpres);
@@ -355,7 +328,6 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     sprintf(buffer, "Current Timer Resolution: %lu ns", actRes);
                     SetDlgItemText(hwndDlg, _CURR, buffer);
                     RegKeySetEx(HKEY_CURRENT_USER, "Software\\ZwSetTimer", "CustomTimer", lpbuffer);
-                    RestartProgram();
                 }
                 return TRUE;
 
