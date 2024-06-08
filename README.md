@@ -39,7 +39,7 @@ zwtimer.exe 5000
 Al pasar el argumento 'test' zwtimer se ejecutara en un bucle, para comprobar la precision de Sleep(1)
 
 ```
-comienza la prueba...
+test begings...
 
 time: 0.0014 s | sleep(1): 1.4140 ms | delta: 0.4140 ms | zwres: 5054 ns
 time: 0.0010 s | sleep(1): 1.0058 ms | delta: 0.0058 ms | zwres: 5054 ns
@@ -59,10 +59,10 @@ esto no quiere decir que sean estables, siempre habrá una fluctuación así que
 
 
 ```
-comienza la prueba...
+test begings...
 
-inicio : 5000
-final : 5200
+start : 5000
+end : 5200
 
 sleep(1): 1.4955 ms | delta: 0.4955 ms | zwres: 4990 ns
 sleep(1): 1.4998 ms | delta: 0.4998 ms | zwres: 5003 ns
@@ -83,10 +83,10 @@ sleep(1): 1.0353 ms | delta: 0.0353 ms | zwres: 5182 ns
 sleep(1): 1.0387 ms | delta: 0.0387 ms | zwres: 5195 ns
 sleep(1): 1.0412 ms | delta: 0.0412 ms | zwres: 5208 ns
 
-prueba finalizada...
+test completed...
 
-minimo: 1.0029 ms | 0.0029 ms
-maximo: 1.5182 ms | 0.5182 ms
+min: 1.0029 ms | 0.0029 ms
+max: 1.5182 ms | 0.5182 ms
 ```
 
 al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio de zwtimer.exe
