@@ -1,95 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <windows.h>
-#include <limits.h>
-#include <tchar.h>
-
-// Definir valores
-ULONG min, max, current, res_act, res, res_new;
-
-// Definir contadores
-LARGE_INTEGER frq, start, end;
-
-// Definir semaforo, evento nulo
-HANDLE hMutex, hEvent;
-
-// Declaración de funciones Zw
-typedef LONG NTSTATUS;
-NTSYSAPI NTSTATUS NTAPI ZwSetTimerResolution(ULONG DesiredResolution, BOOLEAN SetResolution, ULONG *CurrentResolution);
-NTSYSAPI NTSTATUS NTAPI ZwQueryTimerResolution(ULONG *MinimumResolution, ULONG *MaximumResolution, ULONG *CurrentResolution);
-
-// Declaración de SetProcessInformation
-WINBASEAPI WINBOOL WINAPI SetProcessInformation(HANDLE hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, LPVOID ProcessInformation, DWORD ProcessInformationSize);
-
-void _SetProcessInformation()
-{
-    if (SetProcessInformation)
-    {
-
-        // Pasa un puntero a la estructura
-        PROCESS_POWER_THROTTLING_STATE state;
-        ZeroMemory(&state, sizeof(state));
-        state.Version = PROCESS_POWER_THROTTLING_CURRENT_VERSION;
-        state.ControlMask = PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION;
-        state.StateMask = 0;
-
-        // Deshabilitar la resolución del temporizador de inactividad
-        SetProcessInformation(GetCurrentProcess(), ProcessPowerThrottling, &state, sizeof(state));
-    }
-    else
-    {
-        printf("Error al obtener la dirección de SetProcessInformation\n"); // No existe en Windows 7
-    }
-}
-
-TCHAR* _get_folder_path()
-{
-    static TCHAR szPath[MAX_PATH];
-    GetModuleFileName(NULL, szPath, MAX_PATH);
-
-    // Encuentra la última aparición de '\\' en la ruta completa
-    TCHAR* lastBackslash = _tcsrchr(szPath, '\\');
-    if (lastBackslash != NULL) {
-        // Coloca un terminador de cadena nula después del último '\\' para obtener solo la carpeta
-        *(lastBackslash + 1) = '\0';
-    }
-
-    return szPath;
-}
-
-// declarar medidas
-double time, tsleep, delta;
-
-void sleep_test()
-{
-    QueryPerformanceCounter(&start);
-    Sleep(1);
-    QueryPerformanceCounter(&end);
-
-    // Convertir la diferencia a milisegundos y restar el sleep(1)
-    time = (double)(end.QuadPart - start.QuadPart) / frq.QuadPart;
-    tsleep = time * 1000;
-    delta = tsleep - 1;
-}
-
-void loop_test()
-{
-    //bucle predeterminado
-    printf("comienza la prueba...\n");
-    for (int i = 1; ; i++) {
-    ZwQueryTimerResolution(&min, &max, &res_act);
-    sleep_test();
-    printf("\ntime: %.4f s | sleep(1): %.4f ms | delta: %.4f ms | zwres: %d ns", time, tsleep, delta, res_act);
-    Sleep(500);
-    }
-}
-
-void get_frq()
-{
-    // Obtener la frecuencia del contador de rendimiento establecer prioridad
-    QueryPerformanceFrequency(&frq);
-    SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
-}
+#include "zwtimer.h"
 
 int main(int argc, char *argv[])
 {
@@ -106,21 +15,21 @@ int main(int argc, char *argv[])
     //help
     if(strcmp(argv[1], "help") == 0 || strcmp(argv[1], "/?") == 0)
     {
-        printf("Instrucciones de uso:\n");
+        printf("Instructions for use:\n");
         printf("\n<resolution>\n");
-        printf("\nEstablece una nueva resolucion del temporizador (debe especificarla en nanosegundos).\n");
-        printf("como minimo 4 caracteres, maximo 6\n");
-        printf("ejemplo: 'zwtimer.exe 5000'\n");
+        printf("\nSet a new timer resolution (must be specified in nanoseconds).\n");
+        printf("minimum 4 characters, maximum 6\n");
+        printf("example: 'zwtimer.exe 5000'\n");
         printf("\n<query>\n");
-        printf("\nDevuelve informacion acerca de la resolucion del temporizador.\n");
+        printf("\nReturns information about the timer resolution.\n");
         printf("\n<test> start end\n");
-        printf("\nGenera una prueba sobre la precision de Sleep(1).\n");
-        printf("por defecto se ejecuta en un bucle\n");
-        printf("puede especificar un inicio, final para verificar que resolucion tiene una mejor precision\n");
-        printf("los resultados se guardaran en sleep-test.txt\n");
-        printf("ejemplo: 'zwtimer.exe test 5000 6000'\n");
+        printf("\nGenerate a test on the precision of Sleep(1).\n");
+        printf("by default it runs in a loop\n");
+        printf("you can specify a start, end to check which resolution has better precision\n");
+        printf("the results will be saved in sleep-test.txt\n");
+        printf("example: 'zwtimer.exe test 5000 6000'\n");
         printf("\n<stop>\n");
-        printf("\nDetiene todas las instancias.\n");
+        printf("\nStops all instances.\n");
         return 0;
     }
 
@@ -129,10 +38,9 @@ int main(int argc, char *argv[])
         ZwQueryTimerResolution(&min, &max, &current);
 
         // Obtener resoluciones del temporizador
-        printf("informacion del temporizador:\n");
-        printf("\nresolucion minima : %d ns\n", min);
-        printf("resolucion maxima : %d ns\n", max);
-        printf("resolucion actual : %d ns\n", current);
+        printf("\nminimum resolution : %d ns\n", min);
+        printf("maximum resolution : %d ns\n", max);
+        printf("current resolution : %d ns\n", current);
         return 0;
     }
 
@@ -148,7 +56,7 @@ int main(int argc, char *argv[])
         {
             if (!isdigit(argv[2][i]) || strlen(argv[2]) < 4 || strlen(argv[2]) > 6)
             {
-                printf("/? o help para obtener ayuda\n");
+                printf("/? or help to get help\n");
                 return 1;
             }
         }
@@ -158,7 +66,7 @@ int main(int argc, char *argv[])
         {
             if (!isdigit(argv[3][i]) || strlen(argv[3]) < 4 || strlen(argv[3]) > 6)
             {
-                printf("/? o help para obtener ayuda\n");
+                printf("/? or help to get help\n");
                 return 1;
             }
         }
@@ -170,12 +78,12 @@ int main(int argc, char *argv[])
         // Verificar que end_res sea mayor que start_res
         if (end_res <= start_res)
         {
-            printf("La resolucion final debe ser mayor que la resolucion inicial.\n");
+            printf("The final resolution must be greater than the initial resolution.\n");
             return 1;
         }
 
-        printf("comienza la prueba...\n");
-        printf("\ninicio : %d\nfinal : %d\n", start_res, end_res);
+        printf("test begins...\n");
+        printf("\nstart : %d\nend : %d\n", start_res, end_res);
 
         //obtener path y abrir archivo
         TCHAR* dir = _get_folder_path();
@@ -240,9 +148,9 @@ int main(int argc, char *argv[])
         }
 
 
-        printf("\n\nprueba finalizada...\n");
-        printf("\nminimo: %.4f ms | %.4f ms\n",min_sleep, min_delta);
-        printf("maximo: %.4f ms | %.4f ms\n", max_sleep, max_delta);
+        printf("\n\ntest completed...\n");
+        printf("\nmin: %.4f ms | %.4f ms\n",min_sleep, min_delta);
+        printf("max: %.4f ms | %.4f ms\n", max_sleep, max_delta);
 
         //cerrar archivo
         fclose(outputFile);
@@ -262,7 +170,7 @@ int main(int argc, char *argv[])
 
     if (strcmp(argv[1], "stop") == 0)
     {
-        printf("instancias detenidas");
+        printf("stopped instances");
         system("taskkill -f -im zwtimer.exe >nul");
         return 0;
     }
@@ -274,7 +182,7 @@ int main(int argc, char *argv[])
     {
     if (!isdigit(argv[1][i]))
         {
-            printf("/? o help para obtener ayuda");
+            printf("/? or help to get help");
             return 1;
         }
     }
@@ -286,14 +194,14 @@ int main(int argc, char *argv[])
             hMutex = CreateMutex(NULL, TRUE, "zwtimer.exe");
             if (GetLastError() == ERROR_ALREADY_EXISTS) {
                 CloseHandle(hMutex);
-                printf("ya hay una instancia ejecutandose en segundo plano");
+                printf("there is already an instance running in the background");
                 return 1;
             }
 
             res = atoi(argv[1]); // Convertir el argumento a ULONG
             ZwSetTimerResolution(res, TRUE, &res_new); // Establecer resolución del temporizador
             Sleep(100);
-            printf("resolucion establecida correctamente a %d ns", res_new);
+            printf("resolution set correctly to %d ns", res_new);
 
             //prioridad de segundo plano
             SetPriorityClass(GetCurrentProcess(), PROCESS_MODE_BACKGROUND_BEGIN);
@@ -314,9 +222,10 @@ int main(int argc, char *argv[])
     }
     else
     {
-        printf("/? o help para obtener ayuda");
+        printf("/? or help to get help");
         return 1;
     }
 
     return 0;
 }
+
