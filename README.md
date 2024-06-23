@@ -23,7 +23,7 @@ Consola:
 # INFO
 > Reducir el intervalo del temporizador tiene un efecto adverso en la duración de la batería al evitar que el sistema quede inactivo. Es particularmente importante que los programas que pueden permanecer inactivos durante largos períodos de tiempo (reproductores de video/música en pausa, programas minimizados, programas en segundo plano, etc.) no aumenten la frecuencia del temporizador cuando no la necesitan.
 
-* Si posees Windows 11 debes tener en tu registro GlobalTimerResolutionRequests (reiniciar), referencia a un comentario en: [EL GRAN CAMBIO DE REGLAS](https://randomascii.wordpress.com/2020/10/04/windows-timer-resolution-the-great-rule-change/)
+* Si posees Windows Server 2022/Windows 11 debes tener en tu registro:
 
 > [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\kernel]
 "GlobalTimerResolutionRequests"=dword:00000001
@@ -36,60 +36,51 @@ zwtimer.exe 5000
 
 ## PRECISION
 
-Al pasar el argumento 'test' zwtimer se ejecutara en un bucle, para comprobar la precision de Sleep(1)
+al ejecutar zwtimer sin argumentos (abriendo) o pasar el argumento <test> zwtimer se ejecutara en un bucle, para comprobar la precision de Sleep(1)
 
 ```
-test begings...
+C:\...>zwtimer.exe test
 
-time: 0.0014 s | sleep(1): 1.4140 ms | delta: 0.4140 ms | zwres: 5054 ns
-time: 0.0010 s | sleep(1): 1.0058 ms | delta: 0.0058 ms | zwres: 5054 ns
-time: 0.0010 s | sleep(1): 1.0062 ms | delta: 0.0062 ms | zwres: 5054 ns
-time: 0.0010 s | sleep(1): 1.0054 ms | delta: 0.0054 ms | zwres: 5054 ns
-time: 0.0010 s | sleep(1): 1.0064 ms | delta: 0.0064 ms | zwres: 5054 ns
+sleep(1): 15.6224 ms | delta: 14.6224 ms | zwres: 156244 ns
+sleep(1): 15.6221 ms | delta: 14.6221 ms | zwres: 156244 ns
+sleep(1): 15.6219 ms | delta: 14.6219 ms | zwres: 156244 ns
+sleep(1): 15.6217 ms | delta: 14.6217 ms | zwres: 156244 ns
+sleep(1): 15.6247 ms | delta: 14.6247 ms | zwres: 156244 ns
+sleep(1): 15.6241 ms | delta: 14.6241 ms | zwres: 156244 ns
+sleep(1): 15.6224 ms | delta: 14.6224 ms | zwres: 156244 ns
 ```
 
-aparte de 'test' puede pasar dos argumentos más 'start' y 'end'
-
+aparte de 'test' puedes específicar <count>, específicará el numero de veces que se medira la precision de sleep(1)
+y mostrará metricas más avanzadas
 ```
-zwtimer.exe test 5000 5200
-```
+C:\...>zwtimer.exe test 10
 
-esto ejecutará una prueba específica (donde el dispositivo no este ocupado) para verificar que resolución posee valores más precisos en standby
-esto no quiere decir que sean estables, siempre habrá una fluctuación así que usted debe hacer pruebas para verificar cual de todas le conviene...
+sleep(1): 1.0072 ms | delta: 0.0072 ms | zwres: 5054 ns
+sleep(1): 1.0122 ms | delta: 0.0122 ms | zwres: 5054 ns
+sleep(1): 1.0104 ms | delta: 0.0104 ms | zwres: 5054 ns
+sleep(1): 1.0063 ms | delta: 0.0063 ms | zwres: 5054 ns
+sleep(1): 1.0105 ms | delta: 0.0105 ms | zwres: 5054 ns
+sleep(1): 1.0103 ms | delta: 0.0103 ms | zwres: 5054 ns
+sleep(1): 1.0116 ms | delta: 0.0116 ms | zwres: 5054 ns
+sleep(1): 1.0111 ms | delta: 0.0111 ms | zwres: 5054 ns
+sleep(1): 1.0111 ms | delta: 0.0111 ms | zwres: 5054 ns
+sleep(1): 1.0113 ms | delta: 0.0113 ms | zwres: 5054 ns
 
-
-```
-test begings...
-
-start : 5000
-end : 5200
-
-sleep(1): 1.4955 ms | delta: 0.4955 ms | zwres: 4990 ns
-sleep(1): 1.4998 ms | delta: 0.4998 ms | zwres: 5003 ns
-sleep(1): 1.4287 ms | delta: 0.4287 ms | zwres: 5016 ns
-sleep(1): 1.2060 ms | delta: 0.2060 ms | zwres: 5029 ns
-sleep(1): 1.1324 ms | delta: 0.1324 ms | zwres: 5041 ns
-sleep(1): 1.0341 ms | delta: 0.0341 ms | zwres: 5054 ns
-sleep(1): 1.0375 ms | delta: 0.0375 ms | zwres: 5067 ns
-sleep(1): 1.0145 ms | delta: 0.0144 ms | zwres: 5080 ns
-sleep(1): 1.0175 ms | delta: 0.0175 ms | zwres: 5093 ns
-sleep(1): 1.0197 ms | delta: 0.0197 ms | zwres: 5105 ns
-sleep(1): 1.0470 ms | delta: 0.0470 ms | zwres: 5118 ns
-sleep(1): 1.0249 ms | delta: 0.0249 ms | zwres: 5131 ns
-sleep(1): 1.0273 ms | delta: 0.0273 ms | zwres: 5144 ns
-sleep(1): 1.0308 ms | delta: 0.0308 ms | zwres: 5157 ns
-sleep(1): 1.0323 ms | delta: 0.0323 ms | zwres: 5170 ns
-sleep(1): 1.0353 ms | delta: 0.0353 ms | zwres: 5182 ns
-sleep(1): 1.0387 ms | delta: 0.0387 ms | zwres: 5195 ns
-sleep(1): 1.0412 ms | delta: 0.0412 ms | zwres: 5208 ns
-
-test completed...
-
-min: 1.0029 ms | 0.0029 ms
-max: 1.5182 ms | 0.5182 ms
+min: 1.0063 ms | 0.0063 ms
+max: 1.0122 ms | 0.0122 ms
+avg: 1.0102 ms | 0.0102 ms
+stdev: 0.0018 ms | 0.0018 ms
 ```
 
-al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio de zwtimer.exe
+puede usar [Sleep-Tester](https://github.com/LuSlower/ZwTimerResolution/blob/main/Sleep-Tester.ps1)
+
+![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/f0564228-b59b-4052-b896-4d91c902e53e)
+
+puede ejecutar una prueba donde puede epecíficar las resoluciones de inicio y final, además del conteo
+recuerde que siempre habrá una fluctuación así que usted debe hacer pruebas para verificar cual de todas le conviene...
+
+al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio
+
 para visualizar cual de todas las resoluciones obtuvo una mayor precisión (menor delta, menor diff)
 puede visualizarlos en https://list2chart.com/csv-to-chart/
 
