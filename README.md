@@ -9,14 +9,14 @@ GUI:
 ![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/0a3e3c6c-74ea-4109-acb1-e892a68f443f)
 
 * Presione ESC para ocultar la GUI, puede hacer clic en el icono de la bandeja para salir de la aplicación
-* Se permiten solo 6 digitos como máximo en el cuadro de texto, debe ser un numero entero o arrojara un error
-* La resolución del temporizador máxima será siempre 5000 (*100) ns = 5ms, asi que cualquier valor por debajo de ese ingresado sera reemplazado automaticamente por el, 
-aplica la misma relatividad para el minimo 156250ns
+* Se permiten solo 6 dígitos como máximo en el cuadro de texto, debe ser un número entero o arrojara un error
+* La resolución del temporizador máxima será siempre 5000 (*100) ns = 5ms, así que cualquier valor por debajo de ese ingresado sera reemplazado automáticamente por el, 
+aplica la misma relatividad para el mínimo 156250ns
 * Esta GUI Win32 consume poca memoria (cerca de 1.3k de total bytes)
 
 Consola:
 
-* Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precision de Sleep(1)
+* Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precisión de Sleep(1)
 * Algo más ligero en consumo (menos de 400k de total bytes)
 * Obtenga ayuda pasando el arg /? o help
 
@@ -28,7 +28,7 @@ Consola:
 > [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\kernel]
 "GlobalTimerResolutionRequests"=dword:00000001
 
-si desea establecer una resolución personalizada específique
+Si desea establecer una resolución personalizada especifique
 
 ```
 zwtimer.exe 5000
@@ -36,7 +36,7 @@ zwtimer.exe 5000
 
 ## PRECISION
 
-al ejecutar zwtimer sin argumentos (abriendo) o pasar el argumento <test> zwtimer se ejecutara en un bucle, para comprobar la precision de Sleep(1)
+Al ejecutar zwtimer sin argumentos (abriendo) o pasar el argumento <test> zwtimer se ejecutará en un bucle para comprobar la precisión de Sleep(1)
 
 ```
 C:\...>zwtimer.exe test
@@ -50,8 +50,8 @@ sleep(1): 15.6241 ms | delta: 14.6241 ms | zwres: 156244 ns
 sleep(1): 15.6224 ms | delta: 14.6224 ms | zwres: 156244 ns
 ```
 
-aparte de 'test' puedes específicar <count>, específicará el numero de veces que se medira la precision de sleep(1)
-y mostrará metricas más avanzadas
+Aparte de 'test' puedes especificar <count>, especificará el número de veces que se medirá la precisiòn de sleep(1)
+y mostrará métricas más avanzadas
 ```
 C:\...>zwtimer.exe test 10
 
@@ -76,17 +76,13 @@ stdev: 0.0018 ms | 0.0018 ms
 
 ![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/f0564228-b59b-4052-b896-4d91c902e53e)
 
-puede ejecutar una prueba donde puede epecíficar las resoluciones de inicio, final y conteo
+Puede ejecutar una prueba donde puede epecificar las resoluciones de inicio, final y conteo,
+recuerde que siempre habrá una fluctuación, así que usted debe hacer pruebas para verificar cuál de todas le conviene...
 
-> recuerde que siempre habrá una fluctuación así que usted debe hacer pruebas para verificar cual de todas le conviene...
+Al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio,
+para visualizar cuál de todas las resoluciones obtuvo una mayor precisión (menor delta, menor diff),
+puede visualizarlos en https://list2chart.com/csv-to-chart/, simplemente arrastre el archivo allí y especifique qué columna desea comparar
 
-al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio,
-para visualizar cual de todas las resoluciones obtuvo una mayor precisión (menor delta, menor diff)
-
-puede visualizarlos en https://list2chart.com/csv-to-chart/
-
-simplemente arraste el archivo allí y específique que columna desea comparar
-
-aquí hay un ejemplo
+Aquí hay un ejemplo
 
 ![image](https://github.com/LuSlower/nt_timer/assets/148411728/18d45865-1cf7-4a3d-9811-48ee45c53426)
