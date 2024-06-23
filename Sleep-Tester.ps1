@@ -33,7 +33,6 @@ public class TimerResolution
 }
 "@
 
-# Función para imprimir en el TextBox
 function Console {
     param (
         [Switch]$Show,
@@ -109,7 +108,7 @@ function test_precision {
 
     for ($res_act = $start_res; $end_res -ge $res_current; $res_act +=13) {
 
-        # Ejecutar zwtimer con lla resolucion
+        # Ejecutar zwtimer con la resolucion
         Start-Process -FilePath ".\zwtimer.exe" -ArgumentList "$res_act" -NoNewWindow 
 
         Start-Sleep 1
