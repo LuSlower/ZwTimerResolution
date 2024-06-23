@@ -7,6 +7,13 @@
 1713674023 source:e:\documentos\codeblocks\nt_timer_cs\res.rc
 	<windows.h>
 
-1713938718 source:e:\documentos\codeblocks\zwtimer\zwtimer.rc
+1714196085 source:e:\documentos\codeblocks\zwtimer\zwtimer.rc
 	<windows.h>
+
+1714951091 source:e:\documentos\codeblocks\zwtimer\zwtimer.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<limits.h>
+	<tchar.h>
 

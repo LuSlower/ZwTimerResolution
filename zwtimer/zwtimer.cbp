@@ -17,12 +17,10 @@
 		<Linker>
 			<Add library="ntdll" />
 		</Linker>
-		<ExtraCommands>
-			<Add after="upx --lzma $(TARGET_OUTPUT_FILE)" />
-		</ExtraCommands>
 		<Unit filename="zwtimer.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="zwtimer.h" />
 		<Unit filename="zwtimer.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>

@@ -22,12 +22,9 @@ int main(int argc, char *argv[])
         printf("example: 'zwtimer.exe 5000'\n");
         printf("\n<query>\n");
         printf("\nReturns information about the timer resolution.\n");
-        printf("\n<test> start end\n");
+        printf("\n<test> <count>\n");
         printf("\nGenerate a test on the precision of Sleep(1).\n");
         printf("by default it runs in a loop\n");
-        printf("you can specify a start, end to check which resolution has better precision\n");
-        printf("the results will be saved in sleep-test.txt\n");
-        printf("example: 'zwtimer.exe test 5000 6000'\n");
         printf("\n<stop>\n");
         printf("\nStops all instances.\n");
         return 0;
@@ -45,115 +42,68 @@ int main(int argc, char *argv[])
     }
 
     //test de precision
-    if(strcmp(argv[1], "test") == 0 && argc == 4)
+    if(strcmp(argv[1], "test") == 0 && argc == 3)
     {
+        int count = atoi(argv[2]);
+
+        // verificar que count sea un dígito
+        if (!isdigit(*argv[2])) {
+            printf("Count must be a single digit.");
+            return 1;
+        }
 
         // get frequency
         get_frq();
 
-        // start
-        for (int i = 0; argv[2][i] != '\0'; i++)
-        {
-            if (!isdigit(argv[2][i]) || strlen(argv[2]) < 4 || strlen(argv[2]) > 6)
-            {
-                printf("/? or help to get help\n");
-                return 1;
-            }
-        }
-
-        //end
-        for (int i = 0; argv[3][i] != '\0'; i++)
-        {
-            if (!isdigit(argv[3][i]) || strlen(argv[3]) < 4 || strlen(argv[3]) > 6)
-            {
-                printf("/? or help to get help\n");
-                return 1;
-            }
-        }
-
-        // Convertir a entero start, end
-        int start_res = atoi(argv[2]);
-        int end_res = atoi(argv[3]);
-
-        // Verificar que end_res sea mayor que start_res
-        if (end_res <= start_res)
-        {
-            printf("The final resolution must be greater than the initial resolution.\n");
-            return 1;
-        }
-
-        printf("test begins...\n");
-        printf("\nstart : %d\nend : %d\n", start_res, end_res);
-
-        //obtener path y abrir archivo
-        TCHAR* dir = _get_folder_path();
-        TCHAR test[MAX_PATH];
-
-        _snprintf(test, MAX_PATH, _T("%s%s"), dir, _T("sleep-test.txt"));
-        FILE *outputFile = fopen(test, "w");
-
         // declarar limites
-        double min_sleep = INT_MAX, min_delta = INT_MAX, max_sleep = INT_MIN, max_delta = INT_MIN, avg_sleep, avg_delta;
-
-        //heads
-        fprintf(outputFile,"Sleep(1), DeltaMs, ZwResolution\n");
+        double min_sleep = INT_MAX, min_delta = INT_MAX, max_sleep = INT_MIN, max_delta = INT_MIN;
+        double sum_sleep = 0, sum_delta = 0, sum_squared_sleep = 0, sum_squared_delta = 0;
 
         //ejecutar bucle
-        for (int res = start_res; res_act < end_res; res += 3)
+        for (int i = 0; i < count; ++i)
         {
-            // redefinir mediciones
-            double num_sleep = 0, num_delta = 0, sum_sleep = 0, sum_delta = 0;
+            // Realizar una medición
+            ZwQueryTimerResolution(&min, &max, &res_act);
+            Sleep(100);
+            sleep_test();
 
-            // Realizar '25' mediciones para cada valor de res
-            for (int i = 0; i < 25; ++i)
-            {
-                ZwSetTimerResolution(res, TRUE, &res_act);
-                Sleep(50);
-                sleep_test();
+            sum_delta += delta;
+            sum_squared_delta += delta * delta;
 
-                sum_delta += delta;
-                num_delta++;
+            sum_sleep += tsleep;
+            sum_squared_sleep += tsleep * tsleep;
 
-                sum_sleep += tsleep;
-                num_sleep++;
+            if (tsleep < min_sleep) {
+                min_sleep = tsleep;
             }
 
-            // Calcular promedio
-            avg_sleep = (double)sum_sleep / num_sleep;
-            avg_delta = (double)sum_delta / num_delta;
-
-            // actualizar avg_delta y avg_sleep
-
-            if (avg_sleep < min_sleep) {
-                min_sleep = avg_sleep;
+            if (delta < min_delta) {
+                min_delta = delta;
             }
 
-            if (avg_delta < min_delta) {
-                min_delta = avg_delta;
+            if (tsleep > max_sleep) {
+                max_sleep = tsleep;
             }
 
-            if (avg_sleep > max_sleep) {
-                max_sleep = avg_sleep;
+            if (delta > max_delta) {
+                max_delta = delta;
             }
-            if (avg_delta > max_delta) {
-                max_delta = avg_delta;
-            }
-
-            printf("\nsleep(1): %.4f ms | delta: %.4f ms | zwres: %d ns", avg_sleep, avg_delta, res_act);
-            // Guardar resultados en el archivo de salida
-            fprintf(outputFile,"%.4f, %.4f, %d\n", avg_sleep, avg_delta, res_act);
-
-            // incrementar resolucion de inicio
-            res+= 10;
+            printf("sleep(1): %.4f ms | delta: %.4f ms | zwres: %d ns\n", tsleep, delta, res_act);
         }
 
+        // Calcular promedio
+        double avg_sleep = sum_sleep / count;
+        double avg_delta = sum_delta / count;
 
-        printf("\n\ntest completed...\n");
-        printf("\nmin: %.4f ms | %.4f ms\n",min_sleep, min_delta);
-        printf("max: %.4f ms | %.4f ms\n", max_sleep, max_delta);
+        // Calcular desviación estándar
+        double stdev_sleep = sqrt((sum_squared_sleep / count) - (avg_sleep * avg_sleep));
+        double stdev_delta = sqrt((sum_squared_delta / count) - (avg_delta * avg_delta));
 
-        //cerrar archivo
-        fclose(outputFile);
+        printf("\nmin: %.4f ms | %.4f ms", min_sleep, min_delta);
+        printf("\nmax: %.4f ms | %.4f ms", max_sleep, max_delta);
+        printf("\navg: %.4f ms | %.4f ms", avg_sleep, avg_delta);
+        printf("\nstdev: %.4f ms | %.4f ms", stdev_sleep, stdev_delta);
+
         return 0;
     }
     else if (strcmp(argv[1], "test") == 0)
@@ -177,7 +127,7 @@ int main(int argc, char *argv[])
 
        //set zwresolucion
 
-    // Verificar si argv[1] es un nÃºmero entero
+    // Verificar si argv[1] es un número entero
     for (int i = 0; argv[1][i] != '\0'; i++)
     {
     if (!isdigit(argv[1][i]))
@@ -187,19 +137,12 @@ int main(int argc, char *argv[])
         }
     }
 
-    //Verificar tamaÃ±o del argumento
+    //Verificar tamaño del argumento
     if (strlen(argv[1]) >= 4 && strlen(argv[1]) < 6)
     {
-            //detener instancias
-            hMutex = CreateMutex(NULL, TRUE, "zwtimer.exe");
-            if (GetLastError() == ERROR_ALREADY_EXISTS) {
-                CloseHandle(hMutex);
-                printf("there is already an instance running in the background");
-                return 1;
-            }
 
             res = atoi(argv[1]); // Convertir el argumento a ULONG
-            ZwSetTimerResolution(res, TRUE, &res_new); // Establecer resoluciÃ³n del temporizador
+            ZwSetTimerResolution(res, TRUE, &res_new); // Establecer resolución del temporizador
             Sleep(100);
             printf("resolution set correctly to %d ns", res_new);
 
@@ -215,9 +158,9 @@ int main(int argc, char *argv[])
             //liberar memoria
             SetProcessWorkingSetSize(GetCurrentProcess(), (SIZE_T) -1, (SIZE_T) -1);
 
-            hEvent = CreateEvent(NULL, TRUE, FALSE, NULL); // Manual reset event, inicialmente no seÃ±alizado
+            hEvent = CreateEvent(NULL, TRUE, FALSE, NULL); // Manual reset event, inicialmente no señalizado
 
-            // Suspender el hilo hasta que el evento se seÃ±alice
+            // Suspender el hilo hasta que el evento se señalice
             WaitForSingleObject(hEvent, INFINITE);
     }
     else

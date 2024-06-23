@@ -12,9 +12,7 @@ BEGIN
             VALUE "CompanyName", "LuSlower Software"
             VALUE "FileDescription", "zwtimer"
             VALUE "FileVersion", "0.0.0.0"
-            VALUE "InternalName", "zwtimer"
             VALUE "LegalCopyright", "Copyright © LuSlower"
-            VALUE "OriginalFilename", "zwtimer.exe"
             VALUE "ProductName", "zwtimer"
             VALUE "ProductVersion", "0.0.0.0"
         }
