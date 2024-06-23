@@ -76,12 +76,13 @@ stdev: 0.0018 ms | 0.0018 ms
 
 ![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/f0564228-b59b-4052-b896-4d91c902e53e)
 
-puede ejecutar una prueba donde puede epecíficar las resoluciones de inicio y final, además del conteo
-recuerde que siempre habrá una fluctuación así que usted debe hacer pruebas para verificar cual de todas le conviene...
+puede ejecutar una prueba donde puede epecíficar las resoluciones de inicio, final y conteo
 
-al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio
+> recuerde que siempre habrá una fluctuación así que usted debe hacer pruebas para verificar cual de todas le conviene...
 
+al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio,
 para visualizar cual de todas las resoluciones obtuvo una mayor precisión (menor delta, menor diff)
+
 puede visualizarlos en https://list2chart.com/csv-to-chart/
 
 simplemente arraste el archivo allí y específique que columna desea comparar
