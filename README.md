@@ -50,7 +50,7 @@ sleep(1): 15.6241 ms | delta: 14.6241 ms | zwres: 156244 ns
 sleep(1): 15.6224 ms | delta: 14.6224 ms | zwres: 156244 ns
 ```
 
-Aparte de 'test' puedes especificar <count>, especificará el número de veces que se medirá la precisiòn de sleep(1)
+Aparte de 'test' puedes especificar 'count' que especificará el número de veces que se medirá la precisión de sleep(1)
 y mostrará métricas más avanzadas
 ```
 C:\...>zwtimer.exe test 10
