@@ -36,7 +36,7 @@ zwtimer.exe 5000
 
 ## PRECISION
 
-Al ejecutar zwtimer sin argumentos (abriendo) o pasar el argumento <test> zwtimer se ejecutará en un bucle para comprobar la precisión de Sleep(1)
+Al ejecutar zwtimer sin argumentos (abriendola) o al pasar el argumento 'test' zwtimer se ejecutará en un bucle para comprobar la precisión de Sleep(1)
 
 ```
 C:\...>zwtimer.exe test
