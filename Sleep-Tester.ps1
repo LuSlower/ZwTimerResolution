@@ -98,7 +98,7 @@ function test_precision {
 
     $results = @()
 
-    $totalIterations = [math]::Ceiling(($end_res - $start_res) / 10)
+    $totalIterations = [math]::Ceiling(($end_res - $start_res) / 13)
 
     # Inicializar la barra de progreso
     $progressBar.Minimum = 0
