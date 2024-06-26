@@ -1,8 +1,8 @@
-﻿# Chequear privilegios de administrador
+# Check administrator privileges
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
 $delay = 2
 if (-not $isAdmin) {
-    [System.Windows.Forms.MessageBox]::Show("Run the script as an administrator", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+    [System.Windows.Forms.MessageBox]::Show("Run the script as administrator", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
     Start-Sleep -Seconds $delay
     Exit
 }
