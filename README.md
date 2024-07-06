@@ -6,7 +6,7 @@ Una herramienta más para cambiar la resolución del temporizador del sistema en
 ## ACTUALMENTE
 GUI:
 
-![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/0a3e3c6c-74ea-4109-acb1-e892a68f443f)
+![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/1f00528a-37f9-48bd-942f-1cdfc2044ecf)
 
 * Presione ESC para ocultar la GUI, puede hacer clic en el icono de la bandeja para salir de la aplicación
 * Se permiten solo 6 dígitos como máximo en el cuadro de texto, debe ser un número entero o arrojara un error
@@ -31,7 +31,7 @@ Consola:
 Si desea establecer una resolución personalizada especifique
 
 ```
-zwtimer.exe 5000
+zwt.exe 5000
 ```
 
 ## PRECISION
@@ -39,7 +39,7 @@ zwtimer.exe 5000
 Al ejecutar zwtimer sin argumentos (abriendola) o al pasar el argumento 'test' zwtimer se ejecutará en un bucle para comprobar la precisión de Sleep(1)
 
 ```
-C:\...>zwtimer.exe test
+C:\...>zwt.exe test
 
 sleep(1): 15.6224 ms | delta: 14.6224 ms | zwres: 156244 ns
 sleep(1): 15.6221 ms | delta: 14.6221 ms | zwres: 156244 ns
@@ -53,7 +53,7 @@ sleep(1): 15.6224 ms | delta: 14.6224 ms | zwres: 156244 ns
 Aparte de 'test' puedes especificar 'count' que especificará el número de veces que se medirá la precisión de sleep(1)
 y mostrará métricas más avanzadas
 ```
-C:\...>zwtimer.exe test 10
+C:\...>zwt.exe test 10
 
 sleep(1): 1.0072 ms | delta: 0.0072 ms | zwres: 5054 ns
 sleep(1): 1.0122 ms | delta: 0.0122 ms | zwres: 5054 ns
