@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="ZwTimerGui" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option platforms="Windows;" />
+				<Option output="bin/Release/ZwTimer" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+		</Build>
+		<Linker>
+			<Add library="gdi32" />
+			<Add library="user32" />
+			<Add library="kernel32" />
+			<Add library="comctl32" />
+			<Add library="ntdll" />
+		</Linker>
+		<Unit filename="ZwTimerGui.cpp" />
+		<Unit filename="ZwTimerGui.h" />
+		<Unit filename="ZwTimerGui.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="manifest.xml" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>
