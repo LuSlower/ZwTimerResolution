@@ -1,4 +1,4 @@
-# Check administrator privileges
+﻿# Check administrator privileges
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
 $delay = 2
 if (-not $isAdmin) {
@@ -6,32 +6,6 @@ if (-not $isAdmin) {
     Start-Sleep -Seconds $delay
     Exit
 }
-
-# Valores de inicio, final y conteo
-$start_value = 5000
-$end_value = 5200
-$count_value = 20
-
-Add-Type -AssemblyName System.Windows.Forms
-Add-Type -AssemblyName System.Drawing
-
-Add-Type @"
-using System;
-using System.Runtime.InteropServices;
-
-public class TimerResolution
-{
-    [DllImport("ntdll.dll")]
-    public static extern uint ZwQueryTimerResolution(out uint MinimumResolution, out uint MaximumResolution, out uint CurrentResolution);
-
-    public static uint GetCurrentResolution()
-    {
-        uint min, max, current;
-        ZwQueryTimerResolution(out min, out max, out current);
-        return current;
-    }
-}
-"@
 
 function Console {
     param (
@@ -64,10 +38,36 @@ function Console {
     }
 }
 
+# Valores de inicio, final y conteo
+$start_value = 5000
+$end_value = 5200
+$count_value = 20
+
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+
+public class TimerResolution
+{
+    [DllImport("ntdll.dll")]
+    public static extern uint ZwQueryTimerResolution(out uint MinimumResolution, out uint MaximumResolution, out uint CurrentResolution);
+
+    public static uint GetCurrentResolution()
+    {
+        uint min, max, current;
+        ZwQueryTimerResolution(out min, out max, out current);
+        return current;
+    }
+}
+"@
+
 function test_precision {
     # Verificar si zwtimer.exe existe en el directorio actual
-    if (-not (Test-Path ".\zwtimer.exe")) {
-        [System.Windows.Forms.MessageBox]::Show("zwtimer.exe not found in the current directory.", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+    if (-not (Test-Path ".\zwt.exe")) {
+        [System.Windows.Forms.MessageBox]::Show("zwt.exe not found in the current directory.", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
         return
     }
 
@@ -109,7 +109,7 @@ function test_precision {
     for ($res_act = $start_res; $end_res -ge $res_current; $res_act +=13) {
 
         # Ejecutar zwtimer con la resolucion
-        Start-Process -FilePath ".\zwtimer.exe" -ArgumentList "$res_act" -NoNewWindow 
+        Start-Process -FilePath ".\zwt.exe" -ArgumentList "$res_act" -NoNewWindow 
 
         Start-Sleep 1
 
@@ -117,7 +117,7 @@ function test_precision {
         $res_current = [TimerResolution]::GetCurrentResolution()
 
         # Sleep-Test
-        $output = Invoke-Expression ".\zwtimer.exe test $count"
+        $output = Invoke-Expression ".\zwt.exe test $count"
 
         # Parsear la salida para extraer los valores de avg y delta
         $output -split [Environment]::NewLine | ForEach-Object {
@@ -139,7 +139,7 @@ function test_precision {
         $progressBar.PerformStep()
 
         # detener zwtimer
-        Stop-Process -Name "zwtimer" -ErrorAction SilentlyContinue
+        Stop-Process -Name "zwt" -ErrorAction SilentlyContinue
     }
 
     # guardar resultados en un archivo de texto
