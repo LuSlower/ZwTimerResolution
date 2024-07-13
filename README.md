@@ -86,3 +86,5 @@ puede visualizarlos en https://list2chart.com/csv-to-chart/, simplemente arrastr
 Aquí hay un ejemplo
 
 ![image](https://github.com/LuSlower/nt_timer/assets/148411728/18d45865-1cf7-4a3d-9811-48ee45c53426)
+
+esta herramienta se basa en [código abierto](https://github.com/valleyofdoom/TimerResolution)
