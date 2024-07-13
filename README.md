@@ -89,3 +89,4 @@ Aquí hay un ejemplo
 
 # Referencias
 [1](https://github.com/valleyofdoom/TimerResolution)
+[2](https://xkln.net/blog/powershell-sleep-duration-accuracy-and-windows-timers/)
