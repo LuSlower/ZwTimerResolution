@@ -9,9 +9,6 @@ GUI:
 ![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/1f00528a-37f9-48bd-942f-1cdfc2044ecf)
 
 * Presione ESC para ocultar la GUI, puede hacer clic derecho en el icono de la bandeja para salir de la aplicación
-* Se permiten solo 6 dígitos como máximo en el cuadro de texto, debe ser un número entero o arrojara un error
-* La resolución del temporizador máxima será siempre 5000 (*100) ns = 0.5ms, así que cualquier valor por debajo de ese ingresado sera reemplazado automáticamente por el, 
-aplica la misma relatividad para el mínimo 156250ns
 * Esta GUI Win32 consume poca memoria (cerca de 1.3k de total bytes)
 
 Consola:
