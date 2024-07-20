@@ -84,6 +84,6 @@ Aquí hay un ejemplo
 
 ![image](https://github.com/LuSlower/nt_timer/assets/148411728/18d45865-1cf7-4a3d-9811-48ee45c53426)
 
-# Referencias
+# REFERENCIAS
 [1](https://github.com/valleyofdoom/TimerResolution)
 [2](https://xkln.net/blog/powershell-sleep-duration-accuracy-and-windows-timers/)
