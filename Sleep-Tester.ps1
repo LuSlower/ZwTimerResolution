@@ -38,10 +38,11 @@ function Console {
     }
 }
 
-# Valores de inicio, final y conteo
+# Valores de inicio, final, conteo, iteraciones
 $start_value = 5000
 $end_value = 5200
 $count_value = 20
+$it_value = 13
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
@@ -89,7 +90,8 @@ function test_precision {
 
     $start_res = [int]$textBoxStart.Text
     $end_res = [int]$textBoxEnd.Text
-    $count = [int]$textBoxCount.Text
+    $count = [int]$UpDownCount.Text
+    $Iterations = [int]$UpDownIt.Text
 
     if ($end_res -le $start_res) {
         [System.Windows.Forms.MessageBox]::Show("The final resolution must be greater than the initial resolution.", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
@@ -98,7 +100,7 @@ function test_precision {
 
     $results = @()
 
-    $totalIterations = [math]::Ceiling(($end_res - $start_res) / 13)
+    $totalIterations = [math]::Ceiling(($end_res - $start_res) / $Iterations)
 
     # Inicializar la barra de progreso
     $progressBar.Minimum = 0
@@ -106,7 +108,7 @@ function test_precision {
     $progressBar.Value = 0
     $progressBar.Visible = $true
 
-    for ($res_act = $start_res; $end_res -ge $res_current; $res_act +=13) {
+    for ($res_act = $start_res; $end_res -ge $res_current; $res_act +=$Iterations) {
 
         # Ejecutar zwtimer con la resolucion
         Start-Process -FilePath ".\zwt.exe" -ArgumentList "$res_act" -NoNewWindow 
@@ -146,48 +148,35 @@ function test_precision {
     $header = "sleep(1), delta, zwres"
     $results = $header + [Environment]::NewLine + ($results -join [Environment]::NewLine)
 
-    # timestamp
-    $timestamp = Get-Random -Minimum 1000 -Maximum 5000
-
-    $results | Out-File -FilePath "Sleep-Test-$timestamp.txt" -Encoding ascii
+    $results | Out-File -FilePath "Sleep-Test.txt" -Encoding ascii
 
 
     [System.Windows.Forms.MessageBox]::Show("The test has finished.", "Info", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
 }
 
-# Crear form, ocultar consola
+# ocultar consola, crear form
 Console -Hide
 [System.Windows.Forms.Application]::EnableVisualStyles();
 $form = New-Object System.Windows.Forms.Form
-$form.Size = New-Object System.Drawing.Size(350, 160)
+$form.ClientSize = New-Object System.Drawing.Size(130, 220)
 $form.Text = "Sleep-Tester"
 $form.MaximizeBox = $false
+$form.MinimizeBox = $false
 $form.StartPosition = "CenterScreen"
 $form.FormBorderStyle = [System.Windows.Forms.FormBorderStyle]::FixedSingle
 
+# Start
 $labelStart = New-Object System.Windows.Forms.Label
-$labelStart.Text = "Start"
-$labelStart.Location = New-Object System.Drawing.Point(65, 10)
-$labelStart.Size = New-Object System.Drawing.Size(30, 15)
+$labelStart.Text = "Start:"
+$labelStart.Location = New-Object System.Drawing.Point(10, 15)
+$labelStart.Size = New-Object System.Drawing.Size(40, 15)
 $form.Controls.Add($labelStart)
 
-$labelEnd = New-Object System.Windows.Forms.Label
-$labelEnd.Text = "End"
-$labelEnd.Location = New-Object System.Drawing.Point(160, 10)
-$labelEnd.Size = New-Object System.Drawing.Size(30, 15)
-$form.Controls.Add($labelEnd)
-
-$labelCount = New-Object System.Windows.Forms.Label
-$labelCount.Text = "Count"
-$labelCount.Location = New-Object System.Drawing.Point(240, 10)
-$labelCount.Size = New-Object System.Drawing.Size(50, 15)
-$form.Controls.Add($labelCount)
-
 $textBoxStart = New-Object System.Windows.Forms.TextBox
-$textBoxStart.Size = New-Object System.Drawing.Size(60, 20)
+$textBoxStart.Location = New-Object System.Drawing.Point(60, 10)
+$textBoxStart.Size = New-Object System.Drawing.Size(45, 20)
 $textBoxStart.Text = $start_value
 $textBoxStart.MaxLength = 6
-$textBoxStart.Location = New-Object System.Drawing.Point(50, 30)
 $textBoxStart.Add_KeyPress({
     param($sender, $e)
     if (-not [char]::IsDigit($e.KeyChar) -and $e.KeyChar -ne [System.Windows.Forms.Keys]::Back) {
@@ -196,11 +185,18 @@ $textBoxStart.Add_KeyPress({
 })
 $form.Controls.Add($textBoxStart)
 
+# End
+$labelEnd = New-Object System.Windows.Forms.Label
+$labelEnd.Text = "End:"
+$labelEnd.Location = New-Object System.Drawing.Point(10, 55)
+$labelEnd.Size = New-Object System.Drawing.Size(40, 15)
+$form.Controls.Add($labelEnd)
+
 $textBoxEnd = New-Object System.Windows.Forms.TextBox
-$textBoxEnd.Size = New-Object System.Drawing.Size(60, 20)
+$textBoxEnd.Location = New-Object System.Drawing.Point(60, 50)
+$textBoxEnd.Size = New-Object System.Drawing.Size(45, 20)
 $textBoxEnd.Text = $end_value
 $textBoxEnd.MaxLength = 6
-$textBoxEnd.Location = New-Object System.Drawing.Point(140, 30)
 $textBoxEnd.Add_KeyPress({
     param($sender, $e)
     if (-not [char]::IsDigit($e.KeyChar) -and $e.KeyChar -ne [System.Windows.Forms.Keys]::Back) {
@@ -209,31 +205,50 @@ $textBoxEnd.Add_KeyPress({
 })
 $form.Controls.Add($textBoxEnd)
 
-$textBoxCount = New-Object System.Windows.Forms.TextBox
-$textBoxCount.Size = New-Object System.Drawing.Size(60, 20)
-$textBoxCount.Text = $count_value
-$textBoxCount.MaxLength = 3
-$textBoxCount.Location = New-Object System.Drawing.Point(230, 30)
-$textBoxCount.Add_KeyPress({
-    param($sender, $e)
-    if (-not [char]::IsDigit($e.KeyChar) -and $e.KeyChar -ne [System.Windows.Forms.Keys]::Back) {
-        $e.Handled = $true
-    }
-})
-$form.Controls.Add($textBoxCount)
+# Count
+$labelCount = New-Object System.Windows.Forms.Label
+$labelCount.Text = "Count:"
+$labelCount.Location = New-Object System.Drawing.Point(10, 90)
+$labelCount.Size = New-Object System.Drawing.Size(40, 15)
+$form.Controls.Add($labelCount)
 
+$UpDownCount = New-Object System.Windows.Forms.NumericUpDown
+$UpDownCount.Location = New-Object System.Drawing.Point(70, 90)
+$UpDownCount.Size = New-Object System.Drawing.Size(35, 20)
+$UpDownCount.Value = $count_value
+$UpDownCount.Maximum = 100
+$UpDownCount.Minimum = 0
+$form.Controls.Add($UpDownCount)
+
+# Iterations
+$labelIt = New-Object System.Windows.Forms.Label
+$labelIt.Text = "Iterations:"
+$labelIt.Location = New-Object System.Drawing.Point(10, 132)
+$labelIt.Size = New-Object System.Drawing.Size(60, 15)
+$form.Controls.Add($labelIt)
+
+$UpDownIt = New-Object System.Windows.Forms.NumericUpDown
+$UpDownIt.Location = New-Object System.Drawing.Point(70, 130)
+$UpDownIt.Size = New-Object System.Drawing.Size(35, 20)
+$UpDownIt.Value = $it_value
+$UpDownIt.Maximum = 100
+$UpDownIt.Minimum = 0
+$form.Controls.Add($UpDownIt)
+
+# Test
 $buttonTest = New-Object System.Windows.Forms.Button
 $buttonTest.Size = New-Object System.Drawing.Size(80, 20)
-$buttonTest.Location = New-Object System.Drawing.Point(130, 60)
+$buttonTest.Location = New-Object System.Drawing.Point(25, 170)
 $buttonTest.Text = "Start Test"
 $buttonTest.Add_Click({
     test_precision
 })
 $form.Controls.Add($buttonTest)
 
+# ProgressBar
 $progressBar = New-Object System.Windows.Forms.ProgressBar
-$progressBar.Size = New-Object System.Drawing.Size(300, 20)
-$progressBar.Location = New-Object System.Drawing.Point(20, 90)
+$progressBar.Size = New-Object System.Drawing.Size(110, 10)
+$progressBar.Location = New-Object System.Drawing.Point(10, 200)
 $progressBar.Visible = $true
 $progressBar.Step = 1
 $form.Controls.Add($progressBar)
