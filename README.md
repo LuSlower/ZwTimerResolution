@@ -73,9 +73,6 @@ stdev: 0.0018 ms | 0.0018 ms
 
 ![image](https://github.com/user-attachments/assets/3c5e29b1-bcf1-4638-9e37-f319c0b16cd6)
 
-Puede ejecutar una prueba donde puede epecificar las resoluciones de inicio, final y conteo,
-recuerde que siempre habrá una fluctuación, así que usted debe hacer pruebas para verificar cuál de todas le conviene...
-
 Al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio,
 para visualizar cuál de todas las resoluciones obtuvo una mayor precisión (menor delta, menor diff),
 puede visualizarlos en https://list2chart.com/csv-to-chart/, simplemente arrastre el archivo allí y especifique qué columna desea comparar
