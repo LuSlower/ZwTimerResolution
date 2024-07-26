@@ -71,7 +71,7 @@ stdev: 0.0018 ms | 0.0018 ms
 
 [Sleep-Tester](https://github.com/LuSlower/ZwTimerResolution/blob/main/Sleep-Tester.ps1)
 
-![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/f0564228-b59b-4052-b896-4d91c902e53e)
+![image](https://github.com/user-attachments/assets/3c5e29b1-bcf1-4638-9e37-f319c0b16cd6)
 
 Puede ejecutar una prueba donde puede epecificar las resoluciones de inicio, final y conteo,
 recuerde que siempre habrá una fluctuación, así que usted debe hacer pruebas para verificar cuál de todas le conviene...
