@@ -80,8 +80,13 @@ function test_precision {
         return
     }
 
-    if ($textBoxCount.Text -notmatch '^\d{1,3}$') {
+    if ($UpDownCount.Text -notmatch '^\d{1,3}$') {
         [System.Windows.Forms.MessageBox]::Show("Count value must be a number between 1 and 3 digits.", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+        return
+    }
+
+    if ($UpDownIt.Text -notmatch '^\d{1,2}$') {
+        [System.Windows.Forms.MessageBox]::Show("Iterations value must be a number between 1 and 2 digits.", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
         return
     }
 
@@ -165,12 +170,12 @@ $form.FormBorderStyle = [System.Windows.Forms.FormBorderStyle]::FixedSingle
 # Start
 $labelStart = New-Object System.Windows.Forms.Label
 $labelStart.Text = "Start:"
-$labelStart.Location = New-Object System.Drawing.Point(10, 15)
-$labelStart.Size = New-Object System.Drawing.Size(40, 15)
+$labelStart.Location = New-Object System.Drawing.Point(28, 15)
+$labelStart.Size = New-Object System.Drawing.Size(32, 15)
 $form.Controls.Add($labelStart)
 
 $textBoxStart = New-Object System.Windows.Forms.TextBox
-$textBoxStart.Location = New-Object System.Drawing.Point(60, 10)
+$textBoxStart.Location = New-Object System.Drawing.Point(65, 10)
 $textBoxStart.Size = New-Object System.Drawing.Size(45, 20)
 $textBoxStart.Text = $start_value
 $textBoxStart.MaxLength = 6
@@ -185,12 +190,12 @@ $form.Controls.Add($textBoxStart)
 # End
 $labelEnd = New-Object System.Windows.Forms.Label
 $labelEnd.Text = "End:"
-$labelEnd.Location = New-Object System.Drawing.Point(10, 55)
-$labelEnd.Size = New-Object System.Drawing.Size(40, 15)
+$labelEnd.Location = New-Object System.Drawing.Point(30, 55)
+$labelEnd.Size = New-Object System.Drawing.Size(30, 15)
 $form.Controls.Add($labelEnd)
 
 $textBoxEnd = New-Object System.Windows.Forms.TextBox
-$textBoxEnd.Location = New-Object System.Drawing.Point(60, 50)
+$textBoxEnd.Location = New-Object System.Drawing.Point(65, 50)
 $textBoxEnd.Size = New-Object System.Drawing.Size(45, 20)
 $textBoxEnd.Text = $end_value
 $textBoxEnd.MaxLength = 6
@@ -205,13 +210,13 @@ $form.Controls.Add($textBoxEnd)
 # Count
 $labelCount = New-Object System.Windows.Forms.Label
 $labelCount.Text = "Count:"
-$labelCount.Location = New-Object System.Drawing.Point(10, 90)
+$labelCount.Location = New-Object System.Drawing.Point(20, 90)
 $labelCount.Size = New-Object System.Drawing.Size(40, 15)
 $form.Controls.Add($labelCount)
 
 $UpDownCount = New-Object System.Windows.Forms.NumericUpDown
 $UpDownCount.Location = New-Object System.Drawing.Point(70, 90)
-$UpDownCount.Size = New-Object System.Drawing.Size(35, 20)
+$UpDownCount.Size = New-Object System.Drawing.Size(40, 20)
 $UpDownCount.Value = $count_value
 $UpDownCount.Maximum = 100
 $UpDownCount.Minimum = 0
@@ -226,7 +231,7 @@ $form.Controls.Add($labelIt)
 
 $UpDownIt = New-Object System.Windows.Forms.NumericUpDown
 $UpDownIt.Location = New-Object System.Drawing.Point(70, 130)
-$UpDownIt.Size = New-Object System.Drawing.Size(35, 20)
+$UpDownIt.Size = New-Object System.Drawing.Size(40, 20)
 $UpDownIt.Value = $it_value
 $UpDownIt.Maximum = 100
 $UpDownIt.Minimum = 0
