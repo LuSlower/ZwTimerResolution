@@ -1,31 +1,31 @@
 # ZwTimerResolution
 [![Total Downloads](https://img.shields.io/github/downloads/LuSlower/ZwTimerResolution/total.svg)](https://github.com/LuSlower/ZwTimerResolution/releases) [![PayPal Badge](https://img.shields.io/badge/PayPal-003087?logo=paypal&logoColor=fff&style=flat)](https://paypal.me/eldontweaks) 
 
-Una herramienta más para cambiar la resolución del temporizador del sistema en el contexto del proceso de llamada
+One more tool to change the resolution of the system timer in the context of the calling process
 
-## ACTUALMENTE
+## CURRENT
 GUI:
 
 ![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/1f00528a-37f9-48bd-942f-1cdfc2044ecf)
 
-* Presione ESC para ocultar la GUI, puede hacer clic derecho en el icono de la bandeja para salir de la aplicación
-* Esta GUI Win32 consume poca memoria (cerca de 1.3k de total bytes)
+* Press ESC to hide the GUI, you can right click on the tray icon to exit the app
+* This Win32 GUI consumes little memory (about 1.3k total bytes)
 
-Consola:
+CLI:
 
-* Abrirla o ejecutarla sin argumentos por defecto ejecutara el test de precisión de Sleep(1)
-* Algo más ligero en consumo (menos de 400k de total bytes)
-* Obtenga ayuda pasando el arg /? o help
+* Opening it or running it without arguments will by default run the Sleep(1) accuracy test
+* Somewhat lighter in consumption (less than 400k total bytes)
+* Get help by passing the arg /? or help
 
 # INFO
-> Reducir el intervalo del temporizador tiene un efecto adverso en la duración de la batería al evitar que el sistema quede inactivo. Es particularmente importante que los programas que pueden permanecer inactivos durante largos períodos de tiempo (reproductores de video/música en pausa, programas minimizados, programas en segundo plano, etc.) no aumenten la frecuencia del temporizador cuando no la necesitan.
+> Reducing the timer interval has an adverse effect on battery life by preventing the system from going idle. It is particularly important that programs that may remain inactive for long periods of time (paused video/music players, minimized programs, background programs, etc.) do not increase the timer frequency when they do not need it.
 
-* Si posees Windows Server 2022/Windows 11 debes tener en tu registro:
+* If you have Windows Server 2022/Windows 11 you must have in your registry:
 
 > [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\kernel]
 "GlobalTimerResolutionRequests"=dword:00000001
 
-Si desea establecer una resolución personalizada especifique
+If you want to set a custom resolution, please specify
 
 ```
 zwt.exe 5000
@@ -33,7 +33,7 @@ zwt.exe 5000
 
 ## PRECISION
 
-Al ejecutar zwtimer sin argumentos (abriendola) o al pasar el argumento 'test' zwtimer se ejecutará en un bucle para comprobar la precisión de Sleep(1)
+Running zwtimer without arguments (opening it) or passing the 'test' argument will run zwtimer in a loop to check the accuracy of Sleep(1)
 
 ```
 C:\...>zwt.exe test
@@ -47,8 +47,8 @@ sleep(1): 15.6241 ms | delta: 14.6241 ms | zwres: 156244 ns
 sleep(1): 15.6224 ms | delta: 14.6224 ms | zwres: 156244 ns
 ```
 
-Aparte de 'test' puedes especificar 'count' que especificará el número de veces que se medirá la precisión de sleep(1)
-y mostrará métricas más avanzadas
+Apart from 'test' you can specify 'count' which will specify the number of times the precision of sleep(1) will be measured.
+and will show more advanced metrics
 ```
 C:\...>zwt.exe test 10
 
@@ -73,14 +73,14 @@ stdev: 0.0018 ms | 0.0018 ms
 
 ![image](https://github.com/user-attachments/assets/959fe08e-5f3d-4800-9e0b-c3712d3da329)
 
-Al finalizar los resultados se guardarán en sleep-test.txt ubicado en el mismo directorio,
-para visualizar cuál de todas las resoluciones obtuvo una mayor precisión (menor delta, menor diff),
-puede visualizarlos en https://list2chart.com/csv-to-chart/, simplemente arrastre el archivo allí y especifique qué columna desea comparar
+At the end the results will be saved in sleep-test.txt located in the same directory,
+to visualize which of all the resolutions obtained the highest precision (lowest delta, lowest diff),
+you can view them in https://list2chart.com/csv-to-chart/, just drag the file there and specify which column you want to compare
 
 Aquí hay un ejemplo
 
 ![image](https://github.com/LuSlower/nt_timer/assets/148411728/18d45865-1cf7-4a3d-9811-48ee45c53426)
 
-# REFERENCIAS
+# REF
 [1](https://github.com/valleyofdoom/TimerResolution)
 [2](https://xkln.net/blog/powershell-sleep-duration-accuracy-and-windows-timers/)
