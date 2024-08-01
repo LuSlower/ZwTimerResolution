@@ -17,7 +17,7 @@ CLI:
 * Somewhat lighter in consumption (less than 400k total bytes)
 * Get help by passing the arg /? or help
 
-# INFO
+## INFO
 > Reducing the timer interval has an adverse effect on battery life by preventing the system from going idle. It is particularly important that programs that may remain inactive for long periods of time (paused video/music players, minimized programs, background programs, etc.) do not increase the timer frequency when they do not need it.
 
 * If you have Windows Server 2022/Windows 11 you must have in your registry:
