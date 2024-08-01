@@ -77,7 +77,7 @@ At the end the results will be saved in sleep-test.txt located in the same direc
 to visualize which of all the resolutions obtained the highest precision (lowest delta, lowest diff),
 you can view them in https://list2chart.com/csv-to-chart/, just drag the file there and specify which column you want to compare
 
-Aquí hay un ejemplo
+Here is an example
 
 ![image](https://github.com/LuSlower/nt_timer/assets/148411728/18d45865-1cf7-4a3d-9811-48ee45c53426)
 
