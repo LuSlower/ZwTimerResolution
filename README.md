@@ -3,15 +3,14 @@ One more tool to change the resolution of the system timer in the context of the
 
 [![Total Downloads](https://img.shields.io/github/downloads/LuSlower/ZwTimerResolution/total.svg)](https://github.com/LuSlower/ZwTimerResolution/releases) [![PayPal Badge](https://img.shields.io/badge/PayPal-003087?logo=paypal&logoColor=fff&style=flat)](https://paypal.me/eldontweaks) 
 
-## CURRENT
-GUI:
+## GUI:
 
 ![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/1f00528a-37f9-48bd-942f-1cdfc2044ecf)
 
 * Press ESC to hide the GUI, you can right click on the tray icon to exit the app
 * This Win32 GUI consumes little memory (about 1.3k total bytes)
 
-CLI:
+## CLI:
 
 * Opening it or running it without arguments will by default run the Sleep(1) accuracy test
 * Somewhat lighter in consumption (less than 400k total bytes)
