@@ -38,8 +38,8 @@ function Console {
 # Valores de inicio, final, conteo, iteraciones
 $start_value = 5000
 $end_value = 5200
-$count_value = 20
-$it_value = 13
+$samples_value = 20
+$increment_value = 13
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
@@ -80,29 +80,29 @@ function test_precision {
         return
     }
 
-    if ($UpDownCount.Text -notmatch '^\d{1,3}$') {
-        [System.Windows.Forms.MessageBox]::Show("Count value must be a number between 1 and 3 digits.", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+    if ($UpDownSamples.Text -notmatch '^\d{1,3}$') {
+        [System.Windows.Forms.MessageBox]::Show("Samples value must be a number between 1 and 3 digits.", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
         return
     }
 
-    if ($UpDownIt.Text -notmatch '^\d{1,2}$') {
-        [System.Windows.Forms.MessageBox]::Show("Iterations value must be a number between 1 and 2 digits.", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+    if ($UpDownInc.Text -notmatch '^\d{1,2}$') {
+        [System.Windows.Forms.MessageBox]::Show("Increment value must be a number between 1 and 2 digits.", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
         return
     }
 
-    $start_res = [int]$textBoxStart.Text
-    $end_res = [int]$textBoxEnd.Text
-    $count = [int]$UpDownCount.Text
-    $Iterations = [int]$UpDownIt.Text
+    $start = [int]$textBoxStart.Text
+    $end = [int]$textBoxEnd.Text
+    $samples = [int]$UpDownSamples.Text
+    $increment = [int]$UpDownInc.Text
 
-    if ($end_res -le $start_res) {
+    if ($end -le $start) {
         [System.Windows.Forms.MessageBox]::Show("The final resolution must be greater than the initial resolution.", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
         return
     }
 
     $results = @()
 
-    $totalIterations = [math]::Ceiling(($end_res - $start_res) / $Iterations)
+    $totalIterations = [math]::Ceiling(($end - $start) / $increment)
 
     # Inicializar la barra de progreso
     $progressBar.Minimum = 0
@@ -110,7 +110,7 @@ function test_precision {
     $progressBar.Value = 0
     $progressBar.Visible = $true
 
-    for ($res_act = $start_res; $end_res -ge $res_current; $res_act +=$Iterations) {
+    for ($res_act = $start; $end -ge $res_current; $res_act +=$increment) {
 
         # Ejecutar zwtimer con la resolucion
         Start-Process -FilePath ".\zwt.exe" -ArgumentList "$res_act" -NoNewWindow 
@@ -121,7 +121,7 @@ function test_precision {
         $res_current = [TimerResolution]::GetCurrentResolution()
 
         # Sleep-Test
-        $output = Invoke-Expression ".\zwt.exe test $count"
+        $output = Invoke-Expression ".\zwt.exe test $samples"
 
         # Parsear la salida para extraer los valores de avg y delta
         $output -split [Environment]::NewLine | ForEach-Object {
@@ -207,35 +207,35 @@ $textBoxEnd.Add_KeyPress({
 })
 $form.Controls.Add($textBoxEnd)
 
-# Count
-$labelCount = New-Object System.Windows.Forms.Label
-$labelCount.Text = "Count:"
-$labelCount.Location = New-Object System.Drawing.Point(20, 90)
-$labelCount.Size = New-Object System.Drawing.Size(40, 15)
-$form.Controls.Add($labelCount)
+# Samples
+$labelSamples = New-Object System.Windows.Forms.Label
+$labelSamples.Text = "Samples:"
+$labelSamples.Location = New-Object System.Drawing.Point(20, 90)
+$labelSamples.Size = New-Object System.Drawing.Size(40, 15)
+$form.Controls.Add($labelSamples)
 
-$UpDownCount = New-Object System.Windows.Forms.NumericUpDown
-$UpDownCount.Location = New-Object System.Drawing.Point(70, 90)
-$UpDownCount.Size = New-Object System.Drawing.Size(40, 20)
-$UpDownCount.Value = $count_value
-$UpDownCount.Maximum = 100
-$UpDownCount.Minimum = 0
-$form.Controls.Add($UpDownCount)
+$UpDownSamples = New-Object System.Windows.Forms.NumericUpDown
+$UpDownSamples.Location = New-Object System.Drawing.Point(70, 90)
+$UpDownSamples.Size = New-Object System.Drawing.Size(40, 20)
+$UpDownSamples.Value = $samples_value
+$UpDownSamples.Maximum = 100
+$UpDownSamples.Minimum = 0
+$form.Controls.Add($UpDownSamples)
 
-# Iterations
-$labelIt = New-Object System.Windows.Forms.Label
-$labelIt.Text = "Iterations:"
-$labelIt.Location = New-Object System.Drawing.Point(10, 132)
-$labelIt.Size = New-Object System.Drawing.Size(60, 15)
-$form.Controls.Add($labelIt)
+# Increment
+$labelInc = New-Object System.Windows.Forms.Label
+$labelInc.Text = "Increment:"
+$labelInc.Location = New-Object System.Drawing.Point(10, 132)
+$labelInc.Size = New-Object System.Drawing.Size(60, 15)
+$form.Controls.Add($labelInc)
 
-$UpDownIt = New-Object System.Windows.Forms.NumericUpDown
-$UpDownIt.Location = New-Object System.Drawing.Point(70, 130)
-$UpDownIt.Size = New-Object System.Drawing.Size(40, 20)
-$UpDownIt.Value = $it_value
-$UpDownIt.Maximum = 100
-$UpDownIt.Minimum = 0
-$form.Controls.Add($UpDownIt)
+$UpDownInc = New-Object System.Windows.Forms.NumericUpDown
+$UpDownInc.Location = New-Object System.Drawing.Point(70, 130)
+$UpDownInc.Size = New-Object System.Drawing.Size(40, 20)
+$UpDownInc.Value = $increment_value
+$UpDownInc.Maximum = 100
+$UpDownInc.Minimum = 0
+$form.Controls.Add($UpDownInc)
 
 # Test
 $buttonTest = New-Object System.Windows.Forms.Button
