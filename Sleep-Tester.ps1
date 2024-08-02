@@ -210,8 +210,8 @@ $form.Controls.Add($textBoxEnd)
 # Samples
 $labelSamples = New-Object System.Windows.Forms.Label
 $labelSamples.Text = "Samples:"
-$labelSamples.Location = New-Object System.Drawing.Point(20, 90)
-$labelSamples.Size = New-Object System.Drawing.Size(40, 15)
+$labelSamples.Location = New-Object System.Drawing.Point(17, 90)
+$labelSamples.Size = New-Object System.Drawing.Size(52, 15)
 $form.Controls.Add($labelSamples)
 
 $UpDownSamples = New-Object System.Windows.Forms.NumericUpDown
