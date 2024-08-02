@@ -71,7 +71,7 @@ stdev: 0.0018 ms | 0.0018 ms
 
 [Sleep-Tester](https://github.com/LuSlower/ZwTimerResolution/blob/main/Sleep-Tester.ps1)
 
-![image](https://github.com/user-attachments/assets/959fe08e-5f3d-4800-9e0b-c3712d3da329)
+![image](https://github.com/user-attachments/assets/628595da-4379-4317-86c7-fc9911397c15)
 
 At the end the results will be saved in sleep-test.txt located in the same directory,
 to visualize which of all the resolutions obtained the highest precision (lowest delta, lowest diff),
