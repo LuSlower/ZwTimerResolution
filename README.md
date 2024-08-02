@@ -68,7 +68,7 @@ avg: 1.0102 ms | 0.0102 ms
 stdev: 0.0018 ms | 0.0018 ms
 ```
 
-[Sleep-Tester](https://github.com/LuSlower/ZwTimerResolution/blob/main/Sleep-Tester.ps1)
+![image](https://github.com/user-attachments/assets/1872b10f-03a9-4ada-95b1-a0311b2c228d)
 
 ![image](https://github.com/user-attachments/assets/628595da-4379-4317-86c7-fc9911397c15)
 
