@@ -67,7 +67,7 @@ max: 1.0122 ms | 0.0122 ms
 avg: 1.0102 ms | 0.0102 ms
 stdev: 0.0018 ms | 0.0018 ms
 ```
-![image](https://github.com/user-attachments/assets/628595da-4379-4317-86c7-fc9911397c15)
+![image](https://github.com/user-attachments/assets/519cba29-b973-413e-952b-35fd8a86c971)
 
 At the end the results will be saved in sleep-test.txt located in the same directory,
 to visualize which of all the resolutions obtained the highest precision (lowest delta, lowest diff),
@@ -75,7 +75,7 @@ you can view them in https://list2chart.com/csv-to-chart/, just drag the file th
 
 Here is an example
 
-![image](https://github.com/user-attachments/assets/fedf693d-72b1-43e9-95b6-1bba936d5ca9)
+![image](https://github.com/user-attachments/assets/b58589c5-758e-4b61-928a-eaccaf094676)
 
 # REF
 [1](https://github.com/valleyofdoom/TimerResolution)
