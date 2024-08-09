@@ -75,7 +75,7 @@ you can view them in https://list2chart.com/csv-to-chart/, just drag the file th
 
 Here is an example
 
-![image](https://github.com/LuSlower/nt_timer/assets/148411728/18d45865-1cf7-4a3d-9811-48ee45c53426)
+![image](https://github.com/user-attachments/assets/fedf693d-72b1-43e9-95b6-1bba936d5ca9)
 
 # REF
 [1](https://github.com/valleyofdoom/TimerResolution)
