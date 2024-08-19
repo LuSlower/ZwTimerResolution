@@ -11,7 +11,7 @@ One more tool to change the resolution of the system timer in the context of the
 
 ## GUI
 
-![image](https://github.com/LuSlower/ZwTimerResolution/assets/148411728/1f00528a-37f9-48bd-942f-1cdfc2044ecf)
+![image](https://github.com/user-attachments/assets/7337d6f2-bfd4-499b-b7ee-5a8a6cc435d7)
 
 * Press ESC to hide the GUI, you can right click on the tray icon to exit the app
 * This Win32 GUI consumes little memory (about 1.3k total bytes)
