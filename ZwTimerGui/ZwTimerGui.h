@@ -15,9 +15,10 @@
 #define SET_MAX 1001
 #define SET_MIN 1002
 #define SET_CUSTOM 1003
-#define _START 1004
-#define IDI_ICON 1005
-#define IDM_EXIT 1006
+#define UNSET_CUSTOM 1004
+#define _START 1005
+#define IDI_ICON 1006
+#define IDM_EXIT 1007
 #define WM_HIDE 1008
 #define WM_ICON 1009
 #define WM_TRAYICON (WM_ICON)
@@ -34,6 +35,14 @@ NTSTATUS __stdcall ZwSetTimerResolution(ULONG DesiredResolution, BOOLEAN SetReso
 
 HINSTANCE hInst;
 HWND hwndDlg;
+
+void _drain()
+{
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_SET_QUOTA, false, GetCurrentProcessId());
+    //drenar WorkingSet
+    SetProcessWorkingSetSize(hProcess, (SIZE_T) -1, (SIZE_T) -1);
+    CloseHandle(hProcess);
+}
 
 //Leer REG_SZ del registro
 char* RegKeyQueryEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
@@ -96,10 +105,10 @@ void _ZwQueryTimerResolution()
     ZwQueryTimerResolution(&minRes, &maxRes, &currRes);
 }
 
-void _ZwSetTimerResolution(ULONG customRes)
+void _ZwSetTimerResolution(ULONG customRes, BOOL setRes = TRUE)
 {
         //call ZwSetTimerResolution
-        ZwSetTimerResolution(customRes, TRUE, &actRes);
+        ZwSetTimerResolution(customRes, setRes, &actRes);
 }
 
 // Declaración del trayicon
@@ -123,14 +132,6 @@ void ShowTrayMenu(HWND hWnd)
 
     //destruir menu
     DestroyMenu(hMenu);
-}
-
-//Drain Memory
-void _drain()
-{
-    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_SET_QUOTA, false, GetCurrentProcessId());
-    //drenar WorkingSet
-    SetProcessWorkingSetSize(hProcess, (SIZE_T) -1, (SIZE_T) -1);
 }
 
 //SetInformationProcess
