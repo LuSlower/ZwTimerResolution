@@ -37,13 +37,22 @@ Running zwtimer without arguments (opening it) or passing the 'test' argument wi
 ```
 C:\...>zwt.exe test
 
-sleep(1): 15.6224 ms | delta: 14.6224 ms | zwres: 156244 ns
-sleep(1): 15.6221 ms | delta: 14.6221 ms | zwres: 156244 ns
-sleep(1): 15.6219 ms | delta: 14.6219 ms | zwres: 156244 ns
-sleep(1): 15.6217 ms | delta: 14.6217 ms | zwres: 156244 ns
-sleep(1): 15.6247 ms | delta: 14.6247 ms | zwres: 156244 ns
-sleep(1): 15.6241 ms | delta: 14.6241 ms | zwres: 156244 ns
-sleep(1): 15.6224 ms | delta: 14.6224 ms | zwres: 156244 ns
+sleep(1): 1.0087 ms (delta: 0.0087) | zwres: 5060ns
+sleep(1): 1.0099 ms (delta: 0.0099) | zwres: 5060ns
+sleep(1): 1.0083 ms (delta: 0.0083) | zwres: 5060ns
+sleep(1): 1.0096 ms (delta: 0.0096) | zwres: 5060ns
+sleep(1): 1.0089 ms (delta: 0.0089) | zwres: 5060ns
+sleep(1): 1.0088 ms (delta: 0.0088) | zwres: 5060ns
+sleep(1): 1.0083 ms (delta: 0.0083) | zwres: 5060ns
+sleep(1): 1.0086 ms (delta: 0.0086) | zwres: 5060ns
+sleep(1): 1.0078 ms (delta: 0.0078) | zwres: 5060ns
+sleep(1): 1.0071 ms (delta: 0.0071) | zwres: 5060ns
+sleep(1): 1.0106 ms (delta: 0.0106) | zwres: 5060ns
+sleep(1): 1.0076 ms (delta: 0.0076) | zwres: 5060ns
+sleep(1): 1.0089 ms (delta: 0.0089) | zwres: 5060ns
+sleep(1): 1.0099 ms (delta: 0.0099) | zwres: 5060ns
+sleep(1): 1.0090 ms (delta: 0.0090) | zwres: 5060ns
+sleep(1): 1.0068 ms (delta: 0.0068) | zwres: 5060ns
 ```
 
 Apart from 'test' you can specify 'count' which will specify the number of times the precision of sleep(1) will be measured.
@@ -51,21 +60,21 @@ and will show more advanced metrics
 ```
 C:\...>zwt.exe test 10
 
-sleep(1): 1.0072 ms | delta: 0.0072 ms | zwres: 5054 ns
-sleep(1): 1.0122 ms | delta: 0.0122 ms | zwres: 5054 ns
-sleep(1): 1.0104 ms | delta: 0.0104 ms | zwres: 5054 ns
-sleep(1): 1.0063 ms | delta: 0.0063 ms | zwres: 5054 ns
-sleep(1): 1.0105 ms | delta: 0.0105 ms | zwres: 5054 ns
-sleep(1): 1.0103 ms | delta: 0.0103 ms | zwres: 5054 ns
-sleep(1): 1.0116 ms | delta: 0.0116 ms | zwres: 5054 ns
-sleep(1): 1.0111 ms | delta: 0.0111 ms | zwres: 5054 ns
-sleep(1): 1.0111 ms | delta: 0.0111 ms | zwres: 5054 ns
-sleep(1): 1.0113 ms | delta: 0.0113 ms | zwres: 5054 ns
+sleep(1): 1.0115 ms (delta: 0.0115) | zwres: 5060 ns
+sleep(1): 1.0117 ms (delta: 0.0117) | zwres: 5060 ns
+sleep(1): 1.0110 ms (delta: 0.0110) | zwres: 5060 ns
+sleep(1): 1.0084 ms (delta: 0.0084) | zwres: 5060 ns
+sleep(1): 1.0099 ms (delta: 0.0099) | zwres: 5060 ns
+sleep(1): 1.0126 ms (delta: 0.0126) | zwres: 5060 ns
+sleep(1): 1.0083 ms (delta: 0.0083) | zwres: 5060 ns
+sleep(1): 1.0100 ms (delta: 0.0100) | zwres: 5060 ns
+sleep(1): 1.0092 ms (delta: 0.0092) | zwres: 5060 ns
+sleep(1): 1.0116 ms (delta: 0.0116) | zwres: 5060 ns
 
-min: 1.0063 ms | 0.0063 ms
-max: 1.0122 ms | 0.0122 ms
-avg: 1.0102 ms | 0.0102 ms
-stdev: 0.0018 ms | 0.0018 ms
+min: 1.0083 ms
+max: 1.0126 ms
+avg: 1.0104 ms
+stdev: 0.0014 ms
 ```
 ![image](https://github.com/user-attachments/assets/519cba29-b973-413e-952b-35fd8a86c971)
 
