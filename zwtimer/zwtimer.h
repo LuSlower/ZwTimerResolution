@@ -65,7 +65,7 @@ void loop_test()
     for (int i = 1; ; i++) {
     ZwQueryTimerResolution(&min, &max, &res_act);
     sleep_test();
-    printf("sleep(1): %.4f ms | delta: %.4f ms | zwres: %d ns\n", tsleep, delta, res_act);
+    printf("sleep(1): %.4f ms (delta: %.4f) | zwres: %dns\n", tsleep, delta, res_act);
     Sleep(500);
     }
 }

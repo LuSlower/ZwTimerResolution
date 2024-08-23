@@ -88,21 +88,19 @@ int main(int argc, char *argv[])
             if (delta > max_delta) {
                 max_delta = delta;
             }
-            printf("sleep(1): %.4f ms | delta: %.4f ms | zwres: %d ns\n", tsleep, delta, res_act);
+            printf("sleep(1): %.4f ms (delta: %.4f) | zwres: %d ns\n", tsleep, delta, res_act);
         }
 
         // Calcular promedio
         double avg_sleep = sum_sleep / count;
-        double avg_delta = sum_delta / count;
 
         // Calcular desviación estándar
         double stdev_sleep = sqrt((sum_squared_sleep / count) - (avg_sleep * avg_sleep));
-        double stdev_delta = sqrt((sum_squared_delta / count) - (avg_delta * avg_delta));
 
-        printf("\nmin: %.4f ms | %.4f ms", min_sleep, min_delta);
-        printf("\nmax: %.4f ms | %.4f ms", max_sleep, max_delta);
-        printf("\navg: %.4f ms | %.4f ms", avg_sleep, avg_delta);
-        printf("\nstdev: %.4f ms | %.4f ms", stdev_sleep, stdev_delta);
+        printf("\nmin: %.4f ms", min_sleep);
+        printf("\nmax: %.4f ms", max_sleep);
+        printf("\navg: %.4f ms", avg_sleep);
+        printf("\nstdev: %.4f ms", stdev_sleep);
 
         return 0;
     }
@@ -138,7 +136,7 @@ int main(int argc, char *argv[])
     }
 
     //Verificar tamaño del argumento
-    if (strlen(argv[1]) >= 4 && strlen(argv[1]) < 6)
+    if (strlen(argv[1]) >= 1 && strlen(argv[1]) < 6)
     {
 
             res = atoi(argv[1]); // Convertir el argumento a ULONG
