@@ -37,22 +37,22 @@ Running zwtimer without arguments (opening it) or passing the 'test' argument wi
 ```
 C:\...>zwt.exe test
 
-sleep(1): 1.0087 ms (delta: 0.0087) | zwres: 5060ns
-sleep(1): 1.0099 ms (delta: 0.0099) | zwres: 5060ns
-sleep(1): 1.0083 ms (delta: 0.0083) | zwres: 5060ns
-sleep(1): 1.0096 ms (delta: 0.0096) | zwres: 5060ns
-sleep(1): 1.0089 ms (delta: 0.0089) | zwres: 5060ns
-sleep(1): 1.0088 ms (delta: 0.0088) | zwres: 5060ns
-sleep(1): 1.0083 ms (delta: 0.0083) | zwres: 5060ns
-sleep(1): 1.0086 ms (delta: 0.0086) | zwres: 5060ns
-sleep(1): 1.0078 ms (delta: 0.0078) | zwres: 5060ns
-sleep(1): 1.0071 ms (delta: 0.0071) | zwres: 5060ns
-sleep(1): 1.0106 ms (delta: 0.0106) | zwres: 5060ns
-sleep(1): 1.0076 ms (delta: 0.0076) | zwres: 5060ns
-sleep(1): 1.0089 ms (delta: 0.0089) | zwres: 5060ns
-sleep(1): 1.0099 ms (delta: 0.0099) | zwres: 5060ns
-sleep(1): 1.0090 ms (delta: 0.0090) | zwres: 5060ns
-sleep(1): 1.0068 ms (delta: 0.0068) | zwres: 5060ns
+sleep(1): 1.0087 ms (delta: 0.0087) | zwres: 5060 ns
+sleep(1): 1.0099 ms (delta: 0.0099) | zwres: 5060 ns
+sleep(1): 1.0083 ms (delta: 0.0083) | zwres: 5060 ns
+sleep(1): 1.0096 ms (delta: 0.0096) | zwres: 5060 ns
+sleep(1): 1.0089 ms (delta: 0.0089) | zwres: 5060 ns
+sleep(1): 1.0088 ms (delta: 0.0088) | zwres: 5060 ns
+sleep(1): 1.0083 ms (delta: 0.0083) | zwres: 5060 ns
+sleep(1): 1.0086 ms (delta: 0.0086) | zwres: 5060 ns
+sleep(1): 1.0078 ms (delta: 0.0078) | zwres: 5060 ns
+sleep(1): 1.0071 ms (delta: 0.0071) | zwres: 5060 ns
+sleep(1): 1.0106 ms (delta: 0.0106) | zwres: 5060 ns
+sleep(1): 1.0076 ms (delta: 0.0076) | zwres: 5060 ns
+sleep(1): 1.0089 ms (delta: 0.0089) | zwres: 5060 ns
+sleep(1): 1.0099 ms (delta: 0.0099) | zwres: 5060 ns
+sleep(1): 1.0090 ms (delta: 0.0090) | zwres: 5060 ns
+sleep(1): 1.0068 ms (delta: 0.0068) | zwres: 5060 ns
 ```
 
 Apart from 'test' you can specify 'count' which will specify the number of times the precision of sleep(1) will be measured.
