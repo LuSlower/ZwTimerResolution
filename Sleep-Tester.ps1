@@ -125,9 +125,9 @@ function test_precision {
 
         # Parsear la salida para extraer los valores de avg y delta
         $output -split [Environment]::NewLine | ForEach-Object {
-            if ($_ -match 'avg: (\d+\.\d+) ms \| (\d+\.\d+) ms') {
+            if ($_ -match 'avg: (\d+\.\d+)') {
                 $avgSleep = [float] $matches[1]
-                $delta = [float] $matches[2]
+                $delta = $avgSleep - 1
 
                 # precisión de 4 decimales
                 $formattedAvgSleep = "{0:N4}" -f $avgSleep
