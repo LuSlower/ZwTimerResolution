@@ -76,6 +76,9 @@ max: 1.0126 ms
 avg: 1.0104 ms
 stdev: 0.0014 ms
 ```
+
+## SLEEP-TESTER
+
 ![image](https://github.com/user-attachments/assets/519cba29-b973-413e-952b-35fd8a86c971)
 
 At the end the results will be saved in sleep-test.txt located in the same directory,
