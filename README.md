@@ -11,7 +11,7 @@ One more tool to change the resolution of the system timer in the context of the
 
 ## GUI
 
-![image](https://github.com/user-attachments/assets/7337d6f2-bfd4-499b-b7ee-5a8a6cc435d7)
+![image](https://github.com/user-attachments/assets/2b56b7e8-e578-47bb-8d65-fe12a2c28d84)
 
 * Press ESC to hide the GUI, you can right click on the tray icon to exit the app
 * This Win32 GUI consumes little memory (about 1.3k total bytes)
@@ -37,22 +37,22 @@ Running zwtimer without arguments (opening it) or passing the 'test' argument wi
 ```
 C:\...>zwt.exe test
 
-sleep(1): 1.0087 ms (delta: 0.0087) | zwres: 5060 ns
-sleep(1): 1.0099 ms (delta: 0.0099) | zwres: 5060 ns
-sleep(1): 1.0083 ms (delta: 0.0083) | zwres: 5060 ns
-sleep(1): 1.0096 ms (delta: 0.0096) | zwres: 5060 ns
-sleep(1): 1.0089 ms (delta: 0.0089) | zwres: 5060 ns
-sleep(1): 1.0088 ms (delta: 0.0088) | zwres: 5060 ns
-sleep(1): 1.0083 ms (delta: 0.0083) | zwres: 5060 ns
-sleep(1): 1.0086 ms (delta: 0.0086) | zwres: 5060 ns
-sleep(1): 1.0078 ms (delta: 0.0078) | zwres: 5060 ns
-sleep(1): 1.0071 ms (delta: 0.0071) | zwres: 5060 ns
-sleep(1): 1.0106 ms (delta: 0.0106) | zwres: 5060 ns
-sleep(1): 1.0076 ms (delta: 0.0076) | zwres: 5060 ns
-sleep(1): 1.0089 ms (delta: 0.0089) | zwres: 5060 ns
-sleep(1): 1.0099 ms (delta: 0.0099) | zwres: 5060 ns
-sleep(1): 1.0090 ms (delta: 0.0090) | zwres: 5060 ns
-sleep(1): 1.0068 ms (delta: 0.0068) | zwres: 5060 ns
+sleep(1): 1.0087 (delta: 0.0087) | zwres: 5060 hns
+sleep(1): 1.0099 (delta: 0.0099) | zwres: 5060 hns
+sleep(1): 1.0083 (delta: 0.0083) | zwres: 5060 hns
+sleep(1): 1.0096 (delta: 0.0096) | zwres: 5060 hns
+sleep(1): 1.0089 (delta: 0.0089) | zwres: 5060 hns
+sleep(1): 1.0088 (delta: 0.0088) | zwres: 5060 hns
+sleep(1): 1.0083 (delta: 0.0083) | zwres: 5060 hns
+sleep(1): 1.0086 (delta: 0.0086) | zwres: 5060 hns
+sleep(1): 1.0078 (delta: 0.0078) | zwres: 5060 hns
+sleep(1): 1.0071 (delta: 0.0071) | zwres: 5060 hns
+sleep(1): 1.0106 (delta: 0.0106) | zwres: 5060 hns
+sleep(1): 1.0076 (delta: 0.0076) | zwres: 5060 hns
+sleep(1): 1.0089 (delta: 0.0089) | zwres: 5060 hns
+sleep(1): 1.0099 (delta: 0.0099) | zwres: 5060 hns
+sleep(1): 1.0090 (delta: 0.0090) | zwres: 5060 hns
+sleep(1): 1.0068 (delta: 0.0068) | zwres: 5060 hns
 ```
 
 Apart from 'test' you can specify 'count' which will specify the number of times the precision of sleep(1) will be measured.
@@ -60,16 +60,16 @@ and will show more advanced metrics
 ```
 C:\...>zwt.exe test 10
 
-sleep(1): 1.0115 ms (delta: 0.0115) | zwres: 5060 ns
-sleep(1): 1.0117 ms (delta: 0.0117) | zwres: 5060 ns
-sleep(1): 1.0110 ms (delta: 0.0110) | zwres: 5060 ns
-sleep(1): 1.0084 ms (delta: 0.0084) | zwres: 5060 ns
-sleep(1): 1.0099 ms (delta: 0.0099) | zwres: 5060 ns
-sleep(1): 1.0126 ms (delta: 0.0126) | zwres: 5060 ns
-sleep(1): 1.0083 ms (delta: 0.0083) | zwres: 5060 ns
-sleep(1): 1.0100 ms (delta: 0.0100) | zwres: 5060 ns
-sleep(1): 1.0092 ms (delta: 0.0092) | zwres: 5060 ns
-sleep(1): 1.0116 ms (delta: 0.0116) | zwres: 5060 ns
+sleep(1): 1.0115 (delta: 0.0115) | zwres: 5060 hns
+sleep(1): 1.0117 (delta: 0.0117) | zwres: 5060 hns
+sleep(1): 1.0110 (delta: 0.0110) | zwres: 5060 hns
+sleep(1): 1.0084 (delta: 0.0084) | zwres: 5060 hns
+sleep(1): 1.0099 (delta: 0.0099) | zwres: 5060 hns
+sleep(1): 1.0126 (delta: 0.0126) | zwres: 5060 hns
+sleep(1): 1.0083 (delta: 0.0083) | zwres: 5060 hns
+sleep(1): 1.0100 (delta: 0.0100) | zwres: 5060 hns
+sleep(1): 1.0092 (delta: 0.0092) | zwres: 5060 hns
+sleep(1): 1.0116 (delta: 0.0116) | zwres: 5060 hns
 
 min: 1.0083 ms
 max: 1.0126 ms
