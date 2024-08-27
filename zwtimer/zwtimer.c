@@ -17,8 +17,7 @@ int main(int argc, char *argv[])
     {
         printf("Instructions for use:\n");
         printf("\n<resolution>\n");
-        printf("\nSet a new timer resolution (must be specified in nanoseconds).\n");
-        printf("minimum 4 characters, maximum 6\n");
+        printf("\nSet a new timer resolution (in hns units).\n");
         printf("example: 'zwt.exe 5000'\n");
         printf("\n<query>\n");
         printf("\nReturns information about the timer resolution.\n");
@@ -35,9 +34,9 @@ int main(int argc, char *argv[])
         ZwQueryTimerResolution(&min, &max, &current);
 
         // Obtener resoluciones del temporizador
-        printf("\nminimum resolution : %d ns\n", min);
-        printf("maximum resolution : %d ns\n", max);
-        printf("current resolution : %d ns\n", current);
+        printf("\nminimum resolution : %d hns\n", min);
+        printf("maximum resolution : %d hns\n", max);
+        printf("current resolution : %d hns\n", current);
         return 0;
     }
 
@@ -88,7 +87,7 @@ int main(int argc, char *argv[])
             if (delta > max_delta) {
                 max_delta = delta;
             }
-            printf("sleep(1): %.4f ms (delta: %.4f) | zwres: %d ns\n", tsleep, delta, res_act);
+            printf("sleep(1): %.4f (delta: %.4f) | zwres: %d hns\n", tsleep, delta, res_act);
         }
 
         // Calcular promedio
@@ -142,7 +141,7 @@ int main(int argc, char *argv[])
             res = atoi(argv[1]); // Convertir el argumento a ULONG
             ZwSetTimerResolution(res, TRUE, &res_new); // Establecer resolución del temporizador
             Sleep(100);
-            printf("resolution set correctly to %d ns", res_new);
+            printf("resolution set correctly to %d hns", res_new);
 
             //prioridad de segundo plano
             SetPriorityClass(GetCurrentProcess(), PROCESS_MODE_BACKGROUND_BEGIN);
