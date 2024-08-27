@@ -36,15 +36,15 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         char buffer[21];
 
         // Convertir maxRes a cadena
-        sprintf(buffer, "Maximun Resolution: %lu ns", maxRes);
+        sprintf(buffer, "Maximun Resolution: %d hns", maxRes);
         SetDlgItemText(hwndDlg, _MAX, buffer);
 
         // Convertir minRes a cadena
-        sprintf(buffer, "Minimun Resolution: %lu ns", minRes);
+        sprintf(buffer, "Minimun Resolution: %d hns", minRes);
         SetDlgItemText(hwndDlg, _MIN, buffer);
 
         // Convertir currRes a cadena
-        sprintf(buffer, "Current Resolution: %lu ns", currRes);
+        sprintf(buffer, "Current Resolution: %d hns", currRes);
         SetDlgItemText(hwndDlg, _CURR, buffer);
 
         //Comprobar CustomTimer
@@ -58,7 +58,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             ULONG f_res = strtoul(f_custom, NULL, 10);
             _ZwSetTimerResolution(f_res);
             // Convertir actRes a cadena
-            sprintf(buffer, "Current Resolution: %lu ns", actRes);
+            sprintf(buffer, "Current Resolution: %d hns", actRes);
             SetDlgItemText(hwndDlg, _CURR, buffer);
         }
         else
@@ -163,7 +163,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     _ZwSetTimerResolution(maxRes);
 
                     // Convertir actRes a cadena
-                    sprintf(buffer, "Current Resolution: %lu ns", actRes);
+                    sprintf(buffer, "Current Resolution: %d hns", actRes);
                     SetDlgItemText(hwndDlg, _CURR, buffer);
                 }
                 return TRUE;
@@ -175,7 +175,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     _ZwSetTimerResolution(minRes);
 
                     // Convertir actRes a cadena
-                    sprintf(buffer, "Current Resolution: %lu ns", actRes);
+                    sprintf(buffer, "Current Resolution: %d hns", actRes);
                     SetDlgItemText(hwndDlg, _CURR, buffer);
                 }
                 return TRUE;
@@ -190,7 +190,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     _ZwSetTimerResolution(lpres);
 
                     // Convertir actRes a cadena
-                    sprintf(buffer, "Current Resolution: %lu ns", actRes);
+                    sprintf(buffer, "Current Resolution: %d hns", actRes);
                     SetDlgItemText(hwndDlg, _CURR, buffer);
                     RegKeySetEx(HKEY_CURRENT_USER, "Software\\ZwTimer", "CustomTimer", lpbuffer);
                 }
@@ -202,7 +202,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     _ZwSetTimerResolution(0, FALSE);
 
                     // Convertir actRes a cadena
-                    sprintf(buffer, "Current Resolution: %lu ns", actRes);
+                    sprintf(buffer, "Current Resolution: %d hns", actRes);
                     SetDlgItemText(hwndDlg, _CURR, buffer);
                 }
                 return TRUE;
@@ -239,15 +239,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
             char buffer[21];
 
             // Convertir maxRes a cadena
-            sprintf(buffer, "Maximun Resolution: %lu ns", maxRes);
+            sprintf(buffer, "Maximun Resolution: %d hns", maxRes);
             SetDlgItemText(hwndR, _MAX, buffer);
 
             // Convertir minRes a cadena
-            sprintf(buffer, "Minimun Resolution: %lu ns", minRes);
+            sprintf(buffer, "Minimun Resolution: %lu hns", minRes);
             SetDlgItemText(hwndR, _MIN, buffer);
 
             // Convertir currRes a cadena
-            sprintf(buffer, "Current Resolution: %lu ns", currRes);
+            sprintf(buffer, "Current Resolution: %lu hns", currRes);
             SetDlgItemText(hwndR, _CURR, buffer);
         }
        if (!IsDialogMessage(hwndR, &msg))
