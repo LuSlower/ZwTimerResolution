@@ -36,11 +36,11 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         char buffer[21];
 
         // Convertir maxRes a cadena
-        sprintf(buffer, "Maximun Resolution: %d hns", maxRes);
+        sprintf(buffer, "Maximum Resolution: %d hns", maxRes);
         SetDlgItemText(hwndDlg, _MAX, buffer);
 
         // Convertir minRes a cadena
-        sprintf(buffer, "Minimun Resolution: %d hns", minRes);
+        sprintf(buffer, "Minimum Resolution: %d hns", minRes);
         SetDlgItemText(hwndDlg, _MIN, buffer);
 
         // Convertir currRes a cadena
@@ -101,7 +101,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             case WM_RBUTTONDOWN:
             {
-                // Mostrar el menú de la bandeja al hacer clic derecho en el icono
+                // Mostrar el menÃº de la bandeja al hacer clic derecho en el icono
                 ShowTrayMenu(hwndDlg);
             }
             return TRUE;
