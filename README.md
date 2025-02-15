@@ -11,7 +11,7 @@ One more tool to change the resolution of the system timer in the context of the
 
 ## GUI
 
-![image](https://github.com/user-attachments/assets/2b56b7e8-e578-47bb-8d65-fe12a2c28d84)
+![image](https://github.com/user-attachments/assets/15300fae-b1b0-4f61-bd4b-afa6dc677643)
 
 * Press ESC to hide the GUI, you can right click on the tray icon to exit the app
 * This Win32 GUI consumes little memory (about 1.3k total bytes)
