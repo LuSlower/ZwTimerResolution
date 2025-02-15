@@ -239,11 +239,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
             char buffer[21];
 
             // Convertir maxRes a cadena
-            sprintf(buffer, "Maximun Resolution: %d hns", maxRes);
+            sprintf(buffer, "Maximum Resolution: %d hns", maxRes);
             SetDlgItemText(hwndR, _MAX, buffer);
 
             // Convertir minRes a cadena
-            sprintf(buffer, "Minimun Resolution: %lu hns", minRes);
+            sprintf(buffer, "Minimum Resolution: %lu hns", minRes);
             SetDlgItemText(hwndR, _MIN, buffer);
 
             // Convertir currRes a cadena
