@@ -27,15 +27,15 @@ One more tool to change the resolution of the system timer in the context of the
 If you want to set a custom resolution, please specify
 
 ```
-zwt.exe 5000
+zwt.exe --res 5000
 ```
 
 ## PRECISION
 
-Running zwtimer without arguments (opening it) or passing the 'test' argument will run zwtimer in a loop to check the accuracy of Sleep(1)
+Running zwtimer without arguments (opening it) or passing the '--test' argument will run zwtimer in a loop to check the accuracy of Sleep(1)
 
 ```
-C:\...>zwt.exe test
+C:\...>zwt.exe --test
 
 sleep(1): 1.0087 (delta: 0.0087) | zwres: 5060 hns
 sleep(1): 1.0099 (delta: 0.0099) | zwres: 5060 hns
@@ -58,7 +58,7 @@ sleep(1): 1.0068 (delta: 0.0068) | zwres: 5060 hns
 Apart from 'test' you can specify 'count' which will specify the number of times the precision of sleep(1) will be measured.
 and will show more advanced metrics
 ```
-C:\...>zwt.exe test 10
+C:\...>zwt.exe --test 10
 
 sleep(1): 1.0115 (delta: 0.0115) | zwres: 5060 hns
 sleep(1): 1.0117 (delta: 0.0117) | zwres: 5060 hns
