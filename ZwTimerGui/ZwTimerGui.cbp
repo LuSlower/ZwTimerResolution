@@ -26,7 +26,6 @@
 		<Unit filename="ZwTimerGui.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
-		<Unit filename="manifest.xml" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

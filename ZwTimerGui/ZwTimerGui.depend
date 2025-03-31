@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1739663804 source:e:\documentos\codeblocks\zwtimergui\zwtimergui.cpp
+	"ZwTimerGui.h"
+
+1724825857 e:\documentos\codeblocks\zwtimergui\zwtimergui.h
+	<windows.h>
+	<shellapi.h>
+	<commctrl.h>
+	<stdio.h>
+
+1724825878 source:e:\documentos\codeblocks\zwtimergui\zwtimergui.rc
+	<windows.h>
+	<commctrl.h>
+	"ZwTimerGui.h"
+

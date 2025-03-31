@@ -27,10 +27,8 @@ extern "C" {
 WINBASEAPI WINBOOL WINAPI SetProcessInformation (HANDLE hProcess, PROCESS_INFORMATION_CLASS ProcessInformationClass, LPVOID ProcessInformation, DWORD ProcessInformationSize);
 
 typedef long NTSTATUS;
-//Declarar ZwQueryTimerResolution
-NTSTATUS __stdcall ZwQueryTimerResolution(ULONG *MinimumResolution, ULONG *MaximumResolution, ULONG *CurrentResolution);
-//Declarar ZwSetTimerResolution
-NTSTATUS __stdcall ZwSetTimerResolution(ULONG DesiredResolution, BOOLEAN SetResolution, ULONG *CurrentResolution);
+NTSYSAPI NTSTATUS NTAPI ZwQueryTimerResolution(ULONG *MinimumResolution, ULONG *MaximumResolution, ULONG *CurrentResolution);
+NTSYSAPI NTSTATUS NTAPI ZwSetTimerResolution(ULONG DesiredResolution, BOOLEAN SetResolution, ULONG *CurrentResolution);
 }
 
 HINSTANCE hInst;
@@ -39,15 +37,13 @@ HWND hwndDlg;
 void _drain()
 {
     HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_SET_QUOTA, false, GetCurrentProcessId());
-    //drenar WorkingSet
     SetProcessWorkingSetSize(hProcess, (SIZE_T) -1, (SIZE_T) -1);
     CloseHandle(hProcess);
 }
 
-//Leer REG_SZ del registro
 char* RegKeyQueryEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
 {
-    static char result[MAX_PATH]; // Static para que persista fuera del ámbito de la función
+    static char result[MAX_PATH];
     HKEY hSubKey;
     if (RegOpenKeyExA(hKey, lpSubKey, 0, KEY_QUERY_VALUE, &hSubKey) == ERROR_SUCCESS)
     {
@@ -60,10 +56,9 @@ char* RegKeyQueryEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
         }
         RegCloseKey(hSubKey);
     }
-    return nullptr; // Devolver nullptr si no se pudo leer el valor
+    return nullptr;
 }
 
-//Escribir REG_SZ en el registro
 bool RegKeySetEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName, LPCSTR lpData)
 {
     HKEY hSubKey;
@@ -80,7 +75,6 @@ bool RegKeySetEx(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName, LPCSTR lpData)
     return false;
 }
 
-//Eliminar REG_SZ del registro
 bool RegKeyDelete(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
 {
     HKEY hSubKey;
@@ -96,68 +90,53 @@ bool RegKeyDelete(HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValueName)
     return false;
 }
 
-//Global
 ULONG minRes, maxRes, currRes, actRes;
 
-void _ZwQueryTimerResolution()
+void _QueryTimerResolution()
 {
-    //call ZwQueryTimerResolution
     ZwQueryTimerResolution(&minRes, &maxRes, &currRes);
 }
 
-void _ZwSetTimerResolution(ULONG customRes, BOOL setRes = TRUE)
+void _SetTimerResolution(ULONG customRes, BOOL setRes = TRUE)
 {
-        //call ZwSetTimerResolution
-        ZwSetTimerResolution(customRes, setRes, &actRes);
+    ZwSetTimerResolution(customRes, setRes, &actRes);
 }
 
-// Declaración del trayicon
 NOTIFYICONDATA nid;
 bool isIconVisible = false;
 
-//ShowTrayMenu
 void ShowTrayMenu(HWND hWnd)
 {
-    //obtener posición del puntero (x,y)
     POINT pt;
     GetCursorPos(&pt);
 
-    //crear menú
     HMENU hMenu = CreatePopupMenu();
     AppendMenu(hMenu, MF_STRING, IDM_EXIT, "exit");
 
-    //poner en primer plano la ventana actual y centrar en menú
     SetForegroundWindow(hWnd);
     TrackPopupMenu(hMenu, TPM_RIGHTALIGN | TPM_BOTTOMALIGN | TPM_NONOTIFY | TPM_LEFTBUTTON, pt.x, pt.y, 0, hWnd, NULL);
 
-    //destruir menu
     DestroyMenu(hMenu);
 }
 
-//SetInformationProcess
 void _SetProcessInformation()
 {
         if (SetProcessInformation)
         {
-            //Obtener el HANDLE del proceso actual
             HANDLE hProcess = OpenProcess(PROCESS_SET_INFORMATION, FALSE, GetCurrentProcessId());
 
-            //pasa puntero de la estructura
             PROCESS_POWER_THROTTLING_STATE state;
             ZeroMemory(&state, sizeof(state));
             state.Version = PROCESS_POWER_THROTTLING_CURRENT_VERSION;
             state.ControlMask = PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION;
             state.StateMask = 0;
 
-            //DISABLE IDLE TIMER RESOLUTION
             SetProcessInformation(hProcess, ProcessPowerThrottling, &state, sizeof(state));
 
-
-            //cerrar HANDLE
             CloseHandle(hProcess);
         }
         else
         {
-            printf("Error getting address from SetProcessInformation\n"); //No existe en Windows 7
+            printf("Error getting address from SetProcessInformation\n");
         }
 }
