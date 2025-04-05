@@ -33,7 +33,7 @@ void _SetProcessInformation()
     }
     else
     {
-        printf("Error getting address from SetProcessInformation\n"); // No existe en Windows 7
+        printf("Error getting address from SetProcessInformation\n"); // does not exist in w7
     }
 }
 
