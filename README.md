@@ -79,11 +79,13 @@ stdev: 0.0014 ms
 
 ## SLEEP-TESTER
 
-![image](https://github.com/user-attachments/assets/519cba29-b973-413e-952b-35fd8a86c971)
+![image](https://github.com/user-attachments/assets/798ea272-cdda-4617-8265-a82761f7215b)
 
-At the end the results will be saved in sleep-test.txt located in the same directory,
-to visualize which of all the resolutions obtained the highest precision (lowest delta, lowest diff),
+At the end the results will be saved in SleepTest.txt located in the same directory,
+Resolutions with a delta < 150 will be marked with *, to visualize which of all the resolutions obtained the highest precision (lowest delta, lowest diff),
 you can view them in https://list2chart.com/csv-to-chart/, just drag the file there and specify which column you want to compare
+
+
 
 Here is an example
 
