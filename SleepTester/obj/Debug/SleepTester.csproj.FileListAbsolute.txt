@@ -1,0 +1,10 @@
+E:\Documentos\VISUAL-STUDIO\SleepTester\bin\Debug\SleepTester.exe.config
+E:\Documentos\VISUAL-STUDIO\SleepTester\bin\Debug\SleepTester.exe
+E:\Documentos\VISUAL-STUDIO\SleepTester\bin\Debug\SleepTester.pdb
+E:\Documentos\VISUAL-STUDIO\SleepTester\obj\Debug\SleepTester.csproj.AssemblyReference.cache
+E:\Documentos\VISUAL-STUDIO\SleepTester\obj\Debug\SleepTester.SleepTester.resources
+E:\Documentos\VISUAL-STUDIO\SleepTester\obj\Debug\SleepTester.Properties.Resources.resources
+E:\Documentos\VISUAL-STUDIO\SleepTester\obj\Debug\SleepTester.csproj.GenerateResource.cache
+E:\Documentos\VISUAL-STUDIO\SleepTester\obj\Debug\SleepTester.csproj.CoreCompileInputs.cache
+E:\Documentos\VISUAL-STUDIO\SleepTester\obj\Debug\SleepTester.exe
+E:\Documentos\VISUAL-STUDIO\SleepTester\obj\Debug\SleepTester.pdb
