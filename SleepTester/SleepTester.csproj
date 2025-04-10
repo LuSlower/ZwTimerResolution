@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E67C5817-C3B5-4D80-914F-9898A657844F}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>SleepTester</RootNamespace>
     <AssemblyName>SleepTester</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>

@@ -9,22 +9,13 @@ namespace SleepTester
     internal static class Program
     {
         [STAThread]
-        [DllImport("kernel32.dll")]
-        static extern bool FreeConsole();
         static void Main(string[] args)
         {
             if (args.Length == 0)
             {
-                FreeConsole();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new SleepTester());
-                return;
-            }
-
-            if (args.Length == 1 && (args.Contains("--help") || args.Contains("/?")))
-            {
-                ShowHelp();
                 return;
             }
 
@@ -47,14 +38,6 @@ namespace SleepTester
             {
                 Console.WriteLine("Please provide valid arguments. Use --help for usage details.");
             }
-        }
-
-        static void ShowHelp()
-        {
-            Console.WriteLine("Usage:");
-            Console.WriteLine("  --auto         Automatically runs the test.");
-            Console.WriteLine("  --cpu-stress   Enables CPU stress during the test.");
-            Console.WriteLine("  --help, /?     Shows this help message.");
         }
     }
 }
