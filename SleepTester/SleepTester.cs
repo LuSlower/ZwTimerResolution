@@ -75,13 +75,11 @@ namespace SleepTester
                     StopCpuLoad();
                 }
 
-                Invoke(new Action(() => Clipboard.SetText(results.ToString())));
-
                 File.WriteAllText("SleepTest.txt", results.ToString(), Encoding.ASCII);
 
                 Invoke(new Action(() =>
                 {
-                    MessageBox.Show("Test completed. Results copied to clipboard.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Test completed.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     buttonTest.Enabled = true;
                     cpuLoadCheckBox.Enabled = true;
                 }));
