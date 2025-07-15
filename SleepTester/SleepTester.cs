@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -23,7 +23,7 @@ namespace SleepTester
             try
             {
                 StringBuilder results = new StringBuilder();
-                results.AppendLine("sleep(1), delta, zwres");
+                results.AppendLine("min, max, avg, stdev, 1%low, zwres");
 
                 int totalIterations = (int)Math.Ceiling((double)(end - start) / increment);
                 Invoke(new Action(() =>
@@ -45,24 +45,32 @@ namespace SleepTester
                 for (int res_act = start; res_act <= end; res_act += increment)
                 {
                     StartProcessNoWait(@".\zwt.exe", $"--res {res_act}");
-                    System.Threading.Thread.Sleep(500);
+                    Thread.Sleep(500);
 
                     double res_current = TimerResolution.GetCurrentResolution();
                     string output = ExecuteCommand($@".\zwt.exe --test {samples}");
 
+                    List<float> sampleValues = new List<float>();
                     foreach (string line in output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
                     {
-                        var match = System.Text.RegularExpressions.Regex.Match(line, @"avg: (\d+\.\d+)");
-                        if (match.Success)
+                        var match = System.Text.RegularExpressions.Regex.Match(line, @"(\d+\.\d+)");
+                        if (match.Success && float.TryParse(match.Groups[1].Value, out float value))
                         {
-                            float avgSleep = float.Parse(match.Groups[1].Value);
-                            float delta = avgSleep - 1;
-                            string formattedAvgSleep = avgSleep.ToString("F4");
-                            string formattedDelta = delta.ToString("F4");
-
-                            string marker = (avgSleep < 1.0150f && delta < 0.0150f) ? "*" : "";
-                            results.AppendLine($"{formattedAvgSleep}, {formattedDelta}, {res_current}{marker}");
+                            sampleValues.Add(value);
                         }
+                    }
+
+                    if (sampleValues.Count > 0)
+                    {
+                        float min = sampleValues.Min();
+                        float max = sampleValues.Max();
+                        float avg = sampleValues.Average();
+                        float delta = avg - 1;
+                        float stdev = CalculateSTDEV(sampleValues);
+                        float onePercentLow = Calculate1PercentLow(sampleValues);
+
+                        string marker = (avg < 1.0150f && delta < 0.0150f) ? "*" : "";
+                        results.AppendLine($"{min:F4}, {max:F4}, {avg:F4}, {stdev:F4}, {onePercentLow:F4}, {res_current}{marker}");
                     }
 
                     KillProcess("zwt");
@@ -98,7 +106,7 @@ namespace SleepTester
             try
             {
                 StringBuilder results = new StringBuilder();
-                results.AppendLine("sleep(1), delta, zwres");
+                results.AppendLine("min, max, avg, stdev, 1%low, zwres");
 
                 int totalIterations = (int)Math.Ceiling((double)(end - start) / increment);
 
@@ -113,24 +121,32 @@ namespace SleepTester
                 for (int res_act = start; res_act <= end; res_act += increment)
                 {
                     StartProcessNoWait(@".\zwt.exe", $"--res {res_act}");
-                    System.Threading.Thread.Sleep(500);
+                    Thread.Sleep(500);
 
                     double res_current = TimerResolution.GetCurrentResolution();
                     string output = ExecuteCommand($@".\zwt.exe --test {samples}");
 
+                    List<float> sampleValues = new List<float>();
                     foreach (string line in output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
                     {
-                        var match = System.Text.RegularExpressions.Regex.Match(line, @"avg: (\d+\.\d+)");
-                        if (match.Success)
+                        var match = System.Text.RegularExpressions.Regex.Match(line, @"(\d+\.\d+)");
+                        if (match.Success && float.TryParse(match.Groups[1].Value, out float value))
                         {
-                            float avgSleep = float.Parse(match.Groups[1].Value);
-                            float delta = avgSleep - 1;
-                            string formattedAvgSleep = avgSleep.ToString("F4");
-                            string formattedDelta = delta.ToString("F4");
-
-                            string marker = (avgSleep < 1.0150f && delta < 0.0150f) ? "*" : "";
-                            results.AppendLine($"{formattedAvgSleep}, {formattedDelta}, {res_current}{marker}");
+                            sampleValues.Add(value);
                         }
+                    }
+
+                    if (sampleValues.Count > 0)
+                    {
+                        float min = sampleValues.Min();
+                        float max = sampleValues.Max();
+                        float avg = sampleValues.Average();
+                        float delta = avg - 1;
+                        float stdev = CalculateSTDEV(sampleValues);
+                        float onePercentLow = Calculate1PercentLow(sampleValues);
+
+                        string marker = (avg < 1.0150f && delta < 0.0150f) ? "*" : "";
+                        results.AppendLine($"{min:F4}, {max:F4}, {avg:F4}, {stdev:F4}, {onePercentLow:F4}, {res_current}{marker}");
                     }
 
                     KillProcess("zwt");
@@ -152,6 +168,21 @@ namespace SleepTester
             }
         }
 
+        private float CalculateSTDEV(List<float> values)
+        {
+            if (values.Count == 0) return 0f;
+            float avg = values.Average();
+            float sumOfSquares = values.Sum(v => (v - avg) * (v - avg));
+            return (float)Math.Sqrt(sumOfSquares / values.Count);
+        }
+
+        private float Calculate1PercentLow(List<float> values)
+        {
+            if (values.Count == 0) return 0f;
+            values.Sort();
+            int count = Math.Max(1, (int)(values.Count * 0.01));
+            return values.Take(count).Average();
+        }
 
         private void ButtonTest_Click(object sender, EventArgs e)
         {
@@ -211,7 +242,6 @@ namespace SleepTester
             }
         }
 
-
         private void StopCpuLoad()
         {
             isCpuLoadRunning = false;
@@ -226,7 +256,6 @@ namespace SleepTester
 
             cpuLoadThreads.Clear();
         }
-
 
         private void StartProcessNoWait(string fileName, string arguments)
         {
@@ -254,7 +283,6 @@ namespace SleepTester
             return output;
         }
 
-
         private void KillProcess(string processName)
         {
             foreach (var proc in Process.GetProcessesByName(processName))
@@ -262,7 +290,6 @@ namespace SleepTester
                 proc.Kill();
             }
         }
-
 
         public class TimerResolution
         {
@@ -284,6 +311,5 @@ namespace SleepTester
                 return NtQueryTimerResolution(out _, out int maxResolution, out _) == 0 ? maxResolution : -1;
             }
         }
-
     }
 }
